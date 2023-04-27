@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 import * as API from "../services/getCategories";
 
 export default function AsignaturesList() {
@@ -8,11 +9,16 @@ export default function AsignaturesList() {
 	const [error, setError] = useState(null);
 
 
+	const userID = 2;
+
+	//TODO: Refactor all AXIOS calls into a function component?
+	//TODO: define an ID
 	useEffect(() => {
+		// TODO: Refactor this
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`http://www.beapilot.local:82/categories`
+					`http://www.beapilot.local:82/?userID=${userID}`
 				);
 				setData(response.data);
 				setError(null);
@@ -26,7 +32,7 @@ export default function AsignaturesList() {
 		getData();
 	}, []);
 	return (
-		<React.Fragment>
+		<>
 			<h2>Página de Asignaturas</h2>
 			<h1>API Posts</h1>
 			{loading && <div>A moment please...</div>}
@@ -37,10 +43,22 @@ export default function AsignaturesList() {
 				{data &&
 					data.results.map((result) => (
 						<li key={result.id_category}>
-							<h3>{result.name_category}</h3>
+							{result.name_category}
+							{result.id_user_test > 0 ?
+							<Link
+
+							to={{
+								pathname:`/test/${result.id_test}`}}>
+								{result.name_category}
+							</Link>
+							: " Start one"
+							}
+
+
+
 						</li>
 					))}
 			</ul>
-		</React.Fragment>
+		</>
 	);
 }
