@@ -11,15 +11,16 @@ export default function Test(props) {
 	const userID = 2;
 
 	useEffect(() => {
-		// TODO: Refactor this
+		// TODO: Refactor this, this is how we access the TEST
 		const getData = async () => {
 			try {
+				// We make sure the test exists
 				const response = await axios.get(
 					`http://www.beapilot.local:82/test?linkTo=id_test,id_user_test&equalTo=${ testId }_${userID}&select=*`
 				);
 				if (response.status === 200) {
 					const TestResponse = await axios.get(
-						`http://www.beapilot.local:82/answers?linkTo=istrue_answer,id_question_answer&equalTo=1_4&select=string_answer,id_question_answer,id_question_answer`
+						`http://www.beapilot.local:82/answers?linkTo=istrue_answer,id_question_answer&equalTo=1_4&select=string_answer,id_question_answer`
 					);
 					setData(TestResponse.data);
 					console.log(TestResponse.data)
@@ -34,8 +35,6 @@ export default function Test(props) {
 		};
 		getData();
 	}, []);
-
-
 		return (
 			<>
 				<div>Página de Test</div>
