@@ -4,7 +4,7 @@ const API_URL = "http://www.beapilot.local:82";
 export async function getData() {
 	try {
 		const response = await axios.get(
-			`http://www.beapilot.local:82/?userID=${userID}`
+			`${API_URL}/?userID=${userID}`
 		);
 		setData(response.data);
 		setError(null);

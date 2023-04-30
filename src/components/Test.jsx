@@ -8,24 +8,22 @@ export default function Test(props) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const { testId } = useParams();
-	const userID = 2;
+	console.log("Test ID: " + testId)
+	const userID = 5;
 
 	useEffect(() => {
 		// TODO: Refactor this, this is how we access the TEST
 		const getData = async () => {
 			try {
+
 				// We make sure the test exists
 				const response = await axios.get(
-					`http://www.beapilot.local:82/test?linkTo=id_test,id_user_test&equalTo=${ testId }_${userID}&select=*`
+					`http://www.beapilot.local:82/questionintests?linkTo=id_test_questionintest&equalTo=${ testId }?select=*`
 				);
-				if (response.status === 200) {
-					const TestResponse = await axios.get(
-						`http://www.beapilot.local:82/answers?linkTo=istrue_answer,id_question_answer&equalTo=1_4&select=string_answer,id_question_answer`
-					);
-					setData(TestResponse.data);
-					console.log(TestResponse.data)
-					setError(null);
-				}
+
+				setData(response.data);
+				console.log(response.data)
+				setError(null);
 			} catch (err) {
 				setError(err.message);
 				setData(null);
@@ -45,8 +43,12 @@ export default function Test(props) {
 				{data &&
 					data.results.map((result) => (
 						<div key={result.id_question_answer}>
-							id_test: {result.string_answer} <br />
-
+							id_Questionintest: {result.id_questionintest} <br />
+							id_test_questyionintest: {result.id_questionintest} <br />
+							StudentAnswer: {result.studentanswer_questionintest} <br />
+							id_question: {result.id_question_questionintest} <br />
+							id_User: {result.id_user_questionintest} <br />
+							<hr />
 						</div>
 					))}
 			</>
