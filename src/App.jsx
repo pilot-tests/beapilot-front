@@ -8,13 +8,13 @@ import  Test  from './components/Test';
 	export function App() {
 
 		return (
-			<React.Fragment>
+			<>
 				<h1>Página App</h1>
 				<Routes>
 					<Route path="/" element={<AsignaturesList />} />
-					<Route path="/test/:catId" element={<Test />} />
+					<Route path="/test/:testId" element={<Test />} />
 				</Routes>
-			</React.Fragment>
+			</>
 		);
 	}
 
