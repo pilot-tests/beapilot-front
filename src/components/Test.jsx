@@ -4,29 +4,49 @@ import { useParams } from "react-router-dom";
 import * as API from "../services/getCategories"
 
 export default function Test(props) {
-	const [data, setData] = useState({ results: [] });
+	const [quiz, setQuiz] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const [currentQuestion, setCurrentQuestion] = useState(0);
+	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const { testId } = useParams();
 
-	const userID = 5;
+	const currentQuestion = quiz && quiz[currentQuestionIndex]
+
+		const handleAnswerButtonClick = async (answerOption) => {
+			const nextQuestionIndex = currentQuestionIndex + 1;
+			setCurrentQuestionIndex(nextQuestionIndex);
+
+			try {
+				// Preparando los parámetros para la solicitud POST
+				// const id_student_answer = student_answer;
+
+				// Realizar la solicitud POST
+				const response = await axios.post("http://www.beapilot.local:82/", params);
+
+				// Manejar la respuesta de la solicitud POST (si es necesario)
+				console.log(response.data);
+			} catch (err) {
+				// Manejar errores en la solicitud POST
+				console.error(`Error al enviar la respuesta: ${err.message}`);
+			}
+		};
+
+
 
 	useEffect(() => {
 		// TODO: Refactor this, this is how we access the TEST
-		const getData = async () => {
+			const getData = async () => {
 			try {
 
 				// We make sure the test exists
 				const response = await axios.get(
 					`http://www.beapilot.local:82/?examId=${ testId }`
 				);
-
-				setData(response.data);
-				setError(null);
+				console.log(response)
+				setQuiz(response.data.results);
 			} catch (err) {
 				setError(err.message);
-				setData(null);
+				setQuiz(null);
 			} finally {
 				setLoading(false);
 			}
@@ -42,33 +62,38 @@ export default function Test(props) {
 					<div>{`There is a problem fetching the post data - ${error}`}</div>
 				)}
 
-				{data && data.results && (
+
+
+				{currentQuestion && (
 					<div >
-						<h2>{data.results[0].string_question}</h2>
+						<h2>{currentQuestion.string_question}</h2>
 						<ul>
 							<li>
-								{data.results[0].answer_1_string}
+								{currentQuestion.answer_1_string}
 							</li>
 							<li>
-								{data.results[0].answer_2_string}
+								{currentQuestion.answer_2_string}
 							</li>
 							<li>
-								{data.results[0].answer_3_string}
+								{currentQuestion.answer_3_string}
 							</li>
 							<li>
-								{data.results[0].answer_4_string}
+								{currentQuestion.answer_4_string}
 							</li>
 						</ul>
 					</div>
 				)}
-				{/* {data && data.results && (
+
+				<button onClick={() => handleAnswerButtonClick()}>Next</button>
+
+				{/* {data && results && (
         <pre>
-          <code>{JSON.stringify(data.results, null, 2)}</code>
+          <code>{JSON.stringify(results, null, 2)}</code>
         </pre>
       )} */}
 
 				{/* {data &&
-					data.results.map((result) => (
+					results.map((result) => (
 						<div key={result.id_question_answer}>
 							id_Questionintest: {result.id_questionintest} <br />
 							id_test_questyionintest: {result.id_questionintest} <br />
