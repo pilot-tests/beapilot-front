@@ -8,29 +8,51 @@ export default function Test(props) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+	const [optionSelected, setOptionSelected] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 	const { testId } = useParams();
+	const userID = 5;
+
 
 	const currentQuestion = quiz && quiz[currentQuestionIndex]
 
-		const handleAnswerButtonClick = async (answerOption) => {
+	const handleAnswerButtonClick = async () => {
+
+		console.log("Opción seleccionada:", optionSelected);
+		setOptionSelected(null);
+
+		try {
+			// Preparando los parámetros para la solicitud POST
+			// const id_student_answer = student_answer;
+
+			// Preparando los parámetros para la solicitud POST
+			const params = new URLSearchParams();
+			params.append('id_user_student_answer', userID);
+			params.append('id_answer_student_answer', optionSelected);
+			params.append('id_question_student_answer', currentQuestion.id_question);
+			params.append('id_test_student_answer', testId);
+
+			// Realizar la solicitud POST
+			const response = await axios.post("http://www.beapilot.local:82/student_answers", params);
+
 			const nextQuestionIndex = currentQuestionIndex + 1;
 			setCurrentQuestionIndex(nextQuestionIndex);
+			console.log(response.data);
 
-			try {
-				// Preparando los parámetros para la solicitud POST
-				// const id_student_answer = student_answer;
+		} catch (err) {
+			// Manejar errores en la solicitud POST
+			console.error(`Error al enviar la respuesta: ${err.message}`);
+		}
+	};
 
-				// Realizar la solicitud POST
-				const response = await axios.post("http://www.beapilot.local:82/", params);
+	useEffect(() => {
+    setButtonDisabled(optionSelected === null);
+  }, [optionSelected]);
 
-				// Manejar la respuesta de la solicitud POST (si es necesario)
-				console.log(response.data);
-			} catch (err) {
-				// Manejar errores en la solicitud POST
-				console.error(`Error al enviar la respuesta: ${err.message}`);
-			}
-		};
-
+	const handleRadioChange = (event) => {
+    setOptionSelected(event.target.value);
+		console.log("Opción seleccionada:", optionSelected);
+  };
 
 
 	useEffect(() => {
@@ -67,24 +89,56 @@ export default function Test(props) {
 				{currentQuestion && (
 					<div >
 						<h2>{currentQuestion.string_question}</h2>
-						<ul>
-							<li>
-								{currentQuestion.answer_1_string}
-							</li>
-							<li>
-								{currentQuestion.answer_2_string}
-							</li>
-							<li>
-								{currentQuestion.answer_3_string}
-							</li>
-							<li>
-								{currentQuestion.answer_4_string}
-							</li>
-						</ul>
+								<label htmlFor={currentQuestion.answer_1_id}>
+									<span>{currentQuestion.answer_1_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_1_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_1_id}
+										checked={optionSelected === currentQuestion.answer_1_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
+								<label htmlFor={currentQuestion.answer_2_id}>
+									<span>{currentQuestion.answer_2_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_2_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_2_id}
+										checked={optionSelected === currentQuestion.answer_2_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
+								<label htmlFor={currentQuestion.answer_3_id}>
+									<span>{currentQuestion.answer_3_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_3_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_3_id}
+										checked={optionSelected === currentQuestion.answer_3_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
+								<label htmlFor={currentQuestion.answer_4_id}>
+									<span>{currentQuestion.answer_4_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_4_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_4_id}
+										checked={optionSelected === currentQuestion.answer_4_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
 					</div>
 				)}
-
-				<button onClick={() => handleAnswerButtonClick()}>Next</button>
+				<button onClick={handleAnswerButtonClick} disabled={buttonDisabled}>
+					Ejecutar
+				</button>
+				{/* <button onClick={() => handleAnswerButtonClick()}>Next</button> */}
 
 				{/* {data && results && (
         <pre>
