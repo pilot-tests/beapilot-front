@@ -22,10 +22,6 @@ export default function Test(props) {
 		setOptionSelected(null);
 
 		try {
-			// Preparando los parámetros para la solicitud POST
-			// const id_student_answer = student_answer;
-
-			// Preparando los parámetros para la solicitud POST
 			const params = new URLSearchParams();
 			params.append('id_user_student_answer', userID);
 			params.append('id_answer_student_answer', optionSelected);
@@ -64,8 +60,12 @@ export default function Test(props) {
 				const response = await axios.get(
 					`http://www.beapilot.local:82/?examId=${ testId }`
 				);
-				console.log(response)
-				setQuiz(response.data.results);
+
+				// Filtrar preguntas con id_test_student_answer null
+        const filteredQuestions = response.data.results.filter(question => question.id_test_student_answer === null);
+				console.log(response.data);
+				console.log(filteredQuestions);
+				setQuiz(filteredQuestions);
 			} catch (err) {
 				setError(err.message);
 				setQuiz(null);
@@ -85,8 +85,7 @@ export default function Test(props) {
 				)}
 
 
-
-				{currentQuestion && (
+				{currentQuestion && currentQuestionIndex < quiz.length ? (
 					<div >
 						<h2>{currentQuestion.string_question}</h2>
 								<label htmlFor={currentQuestion.answer_1_id}>
@@ -133,11 +132,14 @@ export default function Test(props) {
 										onChange={handleRadioChange}
 									/>
 								</label>
-					</div>
-				)}
-				<button onClick={handleAnswerButtonClick} disabled={buttonDisabled}>
+								<button onClick={handleAnswerButtonClick} disabled={buttonDisabled}>
 					Ejecutar
 				</button>
+					</div>
+				): (
+					<h1>Cosas</h1>
+				)}
+
 				{/* <button onClick={() => handleAnswerButtonClick()}>Next</button> */}
 
 				{/* {data && results && (

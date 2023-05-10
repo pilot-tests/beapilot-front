@@ -9,7 +9,7 @@ export default function AsignaturesList() {
 	const [error, setError] = useState(null);
 
 
-	const userID = 5;
+	const userID = 2;
 
 	//TODO: Refactor all AXIOS calls into a function component?
 	//TODO: define an ID
@@ -20,6 +20,7 @@ export default function AsignaturesList() {
 				const response = await axios.get(
 					`http://www.beapilot.local:82/?userID=${userID}`
 				);
+				console.log(response.data);
 				setData(response.data);
 				setError(null);
 			} catch (err) {
@@ -53,9 +54,6 @@ export default function AsignaturesList() {
 							</Link>
 							: " Start one"
 							}
-
-
-
 						</li>
 					))}
 			</ul>
