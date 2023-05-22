@@ -1,16 +1,48 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as API from "../services/getCategories";
 
 export default function AsignaturesList() {
 	const [data, setData] = useState({ results: [] });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const navigate = useNavigate();
 
 
-	const userID = 2;
+	const userID = 6;
 
+
+	const handleAddTest = async (result) => {
+    setLoading(true);
+
+    try {
+      const postTestData = {
+				id_category_test: result.id_category,
+				id_user_test: userID,
+				id_category_question: result.id_category,
+				newTest: true
+			};
+			const serializedData = new URLSearchParams(postTestData).toString();
+
+			const response = await axios.post(
+				'http://www.beapilot.local:82/test',
+				serializedData,
+				{
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}
+			);
+      if (response.status === 200) {
+        navigate(`/test/${response.data.results}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 	//TODO: Refactor all AXIOS calls into a function component?
 	//TODO: define an ID
 	useEffect(() => {
@@ -47,12 +79,13 @@ export default function AsignaturesList() {
 							{result.name_category}
 							{result.id_user_test > 0 ?
 							<Link
-
-							to={{
-								pathname:`/test/${result.id_test}`}}>
-								{result.name_category}
+								to={{pathname:`/test/${result.id_test}`}}>
+									{result.name_category}
 							</Link>
-							: " Start one"
+							:
+							<button onClick={() => handleAddTest(result)} disabled={loading}>
+								{loading ? 'Cargando...' : 'Crear Test'}
+							</button>
 							}
 						</li>
 					))}

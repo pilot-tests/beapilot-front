@@ -1,7 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import  AsignaturesList  from './components/AsignaturesList';
-import  Test  from './components/Test';
+import  AsignaturesList  from './views/AsignaturesList';
+import  Test  from './views/Test';
+import './style.css';
 
 
 
