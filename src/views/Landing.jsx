@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import LoginButton from '../components/LoginButton'
 
-const PrivacyPolicy = () => {
+const Landing = () => {
   return (
   <LandingWrapper>
     Landing Component <Link to="/Dashboard">Accede al Dashboard</Link>
@@ -13,4 +13,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export default PrivacyPolicy;
+export default Landing;
