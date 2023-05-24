@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import UserWrapper from "../layouts/UserWrapper";
+import NumberOfTests from "../components/dashboard/NumberOfTests";
 import LoginButton from '../components/LoginButton'
 
 export default function AsignaturesList() {
@@ -74,15 +75,17 @@ export default function AsignaturesList() {
 			{error && (
 				<div>{`There is a problem fetching the post data - ${error}`}</div>
 			)}
+			<NumberOfTests />
+			<hr />
 			<ul>
 				{data &&
 					data.results.map((result) => (
 						<li key={result.id_category}>
-							{result.name_category}
+							{result.name_category} -
 							{result.id_user_test > 0 ?
 							<Link
 								to={{pathname:`/test/${result.id_test}`}}>
-									{result.name_category}
+								Continuar Test
 							</Link>
 							:
 							<button onClick={() => handleAddTest(result)} disabled={loading}>
