@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import * as API from "../services/getCategories";
+import UserWrapper from "../layouts/UserWrapper";
 
 export default function AsignaturesList() {
 	const [data, setData] = useState({ results: [] });
@@ -65,7 +65,7 @@ export default function AsignaturesList() {
 		getData();
 	}, []);
 	return (
-		<>
+		<UserWrapper>
 			<h2>Página de Asignaturas</h2>
 			<h1>API Posts</h1>
 			{loading && <div>A moment please...</div>}
@@ -90,6 +90,6 @@ export default function AsignaturesList() {
 						</li>
 					))}
 			</ul>
-		</>
+		</UserWrapper>
 	);
 }
