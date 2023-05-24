@@ -46,7 +46,7 @@ export default function AsignaturesList() {
 	//TODO: Refactor all AXIOS calls into a function component?
 	//TODO: define an ID
 	useEffect(() => {
-		// TODO: Refactor this into a function
+		// TODO: Refactor all API calls into a function or a service
 		const getData = async () => {
 			try {
 				const response = await axios.get(

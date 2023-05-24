@@ -10,6 +10,7 @@ export default function Test(props) {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [optionSelected, setOptionSelected] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+	const [finishedTest, setFinishedTest] = useState(false);
 	const { testId } = useParams();
 	const userID = 6;
 
@@ -47,6 +48,11 @@ export default function Test(props) {
     setOptionSelected(event.target.value);
 
   };
+
+
+
+
+
 	// we make the PUT to edit the FINISHED test field and the SCORE field:
 	useEffect(() => {
     if (!quiz || currentQuestionIndex < quiz.length) {
@@ -57,21 +63,27 @@ export default function Test(props) {
     // Entonces, hacemos la petición PUT:
 
     const putData = async () => {
-        try {
-            const params = new URLSearchParams();
-            params.append('linkTo', 'id_test');
-            params.append('equalTo', testId);
-            // Añade aquí cualquier otro parámetro que necesites
+			try {
+				const params = new URLSearchParams();
+				// params.append('linkTo', 'id_test');
+				params.append('id_test', testId);
+				// Añade aquí cualquier otro parámetro que necesites
 
-            const response = await axios.put("http://www.beapilot.local:82/test", params);
-            // Hacemos algo con la respuesta, si es necesario
-        } catch (err) {
-            console.error(`Error al hacer la petición PUT: ${err.message}`);
-        }
-    };
+				const response = await axios.put(`http://www.beapilot.local:82/test?id_test=${testId}`);
 
-    putData();
-}, [currentQuestionIndex, quiz, testId]);  // Ejecutamos este efecto cada vez que cambia currentQuestionIndex, quiz o testId
+			} catch (err) {
+					console.error(`Error al hacer la petición PUT: ${err.message}`);
+			} finally {
+					// Actualiza el estado finishedTest a true una vez que la solicitud PUT se ha completado
+					setFinishedTest(true);
+			}
+		};
+
+		putData();
+	}, [currentQuestionIndex, quiz, testId]);  // Ejecutamos este efecto cada vez que cambia currentQuestionIndex, quiz o testId
+
+
+
 
 
 	useEffect(() => {
@@ -107,7 +119,7 @@ export default function Test(props) {
 					<div>{`There is a problem fetching the post data - ${error}`}</div>
 				)}
 
-
+				{/* TODO: Refactor this into another component */}
 				{currentQuestion && currentQuestionIndex < quiz.length ? (
 					<div >
 						<h2>{currentQuestion.string_question}</h2>
@@ -159,9 +171,9 @@ export default function Test(props) {
 							Ejecutar
 						</button>
 					</div>
-				): (
+					): finishedTest ? (
 					<TestResult test={testId} />
-				)}
+				) : null}
 			</>
 		);
 }
