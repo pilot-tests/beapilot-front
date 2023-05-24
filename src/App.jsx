@@ -1,10 +1,15 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { withAuthenticationRequired } from "@auth0/auth0-react";
+
 import  Landing  from './views/Landing';
 import  Test  from './views/Test';
 import  Dashboard  from './views/Dashboard';
 import './style.css';
 
+const ProtectedDashboard = withAuthenticationRequired(Dashboard, {
+  onRedirecting: () => <div>Loading...</div>,
+});
 
 
 	export function App() {
@@ -13,10 +18,10 @@ import './style.css';
 			<>
 				<h1>Página App</h1>
 				<Routes>
-					<Route path="/" element={<Landing />} />
-					<Route path="/dashboard" element={<Dashboard />} />
-					<Route path="/test/:testId" element={<Test />} />
-				</Routes>
+        <Route exact path="/" element={<Landing />} />
+        <Route path="/dashboard" element={<ProtectedDashboard />} />
+        <Route path="/test/:testId" element={<Test />} />
+      </Routes>
 			</>
 		);
 	}
