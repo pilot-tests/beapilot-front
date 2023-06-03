@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       domain="beapilot.eu.auth0.com"
       clientId="q9hutTh9jH6PJm6ZlukDtnjNZOCbBtDa"
       authorizationParams={{
-				redirect_uri: "http://localhost:3000"
+				redirect_uri: "http://localhost:3000/dashboard"
 			}}
 		>
 			<BrowserRouter>

@@ -1,3 +1,7 @@
 label {
   display: block;
 }
+
+.avatar {
+  width: 100px;
+}

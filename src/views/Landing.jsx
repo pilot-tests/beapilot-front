@@ -7,7 +7,7 @@ import LoginButton from '../components/LoginButton'
 const Landing = () => {
   return (
   <LandingWrapper>
-    Landing Component <Link to="/Dashboard">Accede al Dashboard</Link>
+    Landing Component <Link to="/dashboard">Accede al Dashboard</Link>
     <LoginButton />
   </LandingWrapper>
   );

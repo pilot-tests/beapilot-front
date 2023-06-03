@@ -66,8 +66,11 @@ export default function AsignaturesList() {
 		};
 		getData();
 	}, []);
+
+
 	return (
 		<UserWrapper>
+
 			<LoginButton />
 			<h2>Página de Asignaturas</h2>
 			<h1>API Posts</h1>
@@ -83,14 +86,26 @@ export default function AsignaturesList() {
 						<li key={result.id_category}>
 							{result.name_category} -
 							{result.id_user_test > 0 ?
-							<Link
-								to={{pathname:`/test/${result.id_test}`}}>
-								Continuar Test
-							</Link>
+								<>
+									{Number(result.finished_test) === 1 ?
+										<>
+										Test Finalizado, tu score es:
+											<b> {result.final_note}</b>
+											<button onClick={() => handleAddTest(result)} disabled={loading}>
+												{loading ? 'Cargando...' : 'Crear nuevo test'}
+											</button>
+										</>
+										:
+										<Link
+										to={{pathname:`/test/${result.id_test}`}}>
+										Continuar Test
+									</Link>
+									}
+								</>
 							:
-							<button onClick={() => handleAddTest(result)} disabled={loading}>
-								{loading ? 'Cargando...' : 'Crear Test'}
-							</button>
+								<button onClick={() => handleAddTest(result)} disabled={loading}>
+									{loading ? 'Cargando...' : 'Crear Test'}
+								</button>
 							}
 						</li>
 					))}

@@ -11,6 +11,8 @@ export default function Test(props) {
 	const [optionSelected, setOptionSelected] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 	const [finishedTest, setFinishedTest] = useState(false);
+	const [questionCount, setQuestionCount] = useState(0);
+
 	const { testId } = useParams();
 	const userID = 6;
 
@@ -101,6 +103,7 @@ export default function Test(props) {
 				console.log(response.data);
 				console.log(filteredQuestions);
 				setQuiz(filteredQuestions);
+				setQuestionCount(response.data.total);
 			} catch (err) {
 				setError(err.message);
 				setQuiz(null);
@@ -122,6 +125,7 @@ export default function Test(props) {
 				{/* TODO: Refactor this into another component */}
 				{currentQuestion && currentQuestionIndex < quiz.length ? (
 					<div >
+						Pregunta {currentQuestionIndex + 1} de {questionCount}
 						<h2>{currentQuestion.string_question}</h2>
 						<label htmlFor={currentQuestion.answer_1_id}>
 							<span>{currentQuestion.answer_1_string} (id: {currentQuestion.answer_1_id})</span>
