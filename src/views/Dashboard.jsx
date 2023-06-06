@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import UserWrapper from "../layouts/UserWrapper";
 import NumberOfTests from "../components/dashboard/NumberOfTests";
 import LoginButton from '../components/LoginButton'
+import { AuthContext } from '../services/AuthContext';
 
-export default function AsignaturesList() {
+
+export default function Dashboard() {
 	const [data, setData] = useState({ results: [] });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
 
-	const userID = 6;
+	const userID = useContext(AuthContext);
+	return;
 
 
 	const handleAddTest = async (result) => {
