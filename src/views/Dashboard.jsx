@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from '../contexts/AuthContext'
 import UserWrapper from "../layouts/UserWrapper";
 import NumberOfTests from "../components/dashboard/NumberOfTests";
 
@@ -10,8 +11,10 @@ export default function AsignaturesList() {
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
-
-	const userID = 6;
+	const { auth } = useAuth();
+  const token = auth.token;
+  const user = auth.user;
+	const userID = auth.user.id_user;
 
 
 	const handleAddTest = async (result) => {
@@ -30,8 +33,12 @@ export default function AsignaturesList() {
 				'http://www.beapilot.local:82/test',
 				serializedData,
 				{
+					params: {
+							token: token
+						},
 					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
+						'Content-Type': 'application/x-www-form-urlencoded',
+						Auth: "abc"
 					}
 				}
 			);
@@ -51,7 +58,15 @@ export default function AsignaturesList() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`http://www.beapilot.local:82/?userID=${userID}`
+					`http://www.beapilot.local:82/?userID=${userID}`,
+					{
+						params: {
+							token: token
+						},
+						headers: {
+							Auth: "abc"
+						}
+					}
 				);
 				console.log(response.data);
 				setData(response.data);

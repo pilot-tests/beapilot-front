@@ -15,7 +15,16 @@ function NumberOfTests() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`http://www.beapilot.local:82/relations?rel=test,categories&type=id_category_test,id_category&select=*&linkTo=id_user_test,finished_test&equalTo=${userID}_1`
+					`http://www.beapilot.local:82/relations?rel=test,categories&type=id_category_test,id_category&select=*&linkTo=id_user_test,finished_test&equalTo=${userID}_1`,
+					{
+						params: {
+							token: token
+						},
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							Auth: "abc"
+						}
+					}
 				);
 				console.log(response.data);
 				setData(response.data);
