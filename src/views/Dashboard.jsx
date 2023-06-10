@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import UserWrapper from "../layouts/UserWrapper";
 import NumberOfTests from "../components/dashboard/NumberOfTests";
-import LoginButton from '../components/LoginButton'
 
 export default function AsignaturesList() {
 	const [data, setData] = useState({ results: [] });
@@ -71,7 +70,6 @@ export default function AsignaturesList() {
 	return (
 		<UserWrapper>
 
-			<LoginButton />
 			<h2>Página de Asignaturas</h2>
 			<h1>API Posts</h1>
 			{loading && <div>A moment please...</div>}
