@@ -31,6 +31,7 @@ const LoginForm = () => {
     // Obtén la información del usuario del objeto de respuesta
     const user = response.data.results[0];
 
+    console.log('Setting auth token and user...', { token, user });
     // Asigna el token a localStorage
     localStorage.setItem('authToken', token);
 
