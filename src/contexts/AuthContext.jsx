@@ -8,14 +8,15 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState({ token: null, user: null });
+  const [loading, setLoading] = useState(true);
 
-  // Carga el token y los datos del usuario desde el localStorage al montar el componente
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const user = JSON.parse(localStorage.getItem('user'));
     if (token && user) {
       setAuth({ token, user });
     }
+    setLoading(false);  // Una vez cargados los datos, actualizamos el estado loading.
   }, []);
 
   const setToken = (token) => {
@@ -32,7 +33,9 @@ export function AuthProvider({ children }) {
     auth,
     setToken,
     setUser,
+    loading
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+
