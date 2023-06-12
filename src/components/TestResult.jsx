@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
+import { useAuth } from '../contexts/AuthContext'
 
 
 export default function Test({test}) {
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+		const { auth } = useAuth();
+  const token = auth.token;
+  const user = auth.user;
+	const userID = auth.user.id_user;
 	useEffect(() => {
 		// TODO: Refactor this, this is how we access the TEST
 			const getData = async () => {
@@ -13,7 +19,12 @@ export default function Test({test}) {
 
 				// We make sure the test exists
 				const response = await axios.get(
-					`http://www.beapilot.local:82/test?linkTo=id_test&equalTo=${test}`
+					`http://www.beapilot.local:82/test?linkTo=id_test&equalTo=${test}&token=${token}`,
+					{
+					headers: {
+						'Auth': 'abc'
+					}
+				}
 				);
 				setData(response.data);
 				console.log(response.data);
@@ -35,6 +46,9 @@ export default function Test({test}) {
         <h1>Test Result {test}</h1>
 				{data && <p>{JSON.stringify(data)}</p>} {/* Aquí mostramos los datos recibidos */}
 				{data && <p>Nota Final: {data.results[0].final_note}</p>}
+				<p>
+					<Link to="/dashboard">Volver al Dashboard</Link>
+				</p>
 			</>
 		);
 }

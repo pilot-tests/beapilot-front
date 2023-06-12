@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TestResult from '../components/TestResult'
 import { useParams  } from "react-router-dom"
 import axios from "axios";
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Test(props) {
 	const [quiz, setQuiz] = useState(null);
@@ -14,7 +15,10 @@ export default function Test(props) {
 	const [questionCount, setQuestionCount] = useState(0);
 
 	const { testId } = useParams();
-	const userID = 6;
+	const { auth } = useAuth();
+  const token = auth.token;
+  const user = auth.user;
+	const userID = auth.user.id_user;
 
 
 	const currentQuestion = quiz && quiz[currentQuestionIndex]
@@ -23,14 +27,23 @@ export default function Test(props) {
 		setOptionSelected(null);
 
 		try {
-			const params = new URLSearchParams();
-			params.append('id_user_student_answer', userID);
-			params.append('id_answer_student_answer', optionSelected);
-			params.append('id_question_student_answer', currentQuestion.id_question);
-			params.append('id_test_student_answer', testId);
+			// Definir los datos que quieres enviar
+			const data = {
+				id_user_student_answer: userID,
+				id_answer_student_answer: optionSelected,
+				id_question_student_answer: currentQuestion.id_question,
+				id_test_student_answer: testId,
+			};
 
 			// Realizar la solicitud POST
-			const response = await axios.post("http://www.beapilot.local:82/student_answers", params);
+			const response = await axios.post(`http://www.beapilot.local:82/student_answers?token=${token}`, data, {
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					Auth: "abc"
+				}
+			});
+			console.log("post response:", userID);
+
 
 			const nextQuestionIndex = currentQuestionIndex + 1;
 			setCurrentQuestionIndex(nextQuestionIndex);
@@ -66,13 +79,15 @@ export default function Test(props) {
 
     const putData = async () => {
 			try {
-				const params = new URLSearchParams();
-				// params.append('linkTo', 'id_test');
-				params.append('id_test', testId);
-				// Añade aquí cualquier otro parámetro que necesites
-
-				const response = await axios.put(`http://www.beapilot.local:82/test?id_test=${testId}`);
-
+				const response = await axios.put(`http://www.beapilot.local:82/test?id_test=${testId}&token=${token}`,
+				null,  // No body data for this PUT request
+				{
+					headers: {
+						'Auth': 'abc'
+					}
+				}
+			);
+				console.log(response.data)
 			} catch (err) {
 					console.error(`Error al hacer la petición PUT: ${err.message}`);
 			} finally {
@@ -88,6 +103,34 @@ export default function Test(props) {
 
 
 
+useEffect(() => {
+    const checkTestStatus = async () => {
+        try {
+            // Realizar la solicitud GET para obtener el estado del test
+            const response = await axios.get(`http://www.beapilot.local:82/test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
+                headers: {
+                    Auth: "abc"
+                }
+            });
+
+            // Suponiendo que 'finished_test' es el campo que indica si el test está terminado
+            if (response.data.results[0].finished_test === 1) {
+                setFinishedTest(true);
+								console.log("Test FInished:", finishedTest);
+            }
+        } catch (err) {
+            console.error(`Error al verificar el estado del test: ${err.message}`);
+        }
+    };
+
+    // Llamar a la función asincrónica dentro del efecto
+    checkTestStatus();
+}, []);  // Ejecutar este efecto solo cuando el componente se monta
+
+
+
+
+
 	useEffect(() => {
 		// TODO: Refactor this, this is how we access the TEST
 			const getData = async () => {
@@ -95,12 +138,22 @@ export default function Test(props) {
 
 				// We make sure the test exists
 				const response = await axios.get(
-					`http://www.beapilot.local:82/?examId=${ testId }`
+					`http://www.beapilot.local:82/?examId=${ testId }`,
+					{
+						params: {
+								token: token
+							},
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							Auth: "abc"
+						}
+					}
+
 				);
 
 				// Filtrar preguntas con id_test_student_answer null
         const filteredQuestions = response.data.results.filter(question => question.id_test_student_answer === null);
-				console.log(response.data);
+				console.log("Response Data:", response.data);
 				console.log(filteredQuestions);
 				setQuiz(filteredQuestions);
 				setQuestionCount(response.data.total);
