@@ -4,6 +4,7 @@ import PrivateRoutes from './components/PrivateRoute'; //
 
 import  Landing  from './views/Landing';
 import  Test  from './views/Test';
+import  TestResult from './views/TestResult';
 import  Dashboard  from './views/Dashboard';
 import './style.css';
 
@@ -19,6 +20,7 @@ import './style.css';
 						<Route element={<PrivateRoutes />}>
                 <Route element={<Dashboard/>} path="/dashboard" />
                 <Route element={<Test/>} path="/test/:testId"/>
+								<Route element={<TestResult/>} path="/testresult/:testId"/>
             </Route>
 					</Routes>
 				</Router>

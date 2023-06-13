@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import TestResult from '../components/TestResult'
-import { useParams  } from "react-router-dom"
+import TestResult from './TestResult'
+import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios";
 import { useAuth } from '../contexts/AuthContext'
 
@@ -14,6 +14,7 @@ export default function Test(props) {
 	const [finishedTest, setFinishedTest] = useState(false);
 	const [questionCount, setQuestionCount] = useState(0);
 
+	const navigate = useNavigate();
 	const { testId } = useParams();
 	const { auth } = useAuth();
   const token = auth.token;
@@ -42,7 +43,6 @@ export default function Test(props) {
 					Auth: "abc"
 				}
 			});
-			console.log("post response:", userID);
 
 
 			const nextQuestionIndex = currentQuestionIndex + 1;
@@ -76,27 +76,35 @@ export default function Test(props) {
 
     // Si llegamos aquí, significa que ya se han contestado todas las preguntas del test
     // Entonces, hacemos la petición PUT:
-
-    const putData = async () => {
+		setLoading(true);  // Comienza la carga
+    const finishTest = async () => {
 			try {
-				const response = await axios.put(`http://www.beapilot.local:82/test?id_test=${testId}&token=${token}`,
-				null,  // No body data for this PUT request
-				{
+				const response = await axios({
+					method: 'post',
+					url: `http://www.beapilot.local:82/openAi?token=${token}`,
 					headers: {
-						'Auth': 'abc'
-					}
-				}
-			);
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'auth': 'abc'
+					},
+					data: new URLSearchParams({
+						prompt: true,
+						userId: userID,
+						testId: testId,
+						type: 1
+					})
+				});
 				console.log(response.data)
 			} catch (err) {
 					console.error(`Error al hacer la petición PUT: ${err.message}`);
 			} finally {
 					// Actualiza el estado finishedTest a true una vez que la solicitud PUT se ha completado
 					setFinishedTest(true);
+					setLoading(false);
+					navigate(`/testresult/${testId}`);
 			}
 		};
 
-		putData();
+		finishTest();
 	}, [currentQuestionIndex, quiz, testId]);  // Ejecutamos este efecto cada vez que cambia currentQuestionIndex, quiz o testId
 
 
@@ -113,10 +121,9 @@ useEffect(() => {
                 }
             });
 
-            // Suponiendo que 'finished_test' es el campo que indica si el test está terminado
             if (response.data.results[0].finished_test === 1) {
                 setFinishedTest(true);
-								console.log("Test FInished:", finishedTest);
+								navigate(`/testresult/${testId}`);
             }
         } catch (err) {
             console.error(`Error al verificar el estado del test: ${err.message}`);
@@ -125,7 +132,7 @@ useEffect(() => {
 
     // Llamar a la función asincrónica dentro del efecto
     checkTestStatus();
-}, []);  // Ejecutar este efecto solo cuando el componente se monta
+}, []);
 
 
 
@@ -228,9 +235,9 @@ useEffect(() => {
 							Ejecutar
 						</button>
 					</div>
-					): finishedTest ? (
-					<TestResult test={testId} />
-				) : null}
+					): (
+					<div>Error.. ?</div>
+				)}
 			</>
 		);
 }

@@ -14,6 +14,7 @@ export default function AsignaturesList() {
 	const { auth } = useAuth();
   const token = auth.token;
   const user = auth.user;
+	console.log(user);
 	const userID = auth.user.id_user;
 
 
