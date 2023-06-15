@@ -106,7 +106,7 @@ export default function AsignaturesList() {
 										Test Finalizado, tu score es:
 											<b> {result.final_note}</b>
 											<button onClick={() => handleAddTest(result)} disabled={loading}>
-												{loading ? 'Cargando...' : 'Crear nuevo test'}
+												{loading ? 'Cargando...' : 'Crear test de nuevo'}
 											</button>
 										</>
 										:
