@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import TestResult from './TestResult'
+import TestResult from '../testResult/TestResult'
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios";
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function Test(props) {
 	const [quiz, setQuiz] = useState(null);

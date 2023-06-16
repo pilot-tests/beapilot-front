@@ -1,10 +1,11 @@
 import React from 'react';
+import Topbar from '../components/layout/Topbar';
 
 const UserWrapper = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem('authToken');
   return (
     <React.Fragment>
-      <h1>User Wrapper</h1>
+      <Topbar />
       {children}
     </React.Fragment>
   );

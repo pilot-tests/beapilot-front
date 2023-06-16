@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from 'react-router-dom';
 import axios from "axios";
-import UserWrapper from "../layouts/UserWrapper";
-import { useAuth } from '../contexts/AuthContext'
+import UserWrapper from "../../layouts/UserWrapper";
+import { useAuth } from '../../contexts/AuthContext'
 
 
 export default function Test({test}) {

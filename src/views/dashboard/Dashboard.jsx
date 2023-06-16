@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from '../contexts/AuthContext'
-import UserWrapper from "../layouts/UserWrapper";
-import NumberOfTests from "../components/dashboard/NumberOfTests";
+import { useAuth } from '../../contexts/AuthContext'
+import UserWrapper from "../../layouts/UserWrapper";
+import NumberOfTests from "../../components/dashboard/NumberOfTests";
 
 export default function AsignaturesList() {
 	const [data, setData] = useState({ results: [] });
