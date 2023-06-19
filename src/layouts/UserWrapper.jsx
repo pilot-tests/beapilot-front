@@ -6,7 +6,9 @@ const UserWrapper = ({ children }) => {
   return (
     <React.Fragment>
       <Topbar />
-      {children}
+      <main className="container">
+        {children}
+      </main>
     </React.Fragment>
   );
 };

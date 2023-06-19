@@ -97,33 +97,31 @@ export default function AsignaturesList() {
 				{data &&
 					data.results.map((result) => (
 						<li className={`category-list__item ${result.name_category}`}
-								key={result.id_category}
-								style={{ '--color-bg-cat': `var(--color-cat-${result.id_category}-t)` }}>
+								key={result.id_category}>
 							<h2 className="category-list__title">{result.name_category}</h2>
 							<div className="category-list__body">
-								<p className="category-list__rating">{result.average_note ? result.average_note : "00.00" }</p>
+								<p className="category-list__rating" style={{ '--color-bg-cat': `var(--color-cat-${result.id_category}-t)` }}>{result.average_note ? result.average_note : "00.00" }</p>
 							</div>
-
+							<Bar rating={result.average_note} />
 							{result.has_tests > 0 ?
 								<>
 									{Number(result.has_finished_tests) === 1 ?
 										<>
-											<Bar rating={result.average_note} />
-
 											<button onClick={() => handleAddTest(result)} disabled={loading}>
-												{loading ? 'Cargando...' : 'Crear test de nuevo'}
+												{loading ? 'Cargando...' : 'Hacer otro test'}
 											</button>
 										</>
 										:
 										<Link
-										to={{pathname:`/test/${result.id_test}`}}>
+										to={{pathname:`/test/${result.id_test}`}}
+										className="link-high">
 										Continuar Test
 									</Link>
 									}
 								</>
 							:
 								<button onClick={() => handleAddTest(result)} disabled={loading}>
-									{loading ? 'Cargando...' : 'Crear Test'}
+									{loading ? 'Cargando...' : 'Empezar Test'}
 								</button>
 							}
 						</li>

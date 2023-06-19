@@ -1,18 +1,20 @@
 :root {
   // Colors
   --black: hsl(208, 18%, 14%);
-  --grey: hsl(206, 15%, 21%);
+  --grey: hsl(230, 16%, 93%);
+  --light-grey: hsl(0, 0%, 90%);
   --white: white;
-  --blue: hsl(235, 100%, 68%);
+  --blue: hsl(189, 100%, 33%);
   --red: hsl(0, 100%, 50%);
   --orange: hsl(30, 100%, 50%);
   --yellow: hsl(60, 100%, 50%);
   --green: hsl(120, 100%, 50%);
 
-  --bg-color: var(--black);
+  --bg-color: var(--light-grey);
   --bg-color-light: var(--grey);
-  --text-color: var(--white);
+  --text-color: var(--black);
   --link-color: var(--blue);
+  --border-color: var(--grey);
 
   --color-score-0-50: var(--red);
   --color-score-50-75: var(--orange);
@@ -45,7 +47,11 @@
   --font-family: 'Lato', sans-serif;
   --fontfamily-heads: 'Montserrat', sans-serif;
 
+  --font-size-16: 16px;
+  --font-size-32: 32px;
   --font-size-64: 64px;
+
+
 
   --font-weight-light: 100;
   --font-weight-bold: 400;
@@ -53,5 +59,6 @@
   // Units
   --unit: 6px;
   --space: calc(var(--unit) * 2);
-  --border-radius: calc(var(--unit) * 2);
+  --space-big: calc(var(--unit) * 4);
+  --border-radius: 2px;
 }
