@@ -6,7 +6,7 @@ import  Landing  from './views/landing/Landing';
 import  Test  from './views/test/Test';
 import  TestResult from './views/testResult/TestResult';
 import  Dashboard  from './views/dashboard/Dashboard';
-import './style.css';
+import './Scss/style.scss';
 
 
 	export function App() {

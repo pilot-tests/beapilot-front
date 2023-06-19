@@ -1,0 +1,15 @@
+.bar {
+
+  &__label {
+    
+  }
+  &-svg {
+    &__bg {
+      stroke: var(--bg-color-light);
+      fill: var(--bg-color-light);
+    }
+    &__bar {
+
+    }
+  }
+}

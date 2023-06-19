@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext'
 import UserWrapper from "../../layouts/UserWrapper";
 import NumberOfTests from "../../components/dashboard/NumberOfTests";
+import Bar from "../../components/Bar/Bar";
+import './Dashboard.scss';
 
 export default function AsignaturesList() {
 	const [data, setData] = useState({ results: [] });
@@ -14,7 +16,6 @@ export default function AsignaturesList() {
 	const { auth } = useAuth();
   const token = auth.token;
   const user = auth.user;
-	console.log(user);
 	const userID = auth.user.id_user;
 
 
@@ -59,17 +60,18 @@ export default function AsignaturesList() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`http://www.beapilot.local:82/?userID=${userID}`,
+					`http://www.beapilot.local:82/averageByCategory`,
 					{
 						params: {
-							token: token
+							token: token,
+							userId:userID
 						},
 						headers: {
 							Auth: "abc"
 						}
 					}
 				);
-				console.log(response.data);
+				console.log("userID: ", response.data);
 				setData(response.data);
 				setError(null);
 			} catch (err) {
@@ -85,26 +87,29 @@ export default function AsignaturesList() {
 
 	return (
 		<UserWrapper>
-
-			<h2>Página de Asignaturas</h2>
-			<h1>API Posts</h1>
 			{loading && <div>A moment please...</div>}
 			{error && (
 				<div>{`There is a problem fetching the post data - ${error}`}</div>
 			)}
 			<NumberOfTests />
 			<hr />
-			<ul>
+			<ul className="category-list">
 				{data &&
 					data.results.map((result) => (
-						<li key={result.id_category}>
-							{result.name_category} -
-							{result.id_user_test > 0 ?
+						<li className={`category-list__item ${result.name_category}`}
+								key={result.id_category}
+								style={{ '--color-bg-cat': `var(--color-cat-${result.id_category}-t)` }}>
+							<h2 className="category-list__title">{result.name_category}</h2>
+							<div className="category-list__body">
+								<p className="category-list__rating">{result.average_note ? result.average_note : "00.00" }</p>
+							</div>
+
+							{result.has_tests > 0 ?
 								<>
-									{Number(result.finished_test) === 1 ?
+									{Number(result.has_finished_tests) === 1 ?
 										<>
-										Test Finalizado, tu score es:
-											<b> {result.final_note}</b>
+											<Bar rating={result.average_note} />
+
 											<button onClick={() => handleAddTest(result)} disabled={loading}>
 												{loading ? 'Cargando...' : 'Crear test de nuevo'}
 											</button>

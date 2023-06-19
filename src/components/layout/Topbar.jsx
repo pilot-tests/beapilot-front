@@ -1,4 +1,5 @@
 import { useAuth } from '../../contexts/AuthContext'
+import "./Topbar.scss"
 
 export default function Topbar() {
   	const { auth } = useAuth();

@@ -1,0 +1,34 @@
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space);
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  &__item {
+    flex: calc(32% - (var(--space) * 2 ));
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg-cat);
+    padding: var(--space);
+    border-radius: var(--border-radius);
+    border-radius: red;
+  }
+
+  &__title {
+    font-family: var(--font-family);
+    font-weight: 300;
+    min-height: 50px
+  }
+
+    &__body {
+      flex: 1;
+    }
+
+      &__rating {
+        font-size: var(--font-size-64);
+        font-weight: 100;
+        margin: 0;
+      }
+}

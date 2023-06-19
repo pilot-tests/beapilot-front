@@ -55,16 +55,17 @@ export default function Test({test}) {
 				<h1>Test Result {testId}</h1>
 				{ data &&
 					<>
-						<h2>Nota Final: {data.results[0].final_note}</h2>
+						<h2>Nota Final: { data && data.results[0].final_note}</h2>
 						<h3>Consejos</h3>
-						<p>{data.results[0].response_openai}</p>
+						<div dangerouslySetInnerHTML={{ __html: data.results[0].response_openai }} />
+
+
 					</>
 				}
 
 
 					<hr />
-				{data && <p>{JSON.stringify(data)}</p>} {/* Aquí mostramos los datos recibidos */}
-				{data && <p></p>}
+
 				<p>
 					<Link to="/dashboard">Volver al Dashboard</Link>
 				</p>

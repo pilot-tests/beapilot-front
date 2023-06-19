@@ -1,0 +1,57 @@
+:root {
+  // Colors
+  --black: hsl(208, 18%, 14%);
+  --grey: hsl(206, 15%, 21%);
+  --white: white;
+  --blue: hsl(235, 100%, 68%);
+  --red: hsl(0, 100%, 50%);
+  --orange: hsl(30, 100%, 50%);
+  --yellow: hsl(60, 100%, 50%);
+  --green: hsl(120, 100%, 50%);
+
+  --bg-color: var(--black);
+  --bg-color-light: var(--grey);
+  --text-color: var(--white);
+  --link-color: var(--blue);
+
+  --color-score-0-50: var(--red);
+  --color-score-50-75: var(--orange);
+  --color-score-75-85: var(--yellow);
+  --color-score-85-100: var(--green);
+
+  // Category Colors
+  --color-cat-1: hsl(348, 100%, 50%);
+  --color-cat-1-t: hsl(348, 50%, 33%);
+  --color-cat-2: hsl(30, 100%, 50%);
+  --color-cat-2-t: hsl(30, 50%, 33%);
+  --color-cat-3: hsl(240, 100%, 50%);
+  --color-cat-3-t: hsl(240, 50%, 33%);
+  --color-cat-4: hsl(120, 100%, 50%);
+  --color-cat-4-t: hsl(120, 50%, 33%);
+  --color-cat-5: hsl(270, 100%, 50%);
+  --color-cat-5-t: hsl(270, 50%, 33%);
+  --color-cat-6: hsl(210, 100%, 50%);
+  --color-cat-6-t: hsl(210, 50%, 33%);
+  --color-cat-7: hsl(60, 100%, 50%);
+  --color-cat-7-t: hsl(60, 50%, 33%);
+  --color-cat-8: hsl(200, 100%, 50%);
+  --color-cat-8-t: hsl(200, 50%, 33%);
+  --color-cat-9: hsl(300, 100%, 50%);
+  --color-cat-9-t: hsl(300, 50%, 33%);
+
+
+
+  // Font properties
+  --font-family: 'Lato', sans-serif;
+  --fontfamily-heads: 'Montserrat', sans-serif;
+
+  --font-size-64: 64px;
+
+  --font-weight-light: 100;
+  --font-weight-bold: 400;
+
+  // Units
+  --unit: 6px;
+  --space: calc(var(--unit) * 2);
+  --border-radius: calc(var(--unit) * 2);
+}
