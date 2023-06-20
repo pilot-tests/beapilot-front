@@ -16,10 +16,10 @@
   --link-color: var(--blue);
   --border-color: var(--grey);
 
-  --color-score-0-50: var(--red);
-  --color-score-50-75: var(--orange);
-  --color-score-75-85: var(--yellow);
-  --color-score-85-100: var(--green);
+  --color-score-failed: var(--red);
+  --color-score-passed: var(--orange);
+  --color-score-excellent: var(--yellow);
+  --color-score-outstanding: var(--green);
 
   // Category Colors
   --color-cat-1: hsl(348, 100%, 50%);
@@ -54,7 +54,7 @@
 
 
   --font-weight-light: 100;
-  --font-weight-bold: 400;
+  --font-weight-bold: 700;
 
   // Units
   --unit: 6px;

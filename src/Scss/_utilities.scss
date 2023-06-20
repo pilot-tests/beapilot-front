@@ -15,3 +15,20 @@
 .link-high {
   text-transform: uppercase;
 }
+
+.ui-block {
+  background-color: var(--white);
+  padding: var(--space);
+}
+
+//-----> Pills
+.pill {
+  display: inline-block;
+  padding: 0 var(--space-big);
+  line-height: 1.5;
+  height: 1.6em;
+  font-weight: var(--font-weight-bold);
+  background-color: var(--color-bg-pill, var(--black));
+  color: white;
+  border-radius: 100px;
+}

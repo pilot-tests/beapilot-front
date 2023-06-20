@@ -1,0 +1,30 @@
+
+/*
+* Variables are in a map in src\styles\variables\_layout-vars.scss:
+
+    'small'  : 48em,
+    'medium' : 56.25em,
+    'large'  : 68.75em,
+
+* Use like this:
+
+.foo {
+  color: red;
+  @include respond-to('small') {
+    color: blue;
+  }
+}
+*/
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+  @else {
+    @media (min-width:$breakpoint) {
+      @content;
+    }
+  }
+}

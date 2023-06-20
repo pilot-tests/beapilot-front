@@ -71,7 +71,7 @@ export default function AsignaturesList() {
 						}
 					}
 				);
-				console.log("userID: ", response.data);
+				console.log("user per category info: ", response.data);
 				setData(response.data);
 				setError(null);
 			} catch (err) {
@@ -91,16 +91,18 @@ export default function AsignaturesList() {
 			{error && (
 				<div>{`There is a problem fetching the post data - ${error}`}</div>
 			)}
-			<NumberOfTests />
-			<hr />
+
 			<ul className="category-list">
 				{data &&
 					data.results.map((result) => (
-						<li className={`category-list__item ${result.name_category}`}
-								key={result.id_category}>
+						<li
+							className={`category-list__item ${result.name_category}`}
+							key={result.id_category}
+							style={{ '--color-bg-cat': `var(--color-cat-${result.id_category})` }}>
+
 							<h2 className="category-list__title">{result.name_category}</h2>
 							<div className="category-list__body">
-								<p className="category-list__rating" style={{ '--color-bg-cat': `var(--color-cat-${result.id_category}-t)` }}>{result.average_note ? result.average_note : "00.00" }</p>
+								<p className="category-list__rating" >{result.average_note ? result.average_note : "00.00" }</p>
 							</div>
 							<Bar rating={result.average_note} />
 							{result.has_tests > 0 ?
@@ -127,6 +129,12 @@ export default function AsignaturesList() {
 						</li>
 					))}
 			</ul>
+
+			<div className="ui-block">
+				<h2>Tus últimos tests</h2>
+				<NumberOfTests />
+			</div>
+
 		</UserWrapper>
 	);
 }

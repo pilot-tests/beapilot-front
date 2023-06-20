@@ -1,6 +1,8 @@
 /* Custom Properties */
-@import "./root";
+@import "./variables/root";
+@import "./variables/sass-vars";
 @import "./utilities";
+@import "./tables";
 
 html {
   font-size: 100%;
@@ -27,6 +29,7 @@ h6 {
 
 a, a:visited {
   color: var(--link-color);
+  font-weight: var(--font-weight-bold);
 }
 
 p {
@@ -36,6 +39,7 @@ p {
 
 
 .container {
-  max-width: 1440px;
+  max-width: 1240px;
   margin: 0 auto;
+  padding: var(--space);
 }

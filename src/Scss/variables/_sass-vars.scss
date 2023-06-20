@@ -1,0 +1,21 @@
+/*------------------------------------*\
+    $BREAKPOINTS
+\*------------------------------------*/
+/**
+ * "Start with the small screen first, then expand until it looks like shit. Time to insert a breakpoint!"
+ * We use it with a respond-to($breakpoint) mixin:
+
+.text {
+  color: pink;
+  @include respond-to(medium) {
+    color: maroon;
+  }
+}
+ *
+ */
+
+$breakpoints: (
+  'small'  : 48em,
+  'medium' : 56.25em,
+  'large'  : 1600px,
+) !default;
