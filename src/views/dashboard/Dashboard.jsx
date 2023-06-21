@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import UserWrapper from "../../layouts/UserWrapper";
 import NumberOfTests from "../../components/dashboard/NumberOfTests";
 import Bar from "../../components/Bar/Bar";
+import GlobalFeedback from "../../components/GlobalFeedback";
 import './Dashboard.scss';
 
 export default function AsignaturesList() {
@@ -91,6 +92,8 @@ export default function AsignaturesList() {
 			{error && (
 				<div>{`There is a problem fetching the post data - ${error}`}</div>
 			)}
+
+			<GlobalFeedback />
 
 			<ul className="category-list">
 				{data &&
