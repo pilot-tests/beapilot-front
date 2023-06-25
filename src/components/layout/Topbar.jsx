@@ -1,4 +1,5 @@
 import { useAuth } from '../../contexts/AuthContext'
+import LogoutButton from '../LogoutButton';
 import "./Topbar.scss"
 
 export default function Topbar() {
@@ -7,7 +8,7 @@ export default function Topbar() {
 
     return (
       <div className="topbar">
-        {user}
+        {user} <LogoutButton />
       </div>
     );
 }
