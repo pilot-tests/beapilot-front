@@ -42,7 +42,7 @@ const LoginForm = () => {
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un estado fuera del rango 2xx
-        setError(error.response.data.message);
+        setError(error.response.data.results);
       } else if (error.request) {
         // La solicitud fue hecha pero no se recibió respuesta
         setError('No response was received');
