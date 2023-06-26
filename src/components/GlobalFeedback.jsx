@@ -13,35 +13,35 @@ export default function OpenAiDataFetcher() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}openai`, {
-                    params: {
-                        token: token,
-                        select: '*',
-                        linkTo: 'id_user_openai,type_openai',
-                        equalTo: `${userID},${type_openai}`,
-                    },
-                    headers: {
-                        Auth: "abc"
-                    }
-                });
-                console.log("OpenAI data: ", response.data);
-                setData(response.data);
-                setError(null);
-            } catch (err) {
-              if (err.response && err.response.status === 404) {
-                  setError("No has hecho ningún test, empieza ahora!");
-              } else {
-                  setError(err.message);
-              }
-              setData(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
+			const fetchData = async () => {
+				setLoading(true);
+				try {
+					const response = await axios.get(`${process.env.REACT_APP_API_URL}openai`, {
+						params: {
+							token: token,
+							select: '*',
+							linkTo: 'id_user_openai,type_openai',
+							equalTo: `${userID},${type_openai}`,
+						},
+						headers: {
+							Auth: "abc"
+						}
+					});
+					console.log("OpenAI data: ", response.data);
+					setData(response.data);
+					setError(null);
+				} catch (err) {
+					if (err.response && err.response.status === 404) {
+						setError("No has hecho ningún test, empieza ahora!");
+					} else {
+						setError(err.message);
+					}
+					setData(null);
+				} finally {
+					setLoading(false);
+				}
+			};
+			fetchData();
     }, []);
 
     if (loading) return <div>Loading...</div>;

@@ -111,23 +111,23 @@ export default function Test(props) {
 
 
 useEffect(() => {
-    const checkTestStatus = async () => {
-        try {
-            // Realizar la solicitud GET para obtener el estado del test
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
-                headers: {
-                    Auth: "abc"
-                }
-            });
+	const checkTestStatus = async () => {
+			try {
+				// Realizar la solicitud GET para obtener el estado del test
+				const response = await axios.get(`${process.env.REACT_APP_API_URL}test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
+						headers: {
+								Auth: "abc"
+						}
+				});
 
-            if (response.data.results[0].finished_test === 1) {
-                setFinishedTest(true);
-								navigate(`/testresult/${testId}`);
-            }
-        } catch (err) {
-            console.error(`Error al verificar el estado del test: ${err.message}`);
-        }
-    };
+				if (response.data.results[0].finished_test === 1) {
+						setFinishedTest(true);
+						navigate(`/testresult/${testId}`);
+				}
+			} catch (err) {
+				console.error(`Error al verificar el estado del test: ${err.message}`);
+			}
+	};
 
     // Llamar a la función asincrónica dentro del efecto
     checkTestStatus();
@@ -139,38 +139,38 @@ useEffect(() => {
 
 	useEffect(() => {
 		// TODO: Refactor this, this is how we access the TEST
-			const getData = async () => {
-			try {
+		const getData = async () => {
+		try {
 
-				// We make sure the test exists
-				const response = await axios.get(
-					`${process.env.REACT_APP_API_URL}?examId=${ testId }`,
-					{
-						params: {
-								token: token
-							},
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded',
-							Auth: "abc"
-						}
+			// We make sure the test exists
+			const response = await axios.get(
+				`${process.env.REACT_APP_API_URL}?examId=${ testId }`,
+				{
+					params: {
+							token: token
+						},
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						Auth: "abc"
 					}
+				}
 
-				);
+			);
 
-				// Filtrar preguntas con id_test_student_answer null
-        const filteredQuestions = response.data.results.filter(question => question.id_test_student_answer === null);
-				console.log("Response Data:", response.data);
-				console.log(filteredQuestions);
-				setQuiz(filteredQuestions);
-				setQuestionCount(response.data.total);
-			} catch (err) {
-				setError(err.message);
-				setQuiz(null);
-			} finally {
-				setLoading(false);
-			}
-		};
-		getData();
+			// Filtrar preguntas con id_test_student_answer null
+			const filteredQuestions = response.data.results.filter(question => question.id_test_student_answer === null);
+			console.log("Response Data:", response.data);
+			console.log(filteredQuestions);
+			setQuiz(filteredQuestions);
+			setQuestionCount(response.data.total);
+		} catch (err) {
+			setError(err.message);
+			setQuiz(null);
+		} finally {
+			setLoading(false);
+		}
+	};
+	getData();
 	}, []);
 
 		return (
