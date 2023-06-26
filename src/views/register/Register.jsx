@@ -81,7 +81,7 @@ async function fetchCreateStripeSession(email, password, name) {
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}users?register=true`,
       headers: {
-        Auth: "abc",
+        Auth: process.env.REACT_APP_AUTH,
         "Content-Type": "application/x-www-form-urlencoded"
       },
       data: data

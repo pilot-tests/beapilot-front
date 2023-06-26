@@ -39,7 +39,7 @@ export default function Test(props) {
 			const response = await axios.post(`${process.env.REACT_APP_API_URL}student_answers?token=${token}`, data, {
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
-					Auth: "abc"
+					Auth: process.env.REACT_APP_AUTH
 				}
 			});
 
@@ -116,7 +116,7 @@ useEffect(() => {
             // Realizar la solicitud GET para obtener el estado del test
             const response = await axios.get(`${process.env.REACT_APP_API_URL}test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
                 headers: {
-                    Auth: "abc"
+                    Auth: process.env.REACT_APP_AUTH
                 }
             });
 
@@ -151,7 +151,7 @@ useEffect(() => {
 							},
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
-							Auth: "abc"
+							Auth: process.env.REACT_APP_AUTH
 						}
 					}
 

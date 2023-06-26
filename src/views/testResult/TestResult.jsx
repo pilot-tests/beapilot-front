@@ -23,7 +23,7 @@ export default function Test({test}) {
 				// We make sure the test exists
 				const response = await axios.get(`${process.env.REACT_APP_API_URL}relations`, {
 					headers: {
-						Auth: "abc"
+						Auth: process.env.REACT_APP_AUTH
 					},
 					params: {
 						rel: 'test,openai',

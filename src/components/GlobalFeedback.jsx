@@ -24,7 +24,7 @@ export default function OpenAiDataFetcher() {
                         equalTo: `${userID},${type_openai}`,
                     },
                     headers: {
-                        Auth: "abc"
+                        Auth: process.env.REACT_APP_AUTH
                     }
                 });
                 console.log("OpenAI data: ", response.data);

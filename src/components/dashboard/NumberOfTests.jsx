@@ -37,7 +37,7 @@ function NumberOfTests() {
 							token: token
 						},
 						headers: {
-							Auth: "abc"
+							Auth: process.env.REACT_APP_AUTH
 						}
 					}
 				);

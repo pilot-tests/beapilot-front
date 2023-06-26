@@ -22,7 +22,7 @@ const LoginForm = () => {
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Auth: "abc"
+        Auth: process.env.REACT_APP_AUTH
       }
     });
 
