@@ -16,7 +16,7 @@ export default function OpenAiDataFetcher() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://www.beapilot.local:82/openai`, {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}openai`, {
                     params: {
                         token: token,
                         select: '*',

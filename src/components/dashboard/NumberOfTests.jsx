@@ -26,7 +26,7 @@ function NumberOfTests() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`http://www.beapilot.local:82/relations`,
+					`${process.env.REACT_APP_API_URL}relations`,
 					{
 						params: {
 							rel: "test,categories",

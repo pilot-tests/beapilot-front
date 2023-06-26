@@ -79,7 +79,7 @@ async function fetchCreateStripeSession(email, password, name) {
     // Hacer la llamada a tu API.
     const response = await axios({
       method: 'post',
-      url: "http://www.beapilot.local:82/users?register=true",
+      url: `${process.env.REACT_APP_API_URL}users?register=true`,
       headers: {
         Auth: "abc",
         "Content-Type": "application/x-www-form-urlencoded"
