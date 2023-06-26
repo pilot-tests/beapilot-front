@@ -33,7 +33,7 @@ export default function AsignaturesList() {
 			const serializedData = new URLSearchParams(postTestData).toString();
 
 			const response = await axios.post(
-				'http://www.beapilot.local:82/test',
+				`${process.env.REACT_APP_API_URL}test`,
 				serializedData,
 				{
 					params: {
@@ -61,7 +61,7 @@ export default function AsignaturesList() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`http://www.beapilot.local:82/averageByCategory`,
+					`${process.env.REACT_APP_API_URL}averageByCategory`,
 					{
 						params: {
 							token: token,

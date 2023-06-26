@@ -21,7 +21,7 @@ export default function Test({test}) {
 			try {
 
 				// We make sure the test exists
-				const response = await axios.get("http://www.beapilot.local:82/relations", {
+				const response = await axios.get(`${process.env.REACT_APP_API_URL}relations`, {
 					headers: {
 						Auth: "abc"
 					},
