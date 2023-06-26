@@ -79,9 +79,9 @@ async function fetchCreateStripeSession(email, password, name) {
     // Hacer la llamada a tu API.
     const response = await axios({
       method: 'post',
-      url: `${process.env.REACT_APP_API_URL}users?register=true`,
+      url: `${import.meta.env.VITE_API_URL}users?register=true`,
       headers: {
-        Auth: process.env.REACT_APP_AUTH,
+        Auth: import.meta.env.VITE_AUTH,
         "Content-Type": "application/x-www-form-urlencoded"
       },
       data: data

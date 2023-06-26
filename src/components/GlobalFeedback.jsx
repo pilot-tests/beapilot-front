@@ -16,7 +16,7 @@ export default function OpenAiDataFetcher() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}openai`, {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}openai`, {
                     params: {
                         token: token,
                         select: '*',
@@ -24,7 +24,7 @@ export default function OpenAiDataFetcher() {
                         equalTo: `${userID},${type_openai}`,
                     },
                     headers: {
-                        Auth: process.env.REACT_APP_AUTH
+                        Auth: import.meta.env.VITE_AUTH
                     }
                 });
                 console.log("OpenAI data: ", response.data);

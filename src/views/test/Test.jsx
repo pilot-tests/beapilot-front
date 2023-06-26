@@ -36,10 +36,10 @@ export default function Test(props) {
 			};
 
 			// Realizar la solicitud POST
-			const response = await axios.post(`${process.env.REACT_APP_API_URL}student_answers?token=${token}`, data, {
+			const response = await axios.post(`${import.meta.env.VITE_API_URL}student_answers?token=${token}`, data, {
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
-					Auth: process.env.REACT_APP_AUTH
+					Auth: import.meta.env.VITE_AUTH
 				}
 			});
 
@@ -80,7 +80,7 @@ export default function Test(props) {
 			try {
 				const response = await axios({
 					method: 'post',
-					url: `${process.env.REACT_APP_API_URL}openAi?token=${token}`,
+					url: `${import.meta.env.VITE_API_URL}openAi?token=${token}`,
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
 						'auth': 'abc'
@@ -114,9 +114,9 @@ useEffect(() => {
     const checkTestStatus = async () => {
         try {
             // Realizar la solicitud GET para obtener el estado del test
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
                 headers: {
-                    Auth: process.env.REACT_APP_AUTH
+                    Auth: import.meta.env.VITE_AUTH
                 }
             });
 
@@ -144,14 +144,14 @@ useEffect(() => {
 
 				// We make sure the test exists
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URL}?examId=${ testId }`,
+					`${import.meta.env.VITE_API_URL}?examId=${ testId }`,
 					{
 						params: {
 								token: token
 							},
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
-							Auth: process.env.REACT_APP_AUTH
+							Auth: import.meta.env.VITE_AUTH
 						}
 					}
 

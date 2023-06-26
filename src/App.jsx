@@ -15,8 +15,7 @@ import RegisterCancel from './views/register/RegisterCancel';
 import './Scss/style.scss';
 
 // Inicializar Stripe
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY);
-
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_API_KEY);
 
 	export function App() {
 		return (

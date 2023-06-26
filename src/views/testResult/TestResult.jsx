@@ -21,9 +21,9 @@ export default function Test({test}) {
 			try {
 
 				// We make sure the test exists
-				const response = await axios.get(`${process.env.REACT_APP_API_URL}relations`, {
+				const response = await axios.get(`${import.meta.env.VITE_API_URL}relations`, {
 					headers: {
-						Auth: process.env.REACT_APP_AUTH
+						Auth: import.meta.env.VITE_AUTH
 					},
 					params: {
 						rel: 'test,openai',

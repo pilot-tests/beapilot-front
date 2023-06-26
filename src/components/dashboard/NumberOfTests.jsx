@@ -26,7 +26,7 @@ function NumberOfTests() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URL}relations`,
+					`${import.meta.env.VITE_API_URL}relations`,
 					{
 						params: {
 							rel: "test,categories",
@@ -37,7 +37,7 @@ function NumberOfTests() {
 							token: token
 						},
 						headers: {
-							Auth: process.env.REACT_APP_AUTH
+							Auth: import.meta.env.VITE_AUTH
 						}
 					}
 				);

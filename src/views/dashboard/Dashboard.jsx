@@ -33,7 +33,7 @@ export default function AsignaturesList() {
 			const serializedData = new URLSearchParams(postTestData).toString();
 
 			const response = await axios.post(
-				`${process.env.REACT_APP_API_URL}test`,
+				`${import.meta.env.VITE_API_URL}test`,
 				serializedData,
 				{
 					params: {
@@ -41,7 +41,7 @@ export default function AsignaturesList() {
 						},
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
-						Auth: process.env.REACT_APP_AUTH
+						Auth: import.meta.env.VITE_AUTH
 					}
 				}
 			);
@@ -61,14 +61,14 @@ export default function AsignaturesList() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URL}averageByCategory`,
+					`${import.meta.env.VITE_API_URL}averageByCategory`,
 					{
 						params: {
 							token: token,
 							userId:userID
 						},
 						headers: {
-							Auth: process.env.REACT_APP_AUTH
+							Auth: import.meta.env.VITE_AUTH
 						}
 					}
 				);

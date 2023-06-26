@@ -12,7 +12,7 @@ const LoginForm = () => {
 
   const handleLogin = async (email_user, password_user) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}users`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}users`, {
         email_user,
         password_user
       },
@@ -22,7 +22,7 @@ const LoginForm = () => {
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Auth: process.env.REACT_APP_AUTH
+        Auth: import.meta.env.VITE_AUTH
       }
     });
 
