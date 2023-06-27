@@ -4,7 +4,7 @@
   --grey: hsl(230, 16%, 93%);
   --light-grey: hsl(0, 0%, 90%);
   --white: white;
-  --blue: hsl(189, 100%, 33%);
+  --blue: hsl(210, 100%, 20%);
   --red: hsl(0, 100%, 50%);
   --orange: hsl(30, 100%, 50%);
   --yellow: hsl(60, 100%, 50%);
@@ -59,6 +59,7 @@
   // Units
   --unit: 6px;
   --space: calc(var(--unit) * 2);
+  --margin-bottom: calc(var(--unit) * 3);
   --space-big: calc(var(--unit) * 4);
   --border-radius: 2px;
 }

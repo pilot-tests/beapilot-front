@@ -3,6 +3,13 @@
 @import "./variables/sass-vars";
 @import "./utilities";
 @import "./tables";
+@import "./forms";
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
 
 html {
   font-size: 100%;
@@ -38,8 +45,8 @@ p {
 
 
 
-.container {
-  max-width: 1240px;
+.form-container {
+  max-width: 450px;
   margin: 0 auto;
   padding: var(--space);
 }

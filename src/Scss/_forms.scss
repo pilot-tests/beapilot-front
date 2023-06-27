@@ -1,0 +1,46 @@
+/* Estilos para las etiquetas de los campos de formulario */
+
+.form-center {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: var(--space);
+}
+label {
+  position: relative;
+  margin-bottom: 20px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+}
+
+/* Estilos para los campos de formulario */
+input {
+  width: 100%;
+  padding: var(--space) var(--unit) ; /* Añade relleno vertical */
+  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  margin-bottom: var(--margin-bottom);
+}
+
+/* Estilos para los campos de formulario cuando están enfocados */
+input:focus {
+  outline: none;
+  border-bottom: 2px solid #3f51b5; /* Color azul de Material Design */
+}
+
+/* Estilos para el botón de inicio de sesión */
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #3f51b5; /* Color azul de Material Design */
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilos para el botón de inicio de sesión cuando se pasa el cursor por encima */
+button:hover {
+  background-color: #303f9f; /* Color azul oscuro de Material Design */
+}

@@ -1,4 +1,10 @@
 .topbar {
+  display: flex;
+  align-items: center;
   padding: var(--space);
   background-color: var(--bg-color-light);
+
+  &__last {
+    margin-left: auto;
+  }
 }

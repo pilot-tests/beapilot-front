@@ -13,8 +13,8 @@ const PrivateRoutes = () => {
         return <Navigate to="/logedout" />;
     }
 
-    if (!user.active_subscription) {
-        return <Navigate to="/subscribe" />; // Reemplaza '/subscribe' con la ruta a la que quieras dirigir a los usuarios no suscritos.
+    if (user.active_subscription != "active") {
+        return <Navigate to="/subscribe" />;
     }
 
     return <Outlet/>;

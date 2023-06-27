@@ -8,7 +8,7 @@ const SubscriptionWrapper = ({ children }) => {
   return (
     <React.Fragment>
       <Topbar />
-      <main className="container">
+      <main className="form-container">
         {children}
       </main>
     </React.Fragment>

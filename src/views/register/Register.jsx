@@ -87,9 +87,8 @@ async function fetchCreateStripeSession(email, password, name) {
       data: data
     });
 
-    // Asegúrate de devolver el ID de la sesión de Stripe de tu respuesta.
-    // Este es solo un ejemplo y necesitarás ajustarlo a cómo se ve tu respuesta real.
-    console.log("response", response); // Agrega esto para verificar la respuesta del servidor
+
+    console.log("response", response);
     const sessionId = response.data.results.stripe_session_id
     console.log("sessionId: ", sessionId);
     console.log("data: ", response.data);
