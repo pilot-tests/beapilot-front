@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 const Landing = () => {
   return (
   <LandingWrapper>
-
-    Landing Component <Link to="/dashboard">Accede al Dashboard</Link>
-    <LoginForm />
+    <div className="form-center">
+      <LoginForm />
+    </div>
   </LandingWrapper>
   );
 };

@@ -1,6 +1,10 @@
 /* Estilos para las etiquetas de los campos de formulario */
 
 .form-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 43px);
   background-color: white;
   border-radius: var(--border-radius);
   padding: var(--space);
@@ -16,10 +20,11 @@ label {
 /* Estilos para los campos de formulario */
 input {
   width: 100%;
-  padding: var(--space) var(--unit) ; /* Añade relleno vertical */
+  padding: var(--space) var(--space) ; /* Añade relleno vertical */
   border: none;
   border: 1px solid rgba(0, 0, 0, 0.3);
   margin-bottom: var(--margin-bottom);
+  font-size: var(--font-size-20);
 }
 
 /* Estilos para los campos de formulario cuando están enfocados */
@@ -30,10 +35,9 @@ input:focus {
 
 /* Estilos para el botón de inicio de sesión */
 button {
-  margin-top: 20px;
   padding: 10px 20px;
   border: none;
-  background-color: #3f51b5; /* Color azul de Material Design */
+  background-color: var(--secondary-color); /* Color azul de Material Design */
   color: #fff;
   font-size: 16px;
   cursor: pointer;

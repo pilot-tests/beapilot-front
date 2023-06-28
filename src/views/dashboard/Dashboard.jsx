@@ -118,7 +118,7 @@ export default function AsignaturesList() {
 										</>
 										:
 										<Link
-										to={{pathname:`/test/${result.id_test}`}}
+										to={{pathname:`/test/${result.inprogress_id_test}`}}
 										className="link-high">
 										Continuar Test
 									</Link>

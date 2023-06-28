@@ -1,52 +1,19 @@
-import React from 'react';
-
-export default function Question({ question, onOptionSelected, onSubmit, buttonDisabled }) {
-    return (
-			<div>
-				<h2>{question.string_question}</h2>
-				<label htmlFor={question.answer_1_id}>
-						<span>{question.answer_1_string} (id: {question.answer_1_id})</span>
-						<input
-								type="radio"
-								id={question.answer_1_id}
-								name={question.id_question}
-								value={question.answer_1_id}
-								onChange={onOptionSelected}
-						/>
-				</label>
-				<label htmlFor={question.answer_2_id}>
-						<span>{question.answer_2_string} (id: {question.answer_2_id})</span>
-						<input
-								type="radio"
-								id={question.answer_2_id}
-								name={question.id_question}
-								value={question.answer_2_id}
-								onChange={onOptionSelected}
-						/>
-				</label>
-				<label htmlFor={question.answer_3_id}>
-						<span>{question.answer_3_string} (id: {question.answer_3_id})</span>
-						<input
-								type="radio"
-								id={question.answer_3_id}
-								name={question.id_question}
-								value={question.answer_3_id}
-								onChange={onOptionSelected}
-						/>
-				</label>
-				<label htmlFor={question.answer_4_id}>
-						<span>{question.answer_4_string} (id: {question.answer_4_id})</span>
-						<input
-								type="radio"
-								id={question.answer_4_id}
-								name={question.id_question}
-								value={question.answer_4_id}
-								onChange={onOptionSelected}
-						/>
-				</label>
-				<button onClick={onSubmit} disabled={buttonDisabled}>
-						Ejecutar
-				</button>
-			</div>
-    );
-}
+const Question = ({ question, optionSelected, handleRadioChange }) => (
+  <div className="test__wrapper">
+    <h2>{question.string_question}</h2>
+    {question.answers.map(answer => (
+      <label key={answer.id} htmlFor={answer.id} className="test__answer">
+        <span>{answer.text} (id: {answer.id})</span>
+        <input
+          type="radio"
+          id={answer.id}
+          name={question.id_question}
+          value={answer.id}
+          checked={optionSelected === answer.id}
+          onChange={handleRadioChange}
+        />
+      </label>
+    ))}
+  </div>
+);
+export default Question;

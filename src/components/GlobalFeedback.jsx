@@ -31,12 +31,12 @@ export default function OpenAiDataFetcher() {
                 setData(response.data);
                 setError(null);
             } catch (err) {
-              if (err.response && err.response.status === 404) {
-                  setError("No has hecho ningún test, empieza ahora!");
-              } else {
-                  setError(err.message);
-              }
-              setData(null);
+							if (err.response && err.response.status === 404) {
+                setError("No has hecho ningún test, empieza ahora!");
+            } else {
+            	setError(err.message);
+            }
+            setData(null);
             } finally {
                 setLoading(false);
             }

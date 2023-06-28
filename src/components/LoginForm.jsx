@@ -59,7 +59,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='form-center'>
+    <form onSubmit={handleSubmit}>
       <label>
         Username:
         <input type="email" value={username} onChange={e => setUsername(e.target.value)} required />

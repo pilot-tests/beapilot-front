@@ -3,13 +3,19 @@
   --black: hsl(208, 18%, 14%);
   --grey: hsl(230, 16%, 93%);
   --light-grey: hsl(0, 0%, 90%);
+  --dark-grey: hsl(0, 0%, 50%);
   --white: white;
-  --blue: hsl(210, 100%, 20%);
+  --sky: hsl(210, 100%, 20%);
+  --sky-tint: hsl(210, 30%, 80%);
+  --sunset: hsl(24, 100%, 50%);
   --red: hsl(0, 100%, 50%);
   --orange: hsl(30, 100%, 50%);
   --yellow: hsl(60, 100%, 50%);
   --green: hsl(120, 100%, 50%);
 
+
+  --main-color: var(--sky);
+  --secondary-color: var(--sunset);
   --bg-color: var(--light-grey);
   --bg-color-light: var(--grey);
   --text-color: var(--black);
@@ -48,12 +54,14 @@
   --fontfamily-heads: 'Montserrat', sans-serif;
 
   --font-size-16: 16px;
+  --font-size-20: 16px;
   --font-size-32: 32px;
   --font-size-64: 64px;
 
 
 
   --font-weight-light: 100;
+  --font-weight-normal: 300;
   --font-weight-bold: 700;
 
   // Units
