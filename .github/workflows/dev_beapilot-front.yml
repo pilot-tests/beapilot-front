@@ -48,7 +48,7 @@ jobs:
           path: ./dist
 
       - name: Move files
-        run: mv ./dist/* ./
+        run: mv ./dist/* ./wwwroot/
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
