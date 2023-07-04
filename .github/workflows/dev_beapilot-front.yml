@@ -47,6 +47,9 @@ jobs:
           name: node-app
           path: ./dist
 
+      - name: Move files
+        run: mv ./dist/* ./
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
