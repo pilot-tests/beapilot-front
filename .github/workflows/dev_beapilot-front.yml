@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: ./dist  # change this to upload the 'dist' folder
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,10 +45,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-          path: ./dist
-
-      - name: Move files
-        run: mv ./dist/* ./wwwroot/
+          path: .  # change this to download to the current directory
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -57,4 +54,4 @@ jobs:
           app-name: 'beapilot-front'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4D2353D7EE12499593AB78268F26EE7E }}
-          package: .
+          package: ./dist  # change this to deploy the 'dist' folder
