@@ -10,8 +10,9 @@ import  TestResult from './views/testResult/TestResult';
 import  Dashboard  from './views/dashboard/Dashboard';
 import  Subscribe  from './views/subscribe/Subscribe';
 import { RegistrationForm } from './views/register/Register';
-import RegisterSuccess from './views/register/RegisterSuccess';
 import RegisterCancel from './views/register/RegisterCancel';
+import RegisterSuccess from './views/register/RegisterSuccess';
+import VerifyEmail from './views/verifyEmail/VerifyEmail';
 import './Scss/style.scss';
 
 // Inicializar Stripe
@@ -26,6 +27,8 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_API_KEY);
 						<Route exact path="/logedout" element={<Landing />} />
 						<Route path="/subscribe" element={<Subscribe />} />
 						<Route path="/register" element={<RegistrationForm />} />
+						<Route path="/exito" element={<RegistrationForm />} />
+						<Route path="/verify-email" element={<VerifyEmail />} />
 						<Route path="/register/success/:sessionId" element={<RegisterSuccess />} />
 						<Route path="/register/cancel" element={<RegisterCancel />} />
 						<Route element={<PrivateRoutes />}>
