@@ -32,38 +32,40 @@ export function RegistrationForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Nombre:
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Contraseña:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <button type="submit" disabled={!stripe}>
-        Registrarse
-      </button>
-    </form>
+    <div className="form-center">
+      <form onSubmit={handleSubmit}>
+        <label>
+          Nombre:
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Contraseña:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit" disabled={!stripe}>
+          Registrarse
+        </button>
+      </form>
+    </div>
   );
 }
 

@@ -13,32 +13,32 @@ const LoginForm = () => {
   const handleLogin = async (email_user, password_user) => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}users`, {
-        email_user,
-        password_user
-      },
-      {
-      params: {
-        login: true
-      },
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Auth: import.meta.env.VITE_AUTH
-      }
-    });
+          email_user,
+          password_user
+        },
+        {
+        params: {
+          login: true
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Auth: import.meta.env.VITE_AUTH
+        }
+      });
 
-     // Obtén el token del objeto de respuesta
-    const token = response.data.results[0].token_user;
-    // Obtén la información del usuario del objeto de respuesta
-    const user = response.data.results[0];
+      // Obtén el token del objeto de respuesta
+      const token = response.data.results[0].token_user;
+      // Obtén la información del usuario del objeto de respuesta
+      const user = response.data.results[0];
 
-    console.log('Setting auth token and user...', { token, user });
-    // Asigna el token a localStorage
-    localStorage.setItem('authToken', token);
+      console.log('Setting auth token and user...', { token, user });
+      // Asigna el token a localStorage
+      localStorage.setItem('authToken', token);
 
-    // Actualiza el token y la información del usuario en el contexto de autenticación
-    setToken(token);
-    setUser(user);
-    navigate("/dashboard");
+      // Actualiza el token y la información del usuario en el contexto de autenticación
+      setToken(token);
+      setUser(user);
+      navigate("/dashboard");
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un estado fuera del rango 2xx
@@ -68,7 +68,7 @@ const LoginForm = () => {
         Password:
         <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
       </label>
-      {error && <div className="error">{error}</div>}
+      {error && <div className="alert alert--danger">{error}</div>}
       <button type="submit">Login</button>
     </form>
   );
