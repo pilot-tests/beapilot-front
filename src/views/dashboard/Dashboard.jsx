@@ -36,12 +36,10 @@ export default function AsignaturesList() {
 				`${import.meta.env.VITE_API_URL}test`,
 				serializedData,
 				{
-					params: {
-							token: token
-						},
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
-						Auth: import.meta.env.VITE_AUTH
+						Auth: import.meta.env.VITE_AUTH,
+						token: token
 					}
 				}
 			);

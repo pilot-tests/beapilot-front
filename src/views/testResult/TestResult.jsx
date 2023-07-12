@@ -23,15 +23,15 @@ export default function Test({test}) {
 				// We make sure the test exists
 				const response = await axios.get(`${import.meta.env.VITE_API_URL}relations`, {
 					headers: {
-						Auth: import.meta.env.VITE_AUTH
+						Auth: import.meta.env.VITE_AUTH,
+						token: token
 					},
 					params: {
 						rel: 'test,openai',
 						type: 'id_test,id_test_openai',
 						select: '*',
 						linkTo: 'id_test,finished_test',
-						equalTo: `${testId},1`,
-						token: token
+						equalTo: `${testId},1`
 					}
 				});
 

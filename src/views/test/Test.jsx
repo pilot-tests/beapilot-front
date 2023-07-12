@@ -36,10 +36,11 @@ export default function Test(props) {
 			};
 
 			// Realizar la solicitud POST
-			const response = await axios.post(`${import.meta.env.VITE_API_URL}student_answers?token=${token}`, data, {
+			const response = await axios.post(`${import.meta.env.VITE_API_URL}student_answers`, data, {
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
-					Auth: import.meta.env.VITE_AUTH
+					Auth: import.meta.env.VITE_AUTH,
+					token: token
 				}
 			});
 
@@ -80,10 +81,11 @@ export default function Test(props) {
 			try {
 				const response = await axios({
 					method: 'post',
-					url: `${import.meta.env.VITE_API_URL}openAi?token=${token}`,
+					url: `${import.meta.env.VITE_API_URL}openAi`,
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
-						'auth': 'abc'
+						auth: 'abc',
+						token: token
 					},
 					data: new URLSearchParams({
 						prompt: true,
