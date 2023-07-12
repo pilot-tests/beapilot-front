@@ -3,6 +3,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from 'axios';
 
 export function RegistrationForm() {
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -12,7 +13,12 @@ export function RegistrationForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const sessionObj = await fetchCreateStripeSession(email, password, name);
-    const { sessionId } = sessionObj;
+    const { sessionId, error: fetchError } = sessionObj;
+
+    if (fetchError) {
+      setError(fetchError);
+      return;
+    }
 
     // Aquí debes hacer una solicitud a tu backend para crear una sesión de pago de Stripe.
     // Reemplaza la siguiente línea con esa llamada a la API.
@@ -27,7 +33,7 @@ export function RegistrationForm() {
     });
 
     if (result.error) {
-      console.log(result.error.message);
+      console.log("results here:", result.error.message);
     }
   };
 
@@ -61,6 +67,7 @@ export function RegistrationForm() {
             required
           />
         </label>
+        {error && <div className="alert alert--danger">{error}</div>}
         <button type="submit" disabled={!stripe}>
           Registrarse
         </button>
@@ -94,11 +101,23 @@ async function fetchCreateStripeSession(email, password, name) {
     const sessionId = response.data.results.stripe_session_id
     console.log("sessionId: ", sessionId);
     console.log("data: ", response.data);
+
     return { sessionId: response.data.results.stripe_session_id }
-   } catch (error) {
-    console.error("Error fetching Stripe session ID", error);
-    // Devuelve un objeto con una propiedad `sessionId` nula
-    // para evitar errores de "undefined"
-    return { sessionId: null };
+  } catch (error) {
+    let errorMessage;
+  // console.error("Error fetching Stripe session ID", error);
+  // console.error("Error message:", error.message);
+  // console.error("HTTP response:", error.response);
+    if (error.response) {
+        // El servidor respondió con un estado fuera del rango 2xx
+        errorMessage = error.response.data.results;
+    } else if (error.request) {
+      // La solicitud fue hecha pero no se recibió respuesta
+      errorMessage = 'No response was received';
+    } else {
+      // Algo salió mal al configurar la solicitud
+      errorMessage = 'Error setting up request';
+    }
+    return { sessionId: null, error: errorMessage };
   }
 }
