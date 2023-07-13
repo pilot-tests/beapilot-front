@@ -37,10 +37,12 @@ export default function Test(props) {
 
 			// Realizar la solicitud POST
 			const response = await axios.post(`${import.meta.env.VITE_API_URL}student_answers`, data, {
+				params: {
+					token: token
+				},
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
-					Auth: import.meta.env.VITE_AUTH,
-					token: token
+					Auth: import.meta.env.VITE_AUTH
 				}
 			});
 
@@ -195,7 +197,7 @@ useEffect(() => {
 								id={currentQuestion.answer_1_id}
 								name={currentQuestion.id_question}
 								value={currentQuestion.answer_1_id}
-								checked={optionSelected === currentQuestion.answer_1_id}
+								checked={Number(optionSelected) === currentQuestion.answer_1_id}
 								onChange={handleRadioChange}
 							/>
 						</label>
@@ -206,7 +208,7 @@ useEffect(() => {
 								id={currentQuestion.answer_2_id}
 								name={currentQuestion.id_question}
 								value={currentQuestion.answer_2_id}
-								checked={optionSelected === currentQuestion.answer_2_id}
+								checked={Number(optionSelected) === currentQuestion.answer_2_id}
 								onChange={handleRadioChange}
 							/>
 						</label>
@@ -217,7 +219,7 @@ useEffect(() => {
 								id={currentQuestion.answer_3_id}
 								name={currentQuestion.id_question}
 								value={currentQuestion.answer_3_id}
-								checked={optionSelected === currentQuestion.answer_3_id}
+								checked={Number(optionSelected) === currentQuestion.answer_3_id}
 								onChange={handleRadioChange}
 							/>
 						</label>
@@ -228,7 +230,7 @@ useEffect(() => {
 								id={currentQuestion.answer_4_id}
 								name={currentQuestion.id_question}
 								value={currentQuestion.answer_4_id}
-								checked={optionSelected === currentQuestion.answer_4_id}
+								checked={Number(optionSelected) === currentQuestion.answer_4_id}
 								onChange={handleRadioChange}
 							/>
 						</label>
