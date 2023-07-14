@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+
   &__topbar {
     display: flex;
     align-items: center;
@@ -9,6 +10,10 @@
     background-color: var(--main-color);
     color: white;
     text-transform: uppercase;
+  }
+
+  &__button {
+    margin-top: auto;
   }
 
   &__wrapper {
@@ -19,15 +24,12 @@
   }
 
   &__answer {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: row-reverse;
     padding: var(--space);
     background-color: var(--white);
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     box-shadow: 0 1px 1px 0 var(--dark-grey);
-    flex: 1;
     font-weight: var(--font-weight-normal);
+    margin-bottom: var(--margin-bottom);
     span {
       flex: 1;
     }

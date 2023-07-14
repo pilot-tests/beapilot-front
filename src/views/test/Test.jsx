@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios";
 import { useAuth } from '../../contexts/AuthContext'
+import './Test.scss'
 
 export default function Test(props) {
 	const [quiz, setQuiz] = useState(null);
@@ -37,12 +38,10 @@ export default function Test(props) {
 
 			// Realizar la solicitud POST
 			const response = await axios.post(`${import.meta.env.VITE_API_URL}student_answers`, data, {
-				params: {
-					token: token
-				},
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
-					Auth: import.meta.env.VITE_AUTH
+					Auth: import.meta.env.VITE_AUTH,
+					token: token
 				}
 			});
 
@@ -179,7 +178,6 @@ useEffect(() => {
 
 		return (
 			<>
-				<div>Página de Test</div>
 				{loading && <div>A moment please...</div>}
 				{error && (
 					<div>{`There is a problem fetching the post data - ${error}`}</div>
@@ -187,56 +185,68 @@ useEffect(() => {
 
 				{/* TODO: Refactor this into another component */}
 				{currentQuestion && currentQuestionIndex < quiz.length ? (
-					<div >
-						Pregunta {currentQuestionIndex + 1} de {questionCount}
-						<h2>{currentQuestion.string_question}</h2>
-						<label htmlFor={currentQuestion.answer_1_id}>
-							<span>{currentQuestion.answer_1_string} (id: {currentQuestion.answer_1_id})</span>
-							<input
-								type="radio"
-								id={currentQuestion.answer_1_id}
-								name={currentQuestion.id_question}
-								value={currentQuestion.answer_1_id}
-								checked={Number(optionSelected) === currentQuestion.answer_1_id}
-								onChange={handleRadioChange}
-							/>
-						</label>
-						<label htmlFor={currentQuestion.answer_2_id}>
-							<span>{currentQuestion.answer_2_string} (id: {currentQuestion.answer_2_id})</span>
-							<input
-								type="radio"
-								id={currentQuestion.answer_2_id}
-								name={currentQuestion.id_question}
-								value={currentQuestion.answer_2_id}
-								checked={Number(optionSelected) === currentQuestion.answer_2_id}
-								onChange={handleRadioChange}
-							/>
-						</label>
-						<label htmlFor={currentQuestion.answer_3_id}>
-							<span>{currentQuestion.answer_3_string} (id: {currentQuestion.answer_3_id})</span>
-							<input
-								type="radio"
-								id={currentQuestion.answer_3_id}
-								name={currentQuestion.id_question}
-								value={currentQuestion.answer_3_id}
-								checked={Number(optionSelected) === currentQuestion.answer_3_id}
-								onChange={handleRadioChange}
-							/>
-						</label>
-						<label htmlFor={currentQuestion.answer_4_id}>
-							<span>{currentQuestion.answer_4_string} (id: {currentQuestion.answer_4_id})</span>
-							<input
-								type="radio"
-								id={currentQuestion.answer_4_id}
-								name={currentQuestion.id_question}
-								value={currentQuestion.answer_4_id}
-								checked={Number(optionSelected) === currentQuestion.answer_4_id}
-								onChange={handleRadioChange}
-							/>
-						</label>
-						<button onClick={handleAnswerButtonClick} disabled={buttonDisabled}>
-							Ejecutar
-						</button>
+					<div className="test">
+						<div className="test__topbar">
+							Pregunta {currentQuestionIndex + 1} de {questionCount}
+						</div>
+						<div className="test__wrapper">
+							<h2 className="test__title">{currentQuestion.string_question}</h2>
+							<div className="test__answer">
+								<label htmlFor={currentQuestion.answer_1_id}>
+									<span>{currentQuestion.answer_1_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_1_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_1_id}
+										checked={Number(optionSelected) === currentQuestion.answer_1_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
+							</div>
+							<div className="test__answer">
+								<label htmlFor={currentQuestion.answer_2_id}>
+									<span>{currentQuestion.answer_2_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_2_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_2_id}
+										checked={Number(optionSelected) === currentQuestion.answer_2_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
+							</div>
+							<div className="test__answer">
+								<label htmlFor={currentQuestion.answer_3_id}>
+									<span>{currentQuestion.answer_3_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_3_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_3_id}
+										checked={Number(optionSelected) === currentQuestion.answer_3_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
+							</div>
+							<div className="test__answer">
+								<label htmlFor={currentQuestion.answer_4_id}>
+									<span>{currentQuestion.answer_4_string}</span>
+									<input
+										type="radio"
+										id={currentQuestion.answer_4_id}
+										name={currentQuestion.id_question}
+										value={currentQuestion.answer_4_id}
+										checked={Number(optionSelected) === currentQuestion.answer_4_id}
+										onChange={handleRadioChange}
+									/>
+								</label>
+							</div>
+							<button onClick={handleAnswerButtonClick} disabled={buttonDisabled} className="test__button">
+								Ejecutar
+							</button>
+						</div>
 					</div>
 					): (
 					<div>Error.. ?</div>
