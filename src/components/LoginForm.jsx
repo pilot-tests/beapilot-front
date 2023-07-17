@@ -21,7 +21,6 @@ const LoginForm = () => {
           login: true
         },
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
           Auth: import.meta.env.VITE_AUTH
         }
       });
