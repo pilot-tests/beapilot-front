@@ -33,7 +33,7 @@ export default function AsignaturesList() {
 			const serializedData = new URLSearchParams(postTestData).toString();
 
 			const response = await axios.post(
-				`${import.meta.env.VITE_API_URL}test/`,
+				`${import.meta.env.VITE_API_URL}test`,
 				serializedData,
 				{
 					headers: {

@@ -31,11 +31,11 @@ export default function OpenAiDataFetcher() {
                 setData(response.data);
                 setError(null);
             } catch (err) {
-							if (err.response && err.response.status === 404) {
-                setError("No has hecho ningún test, empieza ahora!");
-            } else {
-            	setError(err.message);
-            }
+                if (err.response && err.response.status === 404) {
+                    setError("No has hecho ningún test, empieza ahora!");
+                } else {
+                    setError(err.message);
+                }
             setData(null);
             } finally {
                 setLoading(false);
@@ -45,7 +45,7 @@ export default function OpenAiDataFetcher() {
     }, []);
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+    if (error) return <div className='alert alert--warning'>{error}</div>;
 
     return (
         <div>
