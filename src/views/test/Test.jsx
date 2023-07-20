@@ -249,7 +249,8 @@ useEffect(() => {
 						</div>
 					</div>
 					): (
-					<div>Error.. ?</div>
+						// TODO: Add a nice animation
+					<div>Añadir una animación bonica</div>
 				)}
 			</>
 		);
