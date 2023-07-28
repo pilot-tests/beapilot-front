@@ -19,4 +19,7 @@ tr {
 
 td {
   padding: var(--unit) var(--space);
+  a, a:visited {
+    font-weight: var(--font-weight-normal);
+  }
 }
