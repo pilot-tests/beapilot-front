@@ -11,6 +11,8 @@ export default function Test() {
 	const [error, setError] = useState(null);
 	const [testData, setTestData] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
+	const [selectedAnswer, setSelectedAnswer] = useState(null);
+
 
 
 	const { testId } = useParams();
@@ -19,16 +21,18 @@ export default function Test() {
 	const userID = auth.user.id_user;
 
   console.log("Body Test Data: ", testData);
+
+
+
 	const handleAnswerChange = async (questionId, answerId) => {
 		const questionData = testData.find(item => item.id_question === questionId);
-    const studentAnswerId = questionData.id_student_answer;
-
-
+    const studentAnswerId = answerId;
+		console.log("id_student_answer?", answerId)
 
 		try {
 
 			const dataUpdate = {
-			id_answer_student_answer: questionData.id_student_answer,
+			id_answer_student_answer: answerId,
 			};
 			const dataNew = {
 				id_user_student_answer: userID,
@@ -39,16 +43,24 @@ export default function Test() {
 
         if (questionData.id_student_answer) {
             // Actualizar la respuesta existente
-             await axios.put(
-                `${import.meta.env.VITE_API_URL}student_answers?id=${studentAnswerId}&nameId=id_student_answer`, dataUpdate,
-                {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        Auth: import.meta.env.VITE_AUTH,
-                        token: token
-                    }
-                }
+						await axios.put(
+							`${import.meta.env.VITE_API_URL}student_answers?id=${studentAnswerId}&nameId=id_student_answer`, dataUpdate,
+							{
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									Auth: import.meta.env.VITE_AUTH,
+									token: token
+								}
+							}
             );
+						// Actualizar la respuesta en el estado local
+						setTestData(testData.map(item => {
+							if (item.id_question === questionId) {
+								return {...item, id_student_answer: answerId};
+							} else {
+								return item;
+							}
+						}));
         } else {
           // Crear una nueva respuesta
           const response = await axios.post(
@@ -77,6 +89,7 @@ export default function Test() {
     } catch (error) {
         console.error(error);
     }
+		setSelectedAnswer(answerId);
 	};
 
 
@@ -126,22 +139,6 @@ export default function Test() {
     }
   }
 
-	// Order answers
-	let answers = [];
-  if (testData && testData[currentQuestion]) {
-    for (let i = 1; i <= 4; i++) {
-      if (testData[currentQuestion][`answer_${i}_id`] && testData[currentQuestion][`answer_${i}_string`]) {
-        answers.push({
-          id: testData[currentQuestion][`answer_${i}_id`],
-          string: testData[currentQuestion][`answer_${i}_string`],
-          order: testData[currentQuestion][`answer_${i}_order`]
-        });
-      }
-    }
-
-    // Ordenar las respuestas por el campo order
-    answers.sort((a, b) => a.order - b.order);
-  }
 
 	return (
 		<>
@@ -167,34 +164,41 @@ export default function Test() {
 					</ul>
 				</aside>
 				<main className="test__main">
-					{testData && testData[currentQuestion] &&
-						<div>
-							<p>Question: {testData[currentQuestion].string_question}</p>
+						{testData && testData[currentQuestion] &&
+					<div>
+						<p>Question: {testData[currentQuestion].string_question}</p>
 
-							{
-                // Renderizar las respuestas
-                answers.map((answer, i) => (
-                  <div key={answer.id} id={answer.id}>
-                    <label>
-                      <input
-                        type="radio"
-                        name={`answer_${currentQuestion}`}
-                        checked={testData[currentQuestion].id_student_answer ? true : false}
-                        onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answer.id)} />
+						{Array(4).fill().map((_, i) => {
+							const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
+							console.log(answerId)
+							const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
 
-                      {answer.string}
-                    </label>
-                  </div>
-                ))
-              }
+							if (!answerId || !answerString) {
+								return null; // No hay más respuestas
+							}
+
+							return (
+								<div key={answerId} id={answerId}>
+									<label>
+										<input
+											type="radio"
+											name={`answer_${currentQuestion}`}
+                      checked={selectedAnswer === answerId}
+											onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)} />
+
+										{answerString}
+									</label>
+								</div>
+							);
+						})}
 
 
 
-							<button onClick={handlePrevClick} disabled={currentQuestion === 0}>Previous</button>
+						<button onClick={handlePrevClick} disabled={currentQuestion === 0}>Previous</button>
 
-							<button onClick={handleNextClick} disabled={currentQuestion === testData.length - 1}>Next</button>
+						<button onClick={handleNextClick} disabled={currentQuestion === testData.length - 1}>Next</button>
 
-						</div>}
+					</div>}
 				</main>
 			</div>
 		</>
