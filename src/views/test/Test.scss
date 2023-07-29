@@ -52,3 +52,14 @@
       text-align: center;
     }
 }
+
+// Temporal
+
+label {
+  display: flex;
+  align-items: flex-start;
+  input {
+    max-width: 16px;
+    margin-right: 12px;
+  }
+}

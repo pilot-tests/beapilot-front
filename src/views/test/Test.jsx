@@ -11,7 +11,9 @@ export default function Test() {
 	const [error, setError] = useState(null);
 	const [testData, setTestData] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
-	const [selectedAnswer, setSelectedAnswer] = useState(null);
+	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
+	console.log("studentanswer:", selectedAnswer);
+
 
 
 
@@ -20,14 +22,14 @@ export default function Test() {
   const token = auth.token;
 	const userID = auth.user.id_user;
 
-  console.log("Body Test Data: ", testData);
+  const answerLetters = ['A', 'B', 'C', 'D'];
 
 
 
 	const handleAnswerChange = async (questionId, answerId) => {
 		const questionData = testData.find(item => item.id_question === questionId);
     const studentAnswerId = answerId;
-		console.log("id_student_answer?", answerId)
+		console.log("id_answer_student_answer?", answerId)
 
 		try {
 
@@ -41,10 +43,10 @@ export default function Test() {
 				id_test_student_answer: testId,
 			};
 
-        if (questionData.id_student_answer) {
+        if (questionData.id_answer_student_answer) {
             // Actualizar la respuesta existente
 						await axios.put(
-							`${import.meta.env.VITE_API_URL}student_answers?id=${studentAnswerId}&nameId=id_student_answer`, dataUpdate,
+							`${import.meta.env.VITE_API_URL}student_answers?id=${studentAnswerId}&nameId=id_answer_student_answer`, dataUpdate,
 							{
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded',
@@ -56,11 +58,13 @@ export default function Test() {
 						// Actualizar la respuesta en el estado local
 						setTestData(testData.map(item => {
 							if (item.id_question === questionId) {
-								return {...item, id_student_answer: answerId};
+								return {...item, id_answer_student_answer: answerId};
 							} else {
 								return item;
 							}
 						}));
+
+						console.log("TestData after PUT:", testData);
         } else {
           // Crear una nueva respuesta
           const response = await axios.post(
@@ -79,7 +83,7 @@ export default function Test() {
           setTestData(testData.map(item => {
 
             if (item.id_question === questionId) {
-                return {...item, id_student_answer: newAnswerId};
+                return {...item, id_answer_student_answer: newAnswerId};
             } else {
                 return item;
             }
@@ -89,6 +93,7 @@ export default function Test() {
     } catch (error) {
         console.error(error);
     }
+
 		setSelectedAnswer(answerId);
 	};
 
@@ -114,6 +119,7 @@ export default function Test() {
 				);
 				console.log("Test response:", response.data);
 				setTestData(response.data.results);
+				setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -130,12 +136,14 @@ export default function Test() {
 	const handleNextClick = () => {
     if (currentQuestion < testData.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
+			setSelectedAnswer(testData[currentQuestion + 1].id_answer_student_answer);
     }
   }
 
 	const handlePrevClick = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
+			setSelectedAnswer(testData[currentQuestion - 1].id_answer_student_answer);
     }
   }
 
@@ -156,7 +164,7 @@ export default function Test() {
 									{index + 1}
 								</div>
 								<div className="test__answered">
-									{item.id_test_student_answer ? item.id_test_student_answer : ""}
+									{item.id_answer_student_answer ? answerLetters[item.id_answer_student_answer - 1] : ""}
 								</div>
 
 							</li>
@@ -170,7 +178,6 @@ export default function Test() {
 
 						{Array(4).fill().map((_, i) => {
 							const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
-							console.log(answerId)
 							const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
 
 							if (!answerId || !answerString) {
@@ -186,7 +193,9 @@ export default function Test() {
                       checked={selectedAnswer === answerId}
 											onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)} />
 
-										{answerString}
+										{selectedAnswer} and {answerId}
+										<hr />
+										{answerLetters[i]}: {answerString}
 									</label>
 								</div>
 							);
