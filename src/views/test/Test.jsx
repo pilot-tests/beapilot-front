@@ -29,7 +29,7 @@ export default function Test() {
 	const handleAnswerChange = async (questionId, answerId) => {
 		const questionData = testData.find(item => item.id_question === questionId);
     const studentAnswerId = answerId;
-		console.log("id_answer_student_answer?", answerId)
+
 
 		try {
 
@@ -42,11 +42,12 @@ export default function Test() {
 				id_question_student_answer: questionData.id_question,
 				id_test_student_answer: testId,
 			};
+			console.log("studentAnswerId", studentAnswerId)
 
         if (questionData.id_answer_student_answer) {
             // Actualizar la respuesta existente
 						await axios.put(
-							`${import.meta.env.VITE_API_URL}student_answers?id=${studentAnswerId}&nameId=id_answer_student_answer`, dataUpdate,
+							`${import.meta.env.VITE_API_URL}student_answers?id=${questionData.id_question}&nameId=id_question_student_answer`, dataUpdate,
 							{
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded',
