@@ -51,15 +51,16 @@
       color: black;
       text-align: center;
     }
+
+    &__main {
+      label {
+      display: flex;
+      align-items: flex-start;
+      input {
+        max-width: 16px;
+        margin-right: 12px;
+      }
+    }
+    }
 }
 
-// Temporal
-
-label {
-  display: flex;
-  align-items: flex-start;
-  input {
-    max-width: 16px;
-    margin-right: 12px;
-  }
-}

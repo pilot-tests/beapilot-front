@@ -30,6 +30,12 @@ export default function Test() {
 		const questionData = testData.find(item => item.id_question === questionId);
     const studentAnswerId = answerId;
 
+		// Encontrar el objeto de respuesta correspondiente
+		const answerObject = Object.entries(questionData)
+		.filter(([key, _]) => key.startsWith('answer') && key.endsWith('id'))
+		.map(([key, value]) => ({id: value, order: questionData[key.replace('id', 'order')], string: questionData[key.replace('id', 'string')]}))
+		.find(item => item.id === answerId);
+
 
 		try {
 
@@ -59,7 +65,7 @@ export default function Test() {
 						// Actualizar la respuesta en el estado local
 						setTestData(testData.map(item => {
 							if (item.id_question === questionId) {
-								return {...item, id_answer_student_answer: answerId};
+								return {...item, student_answer: answerObject};
 							} else {
 								return item;
 							}
@@ -84,7 +90,7 @@ export default function Test() {
           setTestData(testData.map(item => {
 
             if (item.id_question === questionId) {
-                return {...item, id_answer_student_answer: newAnswerId};
+                return {...item, student_answer: answerObject};
             } else {
                 return item;
             }
@@ -121,6 +127,16 @@ export default function Test() {
 				console.log("Test response:", response.data);
 				setTestData(response.data.results);
 				setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
+				const transformedResults = response.data.results.map(question => {
+    const answerObject = Object.entries(question)
+        .filter(([key, _]) => key.startsWith('answer') && key.endsWith('id'))
+        .map(([key, value]) => ({id: value, order: question[key.replace('id', 'order')], string: question[key.replace('id', 'string')]}))
+        .find(item => item.id === question.id_answer_student_answer);
+
+    return {...question, student_answer: answerObject};
+});
+
+setTestData(transformedResults);
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -165,7 +181,8 @@ export default function Test() {
 									{index + 1}
 								</div>
 								<div className="test__answered">
-									{item.id_answer_student_answer ? answerLetters[item.id_answer_student_answer - 1] : ""}
+									{item.student_answer ? item.student_answer.order : ''}
+									{/* Aquí tengo que colocar qué ha respondido el usuario en esta pregunta, y actualizarlo cuando modifique su respuesta. SI no ha respondido nada, pues mantenerla en blanco. */}
 								</div>
 
 							</li>
