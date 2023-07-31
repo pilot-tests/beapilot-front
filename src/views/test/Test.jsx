@@ -171,61 +171,61 @@ setTestData(transformedResults);
 			{error && (
 				<div>{`There is a problem fetching the post data - ${error}`}</div>
 			)}
+			{currentQuestion + 1}
 			<div className="test">
 				<aside className="test__aside">
 					<ul className="test__list">
 						{testData && testData.map((item, index) => (
-							<li key={index} className="test__indicator" onClick={() => handleQuestionClick(index)}>
+							<li key={index} className={`test__indicator ${currentQuestion === index ? 'test__indicator--current' : ''}`}onClick={() => handleQuestionClick(index)}>
 
 								<div className="test__indicator__qnumber">
 									{index + 1}
 								</div>
 								<div className="test__answered">
 									{item.student_answer ? item.student_answer.order : ''}
-									{/* Aquí tengo que colocar qué ha respondido el usuario en esta pregunta, y actualizarlo cuando modifique su respuesta. SI no ha respondido nada, pues mantenerla en blanco. */}
 								</div>
+
 
 							</li>
 						))}
 					</ul>
 				</aside>
 				<main className="test__main">
-						{testData && testData[currentQuestion] &&
-					<div>
-						<p>Question: {testData[currentQuestion].string_question}</p>
+					{testData && testData[currentQuestion] &&
+						<div>
+							<p>Question: {testData[currentQuestion].string_question}</p>
 
-						{Array(4).fill().map((_, i) => {
-							const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
-							const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
+							{Array(4).fill().map((_, i) => {
+								const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
+								const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
 
-							if (!answerId || !answerString) {
-								return null; // No hay más respuestas
-							}
+								if (!answerId || !answerString) {
+									return null; // No hay más respuestas
+								}
 
-							return (
-								<div key={answerId} id={answerId}>
-									<label>
-										<input
-											type="radio"
-											name={`answer_${currentQuestion}`}
-                      checked={selectedAnswer === answerId}
-											onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)} />
-
-										{selectedAnswer} and {answerId}
-										<hr />
-										{answerLetters[i]}: {answerString}
-									</label>
-								</div>
-							);
-						})}
+								return (
+									<div key={answerId} id={answerId}>
+										<label>
+											<input
+												type="radio"
+												name={`answer_${currentQuestion}`}
+												checked={selectedAnswer === answerId}
+												onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)}
+											/>
+											{answerLetters[i]}: {answerString}
+										</label>
+									</div>
+								);
+							})}
 
 
 
-						<button onClick={handlePrevClick} disabled={currentQuestion === 0}>Previous</button>
+							<button onClick={handlePrevClick} disabled={currentQuestion === 0}>Previous</button>
 
-						<button onClick={handleNextClick} disabled={currentQuestion === testData.length - 1}>Next</button>
+							<button onClick={handleNextClick} disabled={currentQuestion === testData.length - 1}>Next</button>
 
-					</div>}
+						</div>
+					}
 				</main>
 			</div>
 		</>

@@ -27,6 +27,12 @@
       font-size: var(--font-size-14);
       font-weight: var(--font-weight-bold);
 
+      &--current {
+        .test__indicator__qnumber {
+          background-color: blue;
+        }
+      }
+
       &::before {
         content: "";
         position: absolute;
@@ -54,13 +60,13 @@
 
     &__main {
       label {
-      display: flex;
-      align-items: flex-start;
-      input {
-        max-width: 16px;
-        margin-right: 12px;
+        display: flex;
+        align-items: flex-start;
+        input {
+          max-width: 16px;
+          margin-right: 12px;
+        }
       }
-    }
     }
 }
 
