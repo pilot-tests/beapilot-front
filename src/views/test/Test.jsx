@@ -21,6 +21,7 @@ export default function Test() {
 	const { auth } = useAuth();
   const token = auth.token;
 	const userID = auth.user.id_user;
+	const userEmail = auth.user.email_user;
 
   const answerLetters = ['A', 'B', 'C', 'D'];
 
@@ -167,10 +168,18 @@ setTestData(transformedResults);
 
 	return (
 		<>
-			{loading && <div>A moment please...</div>}
-			{error && (
-				<div>{`There is a problem fetching the post data - ${error}`}</div>
-			)}
+			<div className="test__topbar">
+				{loading && <div>A moment please...</div>}
+				{error && (
+					<div>{`There is a problem fetching the post data - ${error}`}</div>
+				)}
+				<div>
+					Alumno: {userEmail}
+				</div>
+				<div>
+					Categoría: {testData[currentQuestion].name_category}
+				</div>
+			</div>
 			{currentQuestion + 1}
 			<div className="test">
 				<aside className="test__aside">
