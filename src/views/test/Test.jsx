@@ -11,6 +11,7 @@ export default function Test() {
 	const [error, setError] = useState(null);
 	const [testData, setTestData] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
+	const [isTestFinished, setIsTestFinished] = useState(false);
 	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
 	console.log("studentanswer:", selectedAnswer);
 
@@ -25,11 +26,55 @@ export default function Test() {
 
   const answerLetters = ['A', 'B', 'C', 'D'];
 
+	const finishTest = async () => {
+		try {
+			const response = await axios({
+				method: 'post',
+				url: `${import.meta.env.VITE_API_URL}openAi`,
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					auth: 'abc',
+					token: token
+				},
+				data: new URLSearchParams({
+					prompt: true,
+					userId: userID,
+					testId: testId,
+					type: 1
+				})
+			});
+			console.log(response.data)
+		} catch (err) {
+			console.error(`Error al hacer la petición PUT: ${err.message}`);
+		} finally {
+			setIsTestFinished(true);
+		}
+	};
+
+	const checkTestStatus = async () => {
+		try {
+			const response = await axios.get(`${import.meta.env.VITE_API_URL}test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
+				headers: {
+					Auth: import.meta.env.VITE_AUTH
+				}
+			});
+
+			if (response.data.results[0].finished_test === 1) {
+				setIsTestFinished(true);
+			}
+		} catch (err) {
+			console.error(`Error al verificar el estado del test: ${err.message}`);
+		}
+	};
+
 
 
 	const handleAnswerChange = async (questionId, answerId) => {
 		const questionData = testData.find(item => item.id_question === questionId);
     const studentAnswerId = answerId;
+		if (isTestFinished) {
+			return;
+		}
 
 		// Encontrar el objeto de respuesta correspondiente
 		const answerObject = Object.entries(questionData)
@@ -183,6 +228,10 @@ export default function Test() {
 				<div>
 					{/* Categoría: {testData[currentQuestion].name_category} */}
 				</div>
+
+				<div>
+					<button onClick={finishTest} disabled={isTestFinished}>Finalizar Test</button>
+				</div>
 			</div>
 			{currentQuestion + 1}
 			<div className="test">
@@ -227,6 +276,10 @@ export default function Test() {
 											/>
 											{answerLetters[i]}: {answerString}
 										</label>
+										<details>
+											<summary>Razonamiento</summary>
+											{testData[currentQuestion].ai_reasoning_questions}
+										</details>
 									</div>
 								);
 							})}
