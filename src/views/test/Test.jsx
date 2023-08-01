@@ -67,6 +67,7 @@ export default function Test() {
 						setTestData(testData.map(item => {
 							if (item.id_question === questionId) {
 								return {...item, student_answer: answerObject};
+
 							} else {
 								return item;
 							}
@@ -128,16 +129,16 @@ export default function Test() {
 				console.log("Test response:", response.data);
 				setTestData(response.data.results);
 				setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
+
 				const transformedResults = response.data.results.map(question => {
-    const answerObject = Object.entries(question)
-        .filter(([key, _]) => key.startsWith('answer') && key.endsWith('id'))
-        .map(([key, value]) => ({id: value, order: question[key.replace('id', 'order')], string: question[key.replace('id', 'string')]}))
-        .find(item => item.id === question.id_answer_student_answer);
+					const answerObject = Object.entries(question)
+					.filter(([key, _]) => key.startsWith('answer') && key.endsWith('id'))
+					.map(([key, value]) => ({id: value, order: question[key.replace('id', 'order')], string: question[key.replace('id', 'string')]}))
+					.find(item => item.id === question.id_answer_student_answer);
+					return {...question, student_answer: answerObject};
+				});
 
-    return {...question, student_answer: answerObject};
-});
-
-setTestData(transformedResults);
+				setTestData(transformedResults);
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -154,16 +155,19 @@ setTestData(transformedResults);
 	const handleNextClick = () => {
     if (currentQuestion < testData.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-			setSelectedAnswer(testData[currentQuestion + 1].id_answer_student_answer);
+      // Aquí aseguramos que student_answer exista antes de intentar acceder a su propiedad id
+      setSelectedAnswer(testData[currentQuestion + 1].student_answer ? testData[currentQuestion + 1].student_answer.id : null);
     }
-  }
+	}
 
 	const handlePrevClick = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-			setSelectedAnswer(testData[currentQuestion - 1].id_answer_student_answer);
-    }
-  }
+		if (currentQuestion > 0) {
+			setCurrentQuestion(currentQuestion - 1);
+			// Aquí aseguramos que student_answer exista antes de intentar acceder a su propiedad id
+			setSelectedAnswer(testData[currentQuestion - 1].student_answer ? testData[currentQuestion - 1].student_answer.id : null);
+		}
+	}
+
 
 
 	return (
@@ -177,7 +181,7 @@ setTestData(transformedResults);
 					Alumno: {userEmail}
 				</div>
 				<div>
-					Categoría: {testData[currentQuestion].name_category}
+					{/* Categoría: {testData[currentQuestion].name_category} */}
 				</div>
 			</div>
 			{currentQuestion + 1}
