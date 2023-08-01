@@ -13,7 +13,7 @@ export default function Test() {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [isTestFinished, setIsTestFinished] = useState(false);
 	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
-	console.log("studentanswer:", selectedAnswer);
+
 
 
 
@@ -26,6 +26,9 @@ export default function Test() {
 
   const answerLetters = ['A', 'B', 'C', 'D'];
 
+	useEffect(() => {
+  console.log('Is Test Finished:', isTestFinished);
+}, [isTestFinished]);
 	const finishTest = async () => {
 		try {
 			const response = await axios({
@@ -53,9 +56,17 @@ export default function Test() {
 
 	const checkTestStatus = async () => {
 		try {
-			const response = await axios.get(`${import.meta.env.VITE_API_URL}test?linkTo=id_test&equalTo=${testId}&select=finished_test&token=${token}`, {
+			const response = await axios.get(`${import.meta.env.VITE_API_URL}relations`, {
 				headers: {
 					Auth: import.meta.env.VITE_AUTH
+				},
+				params: {
+					rel: 'test,openai',
+					type: 'id_test,id_test_openai',
+					select: '*',
+					linkTo: 'id_test,finished_test',
+					equalTo: `${testId},1`,
+					token: token
 				}
 			});
 
@@ -154,6 +165,7 @@ export default function Test() {
 
 	useEffect(() => {
 		// TODO: Refactor this, this is how we access the TEST
+		checkTestStatus();
 		const getData = async () => {
 			try {
 
