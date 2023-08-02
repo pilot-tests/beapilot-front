@@ -12,6 +12,7 @@ export default function Test() {
 	const [testData, setTestData] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [isTestFinished, setIsTestFinished] = useState(false);
+	const [testFinishedData, setTestFinishedData] = useState(null);
 	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
 
 
@@ -26,9 +27,9 @@ export default function Test() {
 
   const answerLetters = ['A', 'B', 'C', 'D'];
 
-	useEffect(() => {
-  console.log('Is Test Finished:', isTestFinished);
-}, [isTestFinished]);
+	// useEffect(() => {
+  // 	console.log('Is Test Finished:', isTestFinished);
+	// }, [isTestFinished]);
 	const finishTest = async () => {
 		try {
 			const response = await axios({
@@ -54,6 +55,7 @@ export default function Test() {
 		}
 	};
 
+
 	const checkTestStatus = async () => {
 		try {
 			const response = await axios.get(`${import.meta.env.VITE_API_URL}relations`, {
@@ -69,10 +71,6 @@ export default function Test() {
 					token: token
 				}
 			});
-
-			if (response.data.results[0].finished_test === 1) {
-				setIsTestFinished(true);
-			}
 		} catch (err) {
 			console.error(`Error al verificar el estado del test: ${err.message}`);
 		}
@@ -164,8 +162,6 @@ export default function Test() {
 
 
 	useEffect(() => {
-		// TODO: Refactor this, this is how we access the TEST
-		checkTestStatus();
 		const getData = async () => {
 			try {
 
@@ -185,6 +181,11 @@ export default function Test() {
 				);
 				console.log("Test response:", response.data);
 				setTestData(response.data.results);
+				if(response.data.examDetails[0].finished_test === 1) {
+					checkTestStatus();
+					console.log("TEST FINALIZADO!");
+
+				}
 				setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
 
 				const transformedResults = response.data.results.map(question => {
@@ -244,6 +245,14 @@ export default function Test() {
 				<div>
 					<button onClick={finishTest} disabled={isTestFinished}>Finalizar Test</button>
 				</div>
+
+					{
+						testFinishedData && testFinishedData.results.length > 0 && testFinishedData.results[0].response_openai &&
+						<div>
+							<h3>Respuesta de OpenAI:</h3>
+							<div dangerouslySetInnerHTML={{ __html: testFinishedData.results[0].response_openai }} />;
+						</div>
+					}
 			</div>
 			{currentQuestion + 1}
 			<div className="test">
@@ -288,10 +297,6 @@ export default function Test() {
 											/>
 											{answerLetters[i]}: {answerString}
 										</label>
-										<details>
-											<summary>Razonamiento</summary>
-											{testData[currentQuestion].ai_reasoning_questions}
-										</details>
 									</div>
 								);
 							})}
@@ -301,7 +306,10 @@ export default function Test() {
 							<button onClick={handlePrevClick} disabled={currentQuestion === 0}>Previous</button>
 
 							<button onClick={handleNextClick} disabled={currentQuestion === testData.length - 1}>Next</button>
-
+							<details>
+								<summary>Razonamiento</summary>
+								{testData[currentQuestion].ai_reasoning_questions}
+							</details>
 						</div>
 					}
 				</main>
