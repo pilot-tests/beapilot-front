@@ -13,6 +13,7 @@ export default function Test() {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [isTestFinished, setIsTestFinished] = useState(false);
 	const [testFinishedData, setTestFinishedData] = useState(null);
+	const [seconds, setSeconds] = useState(null);
 	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
 
 
@@ -26,6 +27,12 @@ export default function Test() {
 	const userEmail = auth.user.email_user;
 
   const answerLetters = ['A', 'B', 'C', 'D'];
+
+	const formatTime = (seconds) => {
+		const min = Math.floor(seconds / 60);
+		const sec = seconds % 60;
+		return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+	};
 
 	// useEffect(() => {
   // 	console.log('Is Test Finished:', isTestFinished);
@@ -179,6 +186,11 @@ export default function Test() {
 					}
 
 				);
+
+				const testTimeInMinutes = response.data.examDetails[0].testtime_category.split(':')[2];
+				const testTimeInSeconds = parseInt(testTimeInMinutes) * 60;
+				setSeconds(testTimeInSeconds);
+
 				console.log("Test response:", response.data);
 				setTestData(response.data.results);
 				if(response.data.examDetails[0].finished_test === 1) {
@@ -205,6 +217,17 @@ export default function Test() {
 		};
 		getData();
 	}, []);
+
+
+  useEffect(() => {
+		if (seconds > 0) {
+			const timerId = setTimeout(() => setSeconds(seconds - 1), 1000);
+			return () => clearTimeout(timerId);
+		} else if (seconds === 0) {
+			// Si el tiempo se agotó, finalizar el examen
+			finishTest();
+		}
+	}, [seconds]);
 
 	const handleQuestionClick = (index) => {
     setCurrentQuestion(index);
@@ -236,7 +259,7 @@ export default function Test() {
 					<div>{`There is a problem fetching the post data - ${error}`}</div>
 				)}
 				<div>
-					Alumno: {userEmail}
+					Alumno: {userEmail} Tiempo restante: {isTestFinished ? "Test finalizado" : formatTime(seconds)} 
 				</div>
 				<div>
 					{/* Categoría: {testData[currentQuestion].name_category} */}
