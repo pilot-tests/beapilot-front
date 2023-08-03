@@ -8,15 +8,15 @@
   --sky: hsl(210, 100%, 20%);
   --sky-tint: hsl(210, 30%, 80%);
   --sunset: hsl(24, 100%, 50%);
-  --red: hsl(0, 100%, 50%);
-  --orange: hsl(30, 100%, 50%);
+  --red: hsl(0, 74%, 43%);
+  --orange: hsl(33, 100%, 51%);
   --yellow: hsl(60, 100%, 50%);
   --green: hsl(120, 100%, 50%);
 
 
   --main-color: var(--sky);
   --secondary-color: var(--sunset);
-  --bg-color: var(--light-grey);
+  --bg-color: var(--white);
   --bg-color-light: var(--grey);
   --text-color: var(--black);
   --link-color: var(--blue);
@@ -47,6 +47,10 @@
   --color-cat-9: hsl(300, 100%, 50%);
   --color-cat-9-t: hsl(300, 50%, 33%);
 
+  // AESA Test Colors
+  --color-aesa-dark-yellow: hsl(55, 63%, 81%);
+  --color-aesa-yellow: hsl(62, 100%, 94%);
+  --color-aesa-blue: hsl(239, 99%, 37%);
 
 
   // Font properties
@@ -71,4 +75,6 @@
   --margin-bottom: calc(var(--unit) * 3);
   --space-big: calc(var(--unit) * 4);
   --border-radius: 4px;
+
+  --pagewidth: 1440px;
 }

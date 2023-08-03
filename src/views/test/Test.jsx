@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"
 import { useAuth } from '../../contexts/AuthContext'
 import axios from "axios"
+import UserWrapper from "../../layouts/UserWrapper";
 import "./Test.scss"
 
 
@@ -10,6 +11,7 @@ export default function Test() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [testData, setTestData] = useState(null);
+	const [examDetails, setExamDetails] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [isTestFinished, setIsTestFinished] = useState(false);
 	const [testFinishedData, setTestFinishedData] = useState(null);
@@ -193,6 +195,7 @@ export default function Test() {
 
 				console.log("Test response:", response.data);
 				setTestData(response.data.results);
+				setExamDetails(response.data.examDetails[0]);
 				if(response.data.examDetails[0].finished_test === 1) {
 					checkTestStatus();
 					console.log("TEST FINALIZADO!");
@@ -209,6 +212,8 @@ export default function Test() {
 				});
 
 				setTestData(transformedResults);
+				console.log(transformedResults);
+
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -252,20 +257,22 @@ export default function Test() {
 
 
 	return (
-		<>
+		<UserWrapper>
 			<div className="test__topbar">
 				{loading && <div>A moment please...</div>}
 				{error && (
 					<div>{`There is a problem fetching the post data - ${error}`}</div>
 				)}
-				<div>
-					Alumno: {userEmail} Tiempo restante: {isTestFinished ? "Test finalizado" : formatTime(seconds)} 
-				</div>
-				<div>
-					{/* Categoría: {testData[currentQuestion].name_category} */}
-				</div>
 
-				<div>
+				<dl className="dl-horizontal">
+					<dt>Alumno</dt>
+					<dd>{userEmail}</dd>
+					<dt>Categoría</dt>
+					<dd>{examDetails && examDetails.name_category}</dd>
+					<dt>Tiempo restante</dt>
+					<dd>{isTestFinished ? "Test finalizado" : formatTime(seconds)}</dd>
+				</dl>
+				<div className="test__topbar--action">
 					<button onClick={finishTest} disabled={isTestFinished}>Finalizar Test</button>
 				</div>
 
@@ -277,7 +284,6 @@ export default function Test() {
 						</div>
 					}
 			</div>
-			{currentQuestion + 1}
 			<div className="test">
 				<aside className="test__aside">
 					<ul className="test__list">
@@ -297,46 +303,52 @@ export default function Test() {
 					</ul>
 				</aside>
 				<main className="test__main">
+
 					{testData && testData[currentQuestion] &&
-						<div>
-							<p>Question: {testData[currentQuestion].string_question}</p>
+						<div className="test__currentquestion">
+							<div className="test__navigation">
+								<button onClick={handlePrevClick} disabled={currentQuestion === 0}>Previous</button>
 
-							{Array(4).fill().map((_, i) => {
-								const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
-								const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
+								<button onClick={handleNextClick} disabled={currentQuestion === testData.length - 1}>Next</button>
+						</div>
+							<h1 className="test__currentquestion__title">
+								<span className="test__currentquestion__number">{currentQuestion + 1}</span>
+								{testData[currentQuestion].string_question}
+							</h1>
+							<div className="test__currentquestion__answers">
+								{Array(4).fill().map((_, i) => {
+									const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
+									const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
 
-								if (!answerId || !answerString) {
-									return null; // No hay más respuestas
-								}
+									if (!answerId || !answerString) {
+										return null; // No hay más respuestas
+									}
 
-								return (
-									<div key={answerId} id={answerId}>
-										<label>
-											<input
-												type="radio"
-												name={`answer_${currentQuestion}`}
-												checked={selectedAnswer === answerId}
-												onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)}
-											/>
-											{answerLetters[i]}: {answerString}
-										</label>
-									</div>
-								);
-							})}
-
-
-
-							<button onClick={handlePrevClick} disabled={currentQuestion === 0}>Previous</button>
-
-							<button onClick={handleNextClick} disabled={currentQuestion === testData.length - 1}>Next</button>
-							<details>
-								<summary>Razonamiento</summary>
+									return (
+										<div key={answerId} id={answerId} className="test__currentquestion__answer">
+											<label>
+												<span className="test__currentquestion__answer__letter">{answerLetters[i]}</span>
+												<input
+													type="radio"
+													name={`answer_${currentQuestion}`}
+													checked={selectedAnswer === answerId}
+													onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)}
+												/>
+												: {answerString}
+											</label>
+										</div>
+									);
+								})}
+								<details>
+									<summary>Ver Anexo</summary>
 								{testData[currentQuestion].ai_reasoning_questions}
-							</details>
+								</details>
+							</div>
+
 						</div>
 					}
 				</main>
 			</div>
-		</>
+		</UserWrapper>
 	)
 }
