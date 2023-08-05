@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"
 import { useAuth } from '../../contexts/AuthContext'
+import Loader from "../../components/loader/Loader";
 import axios from "axios"
 import UserWrapper from "../../layouts/UserWrapper";
 import "./Test.scss"
@@ -14,7 +15,7 @@ export default function Test() {
 	const [examDetails, setExamDetails] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [isTestFinished, setIsTestFinished] = useState(false);
-	const [testFinishedData, setTestFinishedData] = useState(null);
+	const [testResults, setTestResults] = useState(null);
 	const [seconds, setSeconds] = useState(null);
 	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
 
@@ -40,6 +41,7 @@ export default function Test() {
   // 	console.log('Is Test Finished:', isTestFinished);
 	// }, [isTestFinished]);
 	const finishTest = async () => {
+		setLoading(true);
 		try {
 			const response = await axios({
 				method: 'post',
@@ -56,30 +58,30 @@ export default function Test() {
 					type: 1
 				})
 			});
-			console.log(response.data)
 		} catch (err) {
 			console.error(`Error al hacer la petición PUT: ${err.message}`);
 		} finally {
 			setIsTestFinished(true);
+			setLoading(false);
 		}
 	};
 
 
-	const checkTestStatus = async () => {
+	const getTestResults = async () => {
 		try {
-			const response = await axios.get(`${import.meta.env.VITE_API_URL}relations`, {
+			const response = await axios.get(`${import.meta.env.VITE_API_URL}testResult`, {
 				headers: {
 					Auth: import.meta.env.VITE_AUTH
 				},
 				params: {
-					rel: 'test,openai',
-					type: 'id_test,id_test_openai',
-					select: '*',
-					linkTo: 'id_test,finished_test',
-					equalTo: `${testId},1`,
+					examId: testId,
+					userId: userID,
 					token: token
 				}
 			});
+			setTestResults(response.data);
+
+			console.log("And then this is the test results response: ", response.data)
 		} catch (err) {
 			console.error(`Error al verificar el estado del test: ${err.message}`);
 		}
@@ -197,8 +199,9 @@ export default function Test() {
 				setTestData(response.data.results);
 				setExamDetails(response.data.examDetails[0]);
 				if(response.data.examDetails[0].finished_test === 1) {
-					checkTestStatus();
-					console.log("TEST FINALIZADO!");
+					setIsTestFinished(true);
+					getTestResults();
+					console.log("First, we get test results");
 
 				}
 				setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
@@ -212,7 +215,6 @@ export default function Test() {
 				});
 
 				setTestData(transformedResults);
-				console.log(transformedResults);
 
 			} catch (err) {
 				setError(err.message);
@@ -258,8 +260,19 @@ export default function Test() {
 
 	return (
 		<UserWrapper>
+
+			<div className="test__results">
+				{examDetails && examDetails.final_note &&
+					<h2>Nota del test: {examDetails.final_note}</h2>
+				}
+				{
+					examDetails && examDetails.response_openai &&
+					<div dangerouslySetInnerHTML={{ __html: examDetails.response_openai }} />
+				}
+			</div>
+
 			<div className="test__topbar">
-				{loading && <div>A moment please...</div>}
+				{loading && <Loader />}
 				{error && (
 					<div>{`There is a problem fetching the post data - ${error}`}</div>
 				)}
@@ -273,17 +286,11 @@ export default function Test() {
 					<dd>{isTestFinished ? "Test finalizado" : formatTime(seconds)}</dd>
 				</dl>
 				<div className="test__topbar--action">
-					<button onClick={finishTest} disabled={isTestFinished}>Finalizar Test</button>
-				</div>
+					{isTestFinished ? '' : <button onClick={finishTest} disabled={isTestFinished}>Finalizar Test</button>}
 
-					{
-						testFinishedData && testFinishedData.results.length > 0 && testFinishedData.results[0].response_openai &&
-						<div>
-							<h3>Respuesta de OpenAI:</h3>
-							<div dangerouslySetInnerHTML={{ __html: testFinishedData.results[0].response_openai }} />;
-						</div>
-					}
+				</div>
 			</div>
+
 			<div className="test">
 				<aside className="test__aside">
 					<ul className="test__list">
