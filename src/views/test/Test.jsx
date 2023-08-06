@@ -63,6 +63,7 @@ export default function Test() {
 		} finally {
 			setIsTestFinished(true);
 			setLoading(false);
+			await getData();
 		}
 	};
 
@@ -79,7 +80,7 @@ export default function Test() {
 					token: token
 				}
 			});
-			setTestResults(response.data);
+			setTestResults(response.data.results);
 
 			console.log("And then this is the test results response: ", response.data)
 		} catch (err) {
@@ -172,59 +173,60 @@ export default function Test() {
 	};
 
 
-	useEffect(() => {
-		const getData = async () => {
-			try {
 
-				// We make sure the test exists
-				const response = await axios.get(
-					`${import.meta.env.VITE_API_URL}?examId=${ testId }`,
-					{
-						params: {
-								token: token
-							},
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded',
-							Auth: import.meta.env.VITE_AUTH
-						}
+	const getData = async () => {
+		try {
+
+			// We make sure the test exists
+			const response = await axios.get(
+				`${import.meta.env.VITE_API_URL}?examId=${ testId }`,
+				{
+					params: {
+							token: token
+						},
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						Auth: import.meta.env.VITE_AUTH
 					}
-
-				);
-
-				const testTimeInMinutes = response.data.examDetails[0].testtime_category.split(':')[2];
-				const testTimeInSeconds = parseInt(testTimeInMinutes) * 60;
-				setSeconds(testTimeInSeconds);
-
-				console.log("Test response:", response.data);
-				setTestData(response.data.results);
-				setExamDetails(response.data.examDetails[0]);
-				if(response.data.examDetails[0].finished_test === 1) {
-					setIsTestFinished(true);
-					getTestResults();
-					console.log("First, we get test results");
-
 				}
-				setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
 
-				const transformedResults = response.data.results.map(question => {
-					const answerObject = Object.entries(question)
-					.filter(([key, _]) => key.startsWith('answer') && key.endsWith('id'))
-					.map(([key, value]) => ({id: value, order: question[key.replace('id', 'order')], string: question[key.replace('id', 'string')]}))
-					.find(item => item.id === question.id_answer_student_answer);
-					return {...question, student_answer: answerObject};
-				});
+			);
 
-				setTestData(transformedResults);
+			const testTimeInMinutes = response.data.examDetails[0].testtime_category.split(':')[2];
+			const testTimeInSeconds = parseInt(testTimeInMinutes) * 60;
+			setSeconds(testTimeInSeconds);
 
-			} catch (err) {
-				setError(err.message);
-			} finally {
-				setLoading(false);
+			console.log("Test response:", response.data);
+			setTestData(response.data.results);
+			setExamDetails(response.data.examDetails[0]);
+			if(response.data.examDetails[0].finished_test === 1) {
+				setIsTestFinished(true);
+				getTestResults();
+				console.log("First, we get test results");
+
 			}
-		};
-		getData();
-	}, []);
+			setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
 
+			const transformedResults = response.data.results.map(question => {
+				const answerObject = Object.entries(question)
+				.filter(([key, _]) => key.startsWith('answer') && key.endsWith('id'))
+				.map(([key, value]) => ({id: value, order: question[key.replace('id', 'order')], string: question[key.replace('id', 'string')]}))
+				.find(item => item.id === question.id_answer_student_answer);
+				return {...question, student_answer: answerObject};
+			});
+
+			setTestData(transformedResults);
+
+		} catch (err) {
+			setError(err.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
+    getData();
+	}, []);
 
   useEffect(() => {
 		if (seconds > 0) {
@@ -294,19 +296,26 @@ export default function Test() {
 			<div className="test">
 				<aside className="test__aside">
 					<ul className="test__list">
-						{testData && testData.map((item, index) => (
-							<li key={index} className={`test__indicator ${currentQuestion === index ? 'test__indicator--current' : ''}`}onClick={() => handleQuestionClick(index)}>
+						{testData && testData.map((item, index) => {
+							let testResult = testResults ? testResults.find(result => result.id_question === item.id_question) : null;
+							return(
+								<li
+									key={index}
+									className={`test__indicator ${currentQuestion === index ? 'test__indicator--current' : ''}
+									${isTestFinished ? (testResult && testResult.correct_answered === 1 ? 'test__indicator--correct' : 'test__indicator--incorrect') : ''}`}
+									onClick={() => handleQuestionClick(index)}>
 
-								<div className="test__indicator__qnumber">
-									{index + 1}
-								</div>
-								<div className="test__answered">
-									{item.student_answer ? item.student_answer.order : ''}
-								</div>
+									<div className="test__indicator__qnumber">
+										{index + 1}
+									</div>
+									<div className="test__answered">
+										{item.student_answer ? item.student_answer.order : ''}
+									</div>
 
 
-							</li>
-						))}
+								</li>
+							)
+						})}
 					</ul>
 				</aside>
 				<main className="test__main">

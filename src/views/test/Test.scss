@@ -45,6 +45,19 @@
             background-color: blue;
           }
         }
+          &--incorrect {
+            .test__answered {
+              background-color: red;
+              color: white;
+            }
+          }
+
+          &--correct {
+            .test__answered {
+              background-color: green;
+              color: white;
+            }
+          }
 
         &::before {
           content: "";
