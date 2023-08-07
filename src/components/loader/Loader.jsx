@@ -1,12 +1,13 @@
 import React from 'react';
-import PaperPlane from '../svgIcons/paperPlane'
+import LoadingIcon from '../svgIcons/LoadingIcon'
 import './Loader.scss'
 
 
-const Loader = () => {
+const Loader = ({loadingText}) => {
   return (
     <div className="loader">
-      <PaperPlane />
+      <LoadingIcon />
+      <p>{loadingText}</p>
     </div>
   );
 };

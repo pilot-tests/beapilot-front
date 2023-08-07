@@ -97,12 +97,8 @@
     }
 
     &__currentquestion {
-      &__number {
-        display: inline-block;
-        color: blue;
-        padding: 0 6px;
-      }
       &__title {
+        display: flex;
         padding: var(--space);
         margin: 0;
         font-weight: var(--font-weight-bold);
@@ -111,6 +107,12 @@
         border-top-right-radius: var(--border-radius);
         border-top-left-radius: var(--border-radius);
       }
+        &__number {
+          display: inline-block;
+          color: blue;
+          padding: 0 16px 0 0;
+          font-size: var(--font-size-32);
+        }
 
       &__answers {
         background-color: var(--color-aesa-yellow);
@@ -141,5 +143,16 @@
           }
         }
     }
+
+  &__details {
+    margin: var(--space-big) auto;
+    max-width: var(--block-small);
+
+    summary {
+      text-align: center;
+      border-top: 2px solid blue;
+      font-weight: var(--font-weight-bold);
+    }
+  }
 }
 

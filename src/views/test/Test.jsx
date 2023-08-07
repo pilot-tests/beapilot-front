@@ -19,15 +19,12 @@ export default function Test() {
 	const [seconds, setSeconds] = useState(null);
 	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
 
-
-
-
-
 	const { testId } = useParams();
 	const { auth } = useAuth();
   const token = auth.token;
 	const userID = auth.user.id_user;
 	const userEmail = auth.user.email_user;
+	const LOCAL_STORAGE_KEY = `test_timer_${testId}`;  // El key de localstorage es específico para cada test
 
   const answerLetters = ['A', 'B', 'C', 'D'];
 
@@ -37,9 +34,7 @@ export default function Test() {
 		return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 	};
 
-	// useEffect(() => {
-  // 	console.log('Is Test Finished:', isTestFinished);
-	// }, [isTestFinished]);
+
 	const finishTest = async () => {
 		setLoading(true);
 		try {
@@ -192,9 +187,14 @@ export default function Test() {
 
 			);
 
-			const testTimeInMinutes = response.data.examDetails[0].testtime_category.split(':')[2];
-			const testTimeInSeconds = parseInt(testTimeInMinutes) * 60;
-			setSeconds(testTimeInSeconds);
+			const storedTime = localStorage.getItem(LOCAL_STORAGE_KEY);
+			if(storedTime) {
+					setSeconds(storedTime);
+			} else {
+					const testTimeInMinutes = response.data.examDetails[0].testtime_category.split(':')[2];
+					const testTimeInSeconds = parseInt(testTimeInMinutes) * 60;
+					setSeconds(testTimeInSeconds);
+			}
 
 			console.log("Test response:", response.data);
 			setTestData(response.data.results);
@@ -229,13 +229,16 @@ export default function Test() {
 	}, []);
 
   useEffect(() => {
-		if (seconds > 0) {
-			const timerId = setTimeout(() => setSeconds(seconds - 1), 1000);
+    if (seconds > 0) {
+			const timerId = setTimeout(() => {
+					setSeconds(prev => prev - 1);
+					localStorage.setItem(LOCAL_STORAGE_KEY, seconds - 1); // Guardamos el tiempo restante en localStorage
+			}, 1000);
 			return () => clearTimeout(timerId);
-		} else if (seconds === 0) {
-			// Si el tiempo se agotó, finalizar el examen
+    } else if (seconds === 0) {
 			finishTest();
-		}
+			localStorage.removeItem(LOCAL_STORAGE_KEY); // Limpiamos localStorage
+    }
 	}, [seconds]);
 
 	const handleQuestionClick = (index) => {
@@ -274,7 +277,7 @@ export default function Test() {
 			</div>
 
 			<div className="test__topbar">
-				{loading && <Loader />}
+				{loading && <Loader loadingText="Finalizando test, esto puede llevar hasta un minuto... No recargue la página"/>}
 				{error && (
 					<div>{`There is a problem fetching the post data - ${error}`}</div>
 				)}
@@ -355,7 +358,7 @@ export default function Test() {
 										</div>
 									);
 								})}
-								<details>
+								<details className="test__details">
 									<summary>Ver Anexo</summary>
 								{testData[currentQuestion].ai_reasoning_questions}
 								</details>
