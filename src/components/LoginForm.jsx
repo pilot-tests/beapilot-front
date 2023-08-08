@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import Loader from "./loader/loader"
+import Loader from "./loader/Loader"
 import { useAuth } from '../contexts/AuthContext'
 
 const LoginForm = () => {
