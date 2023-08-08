@@ -6,13 +6,14 @@ import "./Topbar.scss"
 export default function Topbar() {
   	const { auth } = useAuth();
     const user = auth?.user?.name_user;
+    const idUser = auth?.user?.id_user;
 
     return (
       <div className="topbar">
       {user ? (
         <>
           <div>
-            {user}
+            {user} - id: {idUser}
           </div>
           <div className="topbar__last">  <LogoutButton />
           </div>

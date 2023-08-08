@@ -48,9 +48,8 @@ export default function OpenAiDataFetcher() {
     if (error) return <div className='alert alert--warning'>{error}</div>;
 
     return (
-        <div>
-            {/* Renderiza tus datos aquí. Este es solo un ejemplo. */}
-            {data && <p>{data.results[0].response_openai}</p>}
-        </div>
+        <>
+            <div dangerouslySetInnerHTML={{ __html: data && data.results[0].response_openai }} />
+        </>
     );
 }

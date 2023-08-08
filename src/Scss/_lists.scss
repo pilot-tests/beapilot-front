@@ -1,0 +1,20 @@
+.dl-horizontal {
+  display: flex;
+  gap: var(--space);
+  align-items: center;
+  margin: 0;
+
+  dt {
+    color: var(--red);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+  }
+
+  dd {
+    background-color: hsl(83, 100%, 96%);
+    margin: 0;
+    padding: 6px;
+    border: 1px solid blue;
+  }
+
+}

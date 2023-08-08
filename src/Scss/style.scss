@@ -4,6 +4,7 @@
 @import "./utilities";
 @import "./tables";
 @import "./forms";
+@import "./lists";
 
 *,
 *::after,
@@ -49,4 +50,9 @@ p {
   max-width: 450px;
   margin: 0 auto;
   padding: var(--space);
+}
+
+.container {
+  max-width: var(--pagewidth);
+  margin: 0 auto;
 }

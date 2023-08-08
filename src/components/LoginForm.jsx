@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Loader from "./loader/loader"
 import { useAuth } from '../contexts/AuthContext'
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { setToken, setUser } = useAuth();
 
   const handleLogin = async (email_user, password_user) => {
+    setLoading(true);
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}users`, {
           email_user,
@@ -42,12 +45,15 @@ const LoginForm = () => {
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un estado fuera del rango 2xx
+        setLoading(false);
         setError(error.response.data.results);
       } else if (error.request) {
         // La solicitud fue hecha pero no se recibió respuesta
+        setLoading(false);
         setError('No response was received');
       } else {
         // Algo salió mal al configurar la solicitud
+        setLoading(false);
         setError('Error setting up request');
       }
     }
@@ -59,18 +65,21 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input type="email" value={username} onChange={e => setUsername(e.target.value)} required />
-      </label>
-      <label>
-        Password:
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-      </label>
-      {error && <div className="alert alert--danger">{error}</div>}
-      <button type="submit">Login</button>
-    </form>
+    <>
+      {loading && <Loader />}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username:
+          <input type="email" value={username} onChange={e => setUsername(e.target.value)} required />
+        </label>
+        <label>
+          Password:
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+        </label>
+        {error && <div className="alert alert--danger">{error}</div>}
+        <button type="submit">Login</button>
+      </form>
+    </>
   );
 };
 
