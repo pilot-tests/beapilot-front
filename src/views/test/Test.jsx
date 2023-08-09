@@ -16,6 +16,10 @@ export default function Test() {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [isTestFinished, setIsTestFinished] = useState(false);
 	const [testResults, setTestResults] = useState(null);
+	const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+	const [incorrectAnswersCount, setIncorrectAnswersCount] = useState(0);
+	const [unansweredCount, setUnansweredCount] = useState(0);
+
 	const [seconds, setSeconds] = useState(null);
 	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
 
@@ -76,6 +80,14 @@ export default function Test() {
 				}
 			});
 			setTestResults(response.data.results);
+			const correctAnswers = response.data.results.filter(result => result.correct_answered === 1).length;
+			const incorrectAnswers = response.data.results.filter(result => result.correct_answered === 0 && result.id_answer_student_answer !== null).length;
+			const unanswered = testData.length - correctAnswers - incorrectAnswers;
+
+			setCorrectAnswersCount(correctAnswers);
+			setIncorrectAnswersCount(incorrectAnswers);
+			setUnansweredCount(unanswered);
+
 
 			console.log("And then this is the test results response: ", response.data)
 		} catch (err) {
@@ -274,6 +286,11 @@ export default function Test() {
 					examDetails && examDetails.response_openai &&
 					<div dangerouslySetInnerHTML={{ __html: examDetails.response_openai }} />
 				}
+				<div className="test__results-summary">
+						<div>Correctas: {correctAnswersCount}</div>
+						<div>Incorrectas: {incorrectAnswersCount}</div>
+						<div>No respondidas: {unansweredCount}</div>
+				</div>
 			</div>
 
 			<div className="test__topbar">
@@ -287,8 +304,15 @@ export default function Test() {
 					<dd>{userEmail}</dd>
 					<dt>Categoría</dt>
 					<dd>{examDetails && examDetails.name_category}</dd>
-					<dt>Tiempo restante</dt>
-					<dd>{isTestFinished ? "Test finalizado" : formatTime(seconds)}</dd>
+					{isTestFinished
+						? <>
+								<div className="alert alert--danger t-align-center">TEST FINALIZADO</div>
+							</>
+						:  <>
+								<dt>Tiempo restante</dt>
+								<dd>{formatTime(seconds)}</dd>
+							</>
+					}
 				</dl>
 				<div className="test__topbar--action">
 					{isTestFinished ? '' : <button onClick={finishTest} disabled={isTestFinished}>Finalizar Test</button>}

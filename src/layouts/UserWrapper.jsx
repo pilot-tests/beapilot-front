@@ -4,12 +4,12 @@ import Topbar from '../components/layout/Topbar';
 const UserWrapper = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem('authToken');
   return (
-    <React.Fragment>
+    <div className='sticky-footer'>
       <Topbar />
       <main className="container">
         {children}
       </main>
-    </React.Fragment>
+    </div>
   );
 };
 

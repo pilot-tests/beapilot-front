@@ -1,6 +1,7 @@
 /* Custom Properties */
 @import "./variables/root";
 @import "./variables/sass-vars";
+@import "./mixins";
 @import "./utilities";
 @import "./tables";
 @import "./forms";
@@ -52,7 +53,13 @@ p {
   padding: var(--space);
 }
 
+.sticky-footer {
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
   max-width: var(--pagewidth);
   margin: 0 auto;
+  flex: 1;
 }

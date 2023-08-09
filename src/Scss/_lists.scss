@@ -1,19 +1,33 @@
 .dl-horizontal {
   display: flex;
+  flex-direction: column;
   gap: var(--space);
-  align-items: center;
+  align-items: flex-start;
   margin: 0;
+  width: 100%;
+  font-size: var(--font-size-14);
+
+  @include respond-to(medium) {
+    flex-direction: row;
+    align-items: center;
+    font-size: var(--font-size-16);
+  }
 
   dt {
     color: var(--red);
     font-weight: var(--font-weight-bold);
     margin: 0;
+    display: none;
+
+    @include respond-to(medium) {
+      display: block;
+    }
   }
 
   dd {
     background-color: hsl(83, 100%, 96%);
     margin: 0;
-    padding: 6px;
+    padding: 0.37rem;
     border: 1px solid blue;
   }
 

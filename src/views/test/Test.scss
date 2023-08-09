@@ -1,13 +1,18 @@
+@import "../../Scss/mixins";
 .test {
   display: flex;
   width: 100%;
   padding-top: var(--space);
+  flex-direction: column;
+
+  @include respond-to(medium) {
+    flex-direction: row;
+  }
 
   &__topbar {
     display: flex;
     align-items: center;
     background-color: var(--light-grey);
-    margin-top: var(--space);
     padding: var(--space);
 
     &--action {
@@ -17,18 +22,32 @@
 
   &__aside {
     padding: 0 var(--space);
+
+    @include respond-to(medium) {
+      width: 33%;
+    }
   }
 
     &__list {
-      display: grid;
-      grid-auto-flow: column;
-      grid-template-rows: repeat(auto-fill, minmax(16px, auto));
-      justify-content: start;
-      width: 100%;
-      gap: 10px;
-      height: 100vh;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space);
       margin: 0;
       padding: 0;
+
+      @include respond-to(medium) {
+        .container {
+          display: grid;
+          grid-auto-flow: column;
+          grid-template-rows: repeat(auto-fill, minmax(16px, auto));
+          justify-content: start;
+          gap: 10px;
+          width: auto;
+          height: 100%;
+          overflow: hidden;
+        }
+
+      }
     }
 
       &__indicator {

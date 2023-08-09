@@ -15,6 +15,14 @@
   }
 }
 */
+
+$breakpoints: (
+  'small'  : 48em,
+  'medium' : 760px,
+  'large'  : 1600px,
+) !default;
+
+
 @mixin respond-to($breakpoint) {
   @if map-has-key($breakpoints, $breakpoint) {
     @media (min-width: map-get($breakpoints, $breakpoint)) {
