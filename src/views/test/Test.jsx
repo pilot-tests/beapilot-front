@@ -40,6 +40,8 @@ export default function Test() {
 
 
 	const finishTest = async () => {
+		console.log("Finalizando test!");
+
 		setLoading(true);
 		try {
 			const response = await axios({
@@ -58,10 +60,12 @@ export default function Test() {
 				})
 			});
 		} catch (err) {
+			setError(err.message);
 			console.error(`Error al hacer la petición PUT: ${err.message}`);
 		} finally {
 			setIsTestFinished(true);
 			setLoading(false);
+			localStorage.removeItem(LOCAL_STORAGE_KEY);
 			await getData();
 		}
 	};
@@ -81,6 +85,8 @@ export default function Test() {
 			});
 			setTestResults(response.data.results);
 			const correctAnswers = response.data.results.filter(result => result.correct_answered === 1).length;
+			console.log(correctAnswers);
+
 			const incorrectAnswers = response.data.results.filter(result => result.correct_answered === 0 && result.id_answer_student_answer !== null).length;
 			const unanswered = testData.length - correctAnswers - incorrectAnswers;
 
@@ -91,6 +97,7 @@ export default function Test() {
 
 			console.log("And then this is the test results response: ", response.data)
 		} catch (err) {
+			setError(err.message);
 			console.error(`Error al verificar el estado del test: ${err.message}`);
 		}
 	};
@@ -173,6 +180,7 @@ export default function Test() {
           console.log("TestData after POST:", testData);
         }
     } catch (error) {
+				setError(err.message);
         console.error(error);
     }
 
@@ -199,14 +207,46 @@ export default function Test() {
 
 			);
 
+
+			const convertToUTCDate = (rawDate) => {
+				return new Date(Date.UTC(
+					rawDate.getUTCFullYear(),
+					rawDate.getUTCMonth(),
+					rawDate.getUTCDate(),
+					rawDate.getUTCHours(),
+					rawDate.getUTCMinutes(),
+					rawDate.getUTCSeconds()
+				));
+			};
+
+			// Convertir las fechas a UTC
+			const creationDate = convertToUTCDate(new Date(response.data.examDetails[0].creationdate_test));
+			const serverTime = convertToUTCDate(new Date(response.data.examDetails[0].serverTime));
+
+			// Calcular el tiempo restante
+			const timeDifferenceInSeconds = (serverTime - creationDate) / 1000;
+			const testTimeInMinutes = parseInt(response.data.examDetails[0].testtime_category.split(':')[2]);
+			const testTimeInSeconds = testTimeInMinutes * 60;
+			const remainingTime = testTimeInSeconds - timeDifferenceInSeconds;
+			console.log(localStorage);
+
+
+
+
+
+			// Obtener o establecer el tiempo restante
 			const storedTime = localStorage.getItem(LOCAL_STORAGE_KEY);
-			if(storedTime) {
+			if (storedTime) {
 					setSeconds(storedTime);
+					console.log("Existe en la cookie", storedTime);
 			} else {
-					const testTimeInMinutes = response.data.examDetails[0].testtime_category.split(':')[2];
-					const testTimeInSeconds = parseInt(testTimeInMinutes) * 60;
-					setSeconds(testTimeInSeconds);
+				console.log("No existe en la cookie, segundos equivale a:", seconds);
+				setSeconds(Math.max(0, remainingTime));
+				console.log("Después de setSeconds:", seconds);
+
+				localStorage.setItem(LOCAL_STORAGE_KEY, remainingTime);
 			}
+
 
 			console.log("Test response:", response.data);
 			setTestData(response.data.results);
@@ -230,7 +270,9 @@ export default function Test() {
 			setTestData(transformedResults);
 
 		} catch (err) {
-			setError(err.message);
+			setError(`Error obteniendo los datos del examen: ${err.message}`);
+			console.error(`Error obteniendo los datos del examen: ${err.message}`);
+
 		} finally {
 			setLoading(false);
 		}
@@ -241,15 +283,19 @@ export default function Test() {
 	}, []);
 
   useEffect(() => {
+		if (seconds === null) return;
     if (seconds > 0) {
 			const timerId = setTimeout(() => {
 					setSeconds(prev => prev - 1);
-					localStorage.setItem(LOCAL_STORAGE_KEY, seconds - 1); // Guardamos el tiempo restante en localStorage
+					localStorage.setItem(LOCAL_STORAGE_KEY, seconds - 1);
 			}, 1000);
 			return () => clearTimeout(timerId);
-    } else if (seconds === 0) {
-			finishTest();
-			localStorage.removeItem(LOCAL_STORAGE_KEY); // Limpiamos localStorage
+    } else {
+			if (!isTestFinished) {
+				finishTest();
+				console.log("CALLING FINISHED TEST FUNCTION!!!!");
+			}
+			localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
 	}, [seconds]);
 
@@ -275,28 +321,18 @@ export default function Test() {
 
 
 
+
 	return (
 		<UserWrapper>
-
-			<div className="test__results">
-				{examDetails && examDetails.final_note &&
-					<h2>Nota del test: {examDetails.final_note}</h2>
-				}
-				{
+			{
 					examDetails && examDetails.response_openai &&
 					<div dangerouslySetInnerHTML={{ __html: examDetails.response_openai }} />
 				}
-				<div className="test__results-summary">
-						<div>Correctas: {correctAnswersCount}</div>
-						<div>Incorrectas: {incorrectAnswersCount}</div>
-						<div>No respondidas: {unansweredCount}</div>
-				</div>
-			</div>
 
 			<div className="test__topbar">
 				{loading && <Loader loadingText="Finalizando test, esto puede llevar hasta un minuto... No recargue la página"/>}
 				{error && (
-					<div>{`There is a problem fetching the post data - ${error}`}</div>
+					<div>{error}</div>
 				)}
 
 				<dl className="dl-horizontal">
@@ -319,6 +355,26 @@ export default function Test() {
 
 				</div>
 			</div>
+			{isTestFinished &&
+				<table className="table-singledata">
+					<thead>
+						<tr>
+							<th>Correctas</th>
+							<th>Incorrectas</th>
+							<th>No respondidas</th>
+							<th>Nota %</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr className="font-size-32 font-weight-bold">
+							<td>{correctAnswersCount}</td>
+							<td>{incorrectAnswersCount}</td>
+							<td>{unansweredCount}</td>
+							<td>{examDetails.final_note}</td>
+						</tr>
+					</tbody>
+				</table>
+			}
 
 			<div className="test">
 				<aside className="test__aside">

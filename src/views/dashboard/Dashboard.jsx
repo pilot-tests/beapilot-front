@@ -131,10 +131,9 @@ export default function AsignaturesList() {
 					))}
 			</ul>
 
-			<div className="ui-block">
-				<h2>Tus últimos tests</h2>
-				<NumberOfTests />
-			</div>
+
+			<NumberOfTests />
+
 
 		</UserWrapper>
 	);

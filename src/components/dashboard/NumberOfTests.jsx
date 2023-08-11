@@ -54,57 +54,62 @@ function NumberOfTests() {
 		getData();
 	}, []);
   return (
-
-    <table>
-      <thead>
-				<tr>
-					<th scope="col">Categoría</th>
-					<th scope="col">Fecha inicio</th>
-					<th scope="col">Fecha Fin</th>
-					<th scope="col">Nota</th>
-				</tr>
-			</thead>
-			<tbody>
-      {data &&
-				data.results.map((result) => (
-					<tr key={result.id_test}>
-						<td>
-								<Link
-								to={{pathname:`/test/${result.id_test}`}}>
-									{result.name_category}
-								</Link>
-						</td>
-						<td>
-							<Link
-								to={{pathname:`/test/${result.id_test}`}}>
-								<time dateTime={result.creationdate_test}>{formatDate(result.creationdate_test)}</time>
-							</Link>
-						</td>
-						<td>
-							<Link
-								to={{pathname:`/test/${result.id_test}`}}>
-								<time dateTime={result.updatedate_test}>{formatDate(result.updatedate_test)}</time>
-							</Link>
-						</td>
-						<td>
-							{result.finished_test != 0 ?
-								<Link
-								to={{pathname:`/test/${result.id_test}`}}>
-									<span style={{'--color-bg-pill': `var(--color-score-${determineRating(result.final_note)})`}} className={`pill `}>{result.final_note}</span>
-								</Link>
-							:
-							<Link
-								to={{pathname:`/test/${result.id_test}`}}
-								className="link-high">
-								Test en Progreso
-							</Link>
-							}
-						</td>
+		<div className="ui-block">
+			<h2>Tus últimos tests</h2>
+			{(!data || !data.results) &&
+				<h4>No has hecho ningún test aún, elige una categoría y empieza a prepararte!</h4>
+			}
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Categoría</th>
+						<th scope="col">Fecha inicio</th>
+						<th scope="col">Fecha Fin</th>
+						<th scope="col">Nota</th>
 					</tr>
-				)
-			)}
-			</tbody>
-    </table>
+				</thead>
+				<tbody>
+				{data &&
+					data.results.map((result) => (
+						<tr key={result.id_test}>
+							<td>
+									<Link
+									to={{pathname:`/test/${result.id_test}`}}>
+										{result.name_category}
+									</Link>
+							</td>
+							<td>
+								<Link
+									to={{pathname:`/test/${result.id_test}`}}>
+									<time dateTime={result.creationdate_test}>{formatDate(result.creationdate_test)}</time>
+								</Link>
+							</td>
+							<td>
+								<Link
+									to={{pathname:`/test/${result.id_test}`}}>
+									<time dateTime={result.updatedate_test}>{formatDate(result.updatedate_test)}</time>
+								</Link>
+							</td>
+							<td>
+								{result.finished_test != 0 ?
+									<Link
+									to={{pathname:`/test/${result.id_test}`}}>
+										<span style={{'--color-bg-pill': `var(--color-score-${determineRating(result.final_note)})`}} className={`pill `}>{result.final_note}</span>
+									</Link>
+								:
+								<Link
+									to={{pathname:`/test/${result.id_test}`}}
+									className="link-high">
+									Test en Progreso
+								</Link>
+								}
+							</td>
+						</tr>
+					)
+				)}
+				</tbody>
+			</table>
+		</div>
    );
 }
 

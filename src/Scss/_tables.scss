@@ -10,7 +10,6 @@ th {
 }
 
 tr {
-  border-bottom: 1px solid var(--border-color);
   transition: background-color 0.2s ease-in-out;
   &:hover {
     background-color: var(--grey);
@@ -21,5 +20,29 @@ td {
   padding: var(--unit) var(--space);
   a, a:visited {
     font-weight: var(--font-weight-normal);
+  }
+}
+
+
+//-----> table-singledata: Made to show one row big numbers data (like the test result)
+
+.table-singledata {
+  th {
+    background-color: var(--light-grey);
+    font-size: var(--font-size-12);
+    text-transform: uppercase;
+    text-align: center;
+    border-left: 1px solid var(--dark-grey);
+    border-bottom: 1px solid var(--dark-grey);
+    border-top: 1px solid var(--dark-grey);
+  }
+
+  tr {
+    border-bottom: 1px solid var(--dark-grey);
+  }
+
+  td {
+    border-left: 1px solid var(--dark-grey);
+    text-align: center;
   }
 }
