@@ -52,8 +52,6 @@ export default function AsignaturesList() {
       setLoading(false);
     }
   };
-	//TODO: Refactor all AXIOS calls into a function component?
-	//TODO: define an ID
 	useEffect(() => {
 		// TODO: Refactor all API calls into a function or a service
 		const getData = async () => {
@@ -108,7 +106,7 @@ export default function AsignaturesList() {
 							<Bar rating={result.average_note} />
 							{result.has_tests > 0 ?
 								<>
-									{Number(result.has_finished_tests) === 1 ?
+									{Number(result.has_inprogress_tests) != 1 ?
 										<>
 											<button onClick={() => handleAddTest(result)} disabled={loading}>
 												{loading ? 'Cargando...' : 'Hacer otro test'}
