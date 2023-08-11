@@ -11,7 +11,7 @@ export default function Test() {
 
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const [testData, setTestData] = useState(null);
+	const [testData, setTestData] = useState([]);
 	const [examDetails, setExamDetails] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [isTestFinished, setIsTestFinished] = useState(false);
@@ -21,7 +21,8 @@ export default function Test() {
 	const [unansweredCount, setUnansweredCount] = useState(0);
 
 	const [seconds, setSeconds] = useState(null);
-	const [selectedAnswer, setSelectedAnswer] = useState(testData ? testData[currentQuestion].id_answer_student_answer : null);
+	const [selectedAnswer, setSelectedAnswer] = useState(null);
+
 
 	const { testId } = useParams();
 	const { auth } = useAuth();
@@ -36,6 +37,21 @@ export default function Test() {
 		const min = Math.floor(seconds / 60);
 		const sec = seconds % 60;
 		return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+	};
+
+	const getAnswerClass = (answerId, currentResult) => {
+		if (!currentResult) return '';
+
+		if (answerId === currentResult.student_answer_id) {
+			if (answerId === currentResult.correct_answer_id) {
+				return 'test__answered--correct';
+			}
+			return 'test__answered--incorrect';
+		}
+		if (answerId === currentResult.correct_answer_id) {
+			return 'test__answered--actual';
+		}
+		return '';
 	};
 
 
@@ -61,7 +77,7 @@ export default function Test() {
 			});
 		} catch (err) {
 			setError(err.message);
-			console.error(`Error al hacer la petición PUT: ${err.message}`);
+			console.error(`Error al hacer la petición para finalizar el test: ${err.message}`);
 		} finally {
 			setIsTestFinished(true);
 			setLoading(false);
@@ -248,15 +264,9 @@ export default function Test() {
 			}
 
 
-			console.log("Test response:", response.data);
+			console.log("Get Data / tesData:", response.data);
 			setTestData(response.data.results);
 			setExamDetails(response.data.examDetails[0]);
-			if(response.data.examDetails[0].finished_test === 1) {
-				setIsTestFinished(true);
-				getTestResults();
-				console.log("First, we get test results");
-
-			}
 			setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
 
 			const transformedResults = response.data.results.map(question => {
@@ -268,6 +278,9 @@ export default function Test() {
 			});
 
 			setTestData(transformedResults);
+			if(response.data.examDetails[0].finished_test  === 1) {
+				setIsTestFinished(true);
+			}
 
 		} catch (err) {
 			setError(`Error obteniendo los datos del examen: ${err.message}`);
@@ -299,15 +312,21 @@ export default function Test() {
     }
 	}, [seconds]);
 
+	useEffect(() => {
+		if (testData && testData.length > 0 && isTestFinished) {
+			getTestResults();
+		}
+	}, [testData, isTestFinished]);
+
 	const handleQuestionClick = (index) => {
     setCurrentQuestion(index);
   }
 
 	const handleNextClick = () => {
-    if (currentQuestion < testData.length - 1) {
+    if (currentQuestion < testData?.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       // Aquí aseguramos que student_answer exista antes de intentar acceder a su propiedad id
-      setSelectedAnswer(testData[currentQuestion + 1].student_answer ? testData[currentQuestion + 1].student_answer.id : null);
+      setSelectedAnswer(testData[currentQuestion + 1]?.student_answer?.id);
     }
 	}
 
@@ -315,7 +334,7 @@ export default function Test() {
 		if (currentQuestion > 0) {
 			setCurrentQuestion(currentQuestion - 1);
 			// Aquí aseguramos que student_answer exista antes de intentar acceder a su propiedad id
-			setSelectedAnswer(testData[currentQuestion - 1].student_answer ? testData[currentQuestion - 1].student_answer.id : null);
+			setSelectedAnswer(testData[currentQuestion - 1]?.student_answer?.id);
 		}
 	}
 
@@ -418,13 +437,14 @@ export default function Test() {
 								{Array(4).fill().map((_, i) => {
 									const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
 									const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
+									const currentResult = testResults ? testResults.find(result => result.id_question === testData[currentQuestion].id_question) : null;
 
 									if (!answerId || !answerString) {
 										return null; // No hay más respuestas
 									}
 
 									return (
-										<div key={answerId} id={answerId} className="test__currentquestion__answer">
+										<div key={answerId} id={answerId} className={`test__currentquestion__answer ${getAnswerClass(answerId, currentResult)}`}>
 											<label>
 												<span className="test__currentquestion__answer__letter">{answerLetters[i]}</span>
 												<input

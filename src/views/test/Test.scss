@@ -101,6 +101,18 @@
       width: 16px;
       color: black;
       text-align: center;
+
+      &--correct {
+        background-color: green;
+      }
+
+      &--incorrect {
+        background-color: red;
+      }
+
+      &--actual {
+        background-color: green;
+      }
     }
 
   &__main {
