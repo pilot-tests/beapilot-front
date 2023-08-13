@@ -52,6 +52,11 @@ export default function AsignaturesList() {
       setLoading(false);
     }
   };
+
+
+
+
+
 	useEffect(() => {
 		// TODO: Refactor all API calls into a function or a service
 		const getData = async () => {

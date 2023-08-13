@@ -100,12 +100,12 @@ export default function Test() {
 				}
 			});
 			setTestResults(response.data.results);
+
+			// Calculate correct/incorrect/unsanswered questions
 			const correctAnswers = response.data.results.filter(result => result.correct_answered === 1).length;
 			console.log(correctAnswers);
-
-			const incorrectAnswers = response.data.results.filter(result => result.correct_answered === 0 && result.id_answer_student_answer !== null).length;
+			const incorrectAnswers = response.data.results.filter(result => result.correct_answered === 0 && result.student_answer_id !== null).length;
 			const unanswered = testData.length - correctAnswers - incorrectAnswers;
-
 			setCorrectAnswersCount(correctAnswers);
 			setIncorrectAnswersCount(incorrectAnswers);
 			setUnansweredCount(unanswered);
@@ -163,7 +163,6 @@ export default function Test() {
 						setTestData(testData.map(item => {
 							if (item.id_question === questionId) {
 								return {...item, student_answer: answerObject};
-
 							} else {
 								return item;
 							}
@@ -184,7 +183,6 @@ export default function Test() {
             }
           );
           const newAnswerId = response.data.results.lastId;
-          console.log("New Nawer ID: ", newAnswerId)
           setTestData(testData.map(item => {
 
             if (item.id_question === questionId) {
@@ -244,7 +242,6 @@ export default function Test() {
 			const testTimeInMinutes = parseInt(response.data.examDetails[0].testtime_category.split(':')[2]);
 			const testTimeInSeconds = testTimeInMinutes * 60;
 			const remainingTime = testTimeInSeconds - timeDifferenceInSeconds;
-			console.log(localStorage);
 
 
 
@@ -254,11 +251,8 @@ export default function Test() {
 			const storedTime = localStorage.getItem(LOCAL_STORAGE_KEY);
 			if (storedTime) {
 					setSeconds(storedTime);
-					console.log("Existe en la cookie", storedTime);
 			} else {
-				console.log("No existe en la cookie, segundos equivale a:", seconds);
 				setSeconds(Math.max(0, remainingTime));
-				console.log("Después de setSeconds:", seconds);
 
 				localStorage.setItem(LOCAL_STORAGE_KEY, remainingTime);
 			}
