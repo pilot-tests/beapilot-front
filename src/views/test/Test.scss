@@ -103,15 +103,27 @@
       text-align: center;
 
       &--correct {
-        background-color: green;
+        background-color: var(--color-success-light);
+        color: var(--color-success);
+        label {
+          color: var(--color-success);
+        }
       }
 
       &--incorrect {
-        background-color: red;
+        background-color: var(--color-error-light);
+        color: var(--color-error);
+        label {
+          color: var(--color-error);
+        }
       }
 
       &--actual {
-        background-color: green;
+        background-color: var(--color-aesa-light-blue);
+        color: var(--color-aesa-blue);
+        label {
+          color: var(--color-aesa-blue);
+        }
       }
     }
 

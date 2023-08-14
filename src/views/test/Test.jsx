@@ -444,7 +444,11 @@ export default function Test() {
 												<input
 													type="radio"
 													name={`answer_${currentQuestion}`}
-													checked={selectedAnswer === answerId}
+													checked={
+																		isTestFinished
+																			? currentResult.student_answer_id === answerId
+																			: selectedAnswer === answerId
+																	}
 													onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)}
 												/>
 												: {answerString}

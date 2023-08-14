@@ -9,9 +9,11 @@
   --sky-tint: hsl(210, 30%, 80%);
   --sunset: hsl(24, 100%, 50%);
   --red: hsl(0, 74%, 43%);
+  --red-light: hsl(0, 74%, 93%);
   --orange: hsl(33, 100%, 51%);
   --yellow: hsl(60, 100%, 50%);
-  --green: hsl(120, 100%, 50%);
+  --green: hsl(120, 100%, 30%);
+  --green-light: hsl(120, 100%, 90%);
 
 
   --main-color: var(--sky);
@@ -26,6 +28,15 @@
   --color-score-passed: var(--orange);
   --color-score-excellent: var(--yellow);
   --color-score-outstanding: var(--green);
+
+
+  // Alert color:
+  --color-error: var(--red);
+  --color-error-light: var(--red-light);
+
+  --color-success: var(--green);
+  --color-success-light: var(--green-light);
+
 
   // Category Colors
   --color-cat-1: hsl(348, 100%, 50%);
@@ -51,6 +62,7 @@
   --color-aesa-dark-yellow: hsl(55, 63%, 81%);
   --color-aesa-yellow: hsl(62, 100%, 94%);
   --color-aesa-blue: hsl(239, 99%, 37%);
+  --color-aesa-light-blue: hsl(239, 49%, 87%);
 
 
   // Font properties
