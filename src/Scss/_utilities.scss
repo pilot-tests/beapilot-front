@@ -12,6 +12,18 @@
   font-family: var(--font-family);
 }
 
+.font-size-12 {
+  font-size: var(--font-size-12);
+}
+
+.font-size-32 {
+  font-size: var(--font-size-32);
+}
+
+.font-weight-bold {
+  font-weight: var(--font-weight-bold);
+}
+
 .link-high {
   text-transform: uppercase;
 }
@@ -63,15 +75,21 @@
 }
 
 
+//-----> Pills
+
+.pill {
+  font-size: var(--font-size-12);
+  line-height: 1.4;
+  padding: 0 var(--unit);
+  border-radius: 1em;
+  border: none;
+  outline: none;
+  background: var(--secondary-color);
+  cursor: pointer;
+}
+
 .t-align-center {
   text-align: center;
 }
 
 
-.font-size-32 {
-  font-size: var(--font-size-32);
-}
-
-.font-weight-bold {
-  font-weight: var(--font-weight-bold);
-}

@@ -433,6 +433,7 @@ export default function Test() {
 									const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
 									const currentResult = testResults ? testResults.find(result => result.id_question === testData[currentQuestion].id_question) : null;
 
+
 									if (!answerId || !answerString) {
 										return null; // No hay más respuestas
 									}
@@ -444,13 +445,13 @@ export default function Test() {
 												<input
 													type="radio"
 													name={`answer_${currentQuestion}`}
-													checked={
-																		isTestFinished
-																			? currentResult.student_answer_id === answerId
-																			: selectedAnswer === answerId
-																	}
+													checked={isTestFinished
+														? (currentResult && currentResult.student_answer_id === answerId)
+														: selectedAnswer === answerId
+													}
 													onChange={() => handleAnswerChange(testData[currentQuestion].id_question, answerId)}
 												/>
+
 												: {answerString}
 											</label>
 										</div>
@@ -458,7 +459,7 @@ export default function Test() {
 								})}
 								<details className="test__details">
 									<summary>Ver Anexo</summary>
-								{testData[currentQuestion].ai_reasoning_questions}
+									<div dangerouslySetInnerHTML={{ __html: testData[currentQuestion].ai_reasoning_questions }} />
 								</details>
 							</div>
 

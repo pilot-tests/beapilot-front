@@ -3,6 +3,7 @@
 @import "./variables/sass-vars";
 @import "./mixins";
 @import "./utilities";
+@import "./buttons";
 @import "./tables";
 @import "./forms";
 @import "./lists";
@@ -59,6 +60,7 @@ p {
 }
 
 .container {
+  width: 100%;
   max-width: var(--pagewidth);
   margin: 0 auto;
   flex: 1;

@@ -36,26 +36,3 @@ input:focus {
 input:checked {
   background-color: red;
 }
-
-/* Estilos para el botón de inicio de sesión */
-button {
-  padding: 6px 10px;
-  text-transform: uppercase;
-  border: none;
-  background-color: var(--orange);
-  border: 1px solid var(--orange);
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Estilos para el botón de inicio de sesión cuando se pasa el cursor por encima */
-button:hover {
-  background-color: #303f9f; /* Color azul oscuro de Material Design */
-}
-
-button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}

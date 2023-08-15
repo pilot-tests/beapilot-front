@@ -23,9 +23,9 @@ export default function Bar({ rating }) {
       <span
         role="progressbar" aria-labelledby="rating" aria-valuenow={rating}>
 
-        <svg width="100%" height="2">
-          <rect className='bar-svg__bg' height="2" width="100%" />
-          <rect height="2" width={`${rating}%`} fill={fillColor} />
+        <svg width="100%" height="6">
+          <rect className='bar-svg__bg' height="6" width="100%" />
+          <rect height="6" width={`${rating}%`} fill={fillColor} />
         </svg>
 
       </span>

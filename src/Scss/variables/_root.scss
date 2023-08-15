@@ -6,7 +6,7 @@
   --dark-grey: hsl(0, 0%, 50%);
   --white: white;
   --sky: hsl(210, 100%, 20%);
-  --sky-tint: hsl(210, 30%, 80%);
+  --sky-tint: hsl(210, 30%, 93%);
   --sunset: hsl(24, 100%, 50%);
   --red: hsl(0, 74%, 43%);
   --red-light: hsl(0, 74%, 93%);
@@ -18,9 +18,10 @@
 
   --main-color: var(--sky);
   --secondary-color: var(--sunset);
-  --bg-color: var(--white);
+  --bg-color: var(--sky-tint);
   --bg-color-light: var(--grey);
   --text-color: var(--black);
+  --mute-color: var(--dark-grey);
   --link-color: var(--blue);
   --border-color: var(--grey);
 
@@ -72,7 +73,7 @@
   --font-size-12: 12px;
   --font-size-14: 14px;
   --font-size-16: 16px;
-  --font-size-16: 18px;
+  --font-size-18: 18px;
   --font-size-20: 20px;
   --font-size-32: 32px;
   --font-size-64: 64px;

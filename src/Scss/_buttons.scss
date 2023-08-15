@@ -1,0 +1,40 @@
+
+/* Estilos para el botón de inicio de sesión */
+button, .btn {
+  padding: var(--unit) var(--space);
+  text-transform: uppercase;
+  border: none;
+  background-color: var(--sunset);
+  border: 1px solid var(--sunset);
+  color: #fff;
+  font-size: var(--font-size-16);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &--aslink {
+    display: inline-block;
+    text-decoration: underline;
+    text-transform: none;
+    background-color:  transparent;
+    outline: none;
+    color: var(--text-color);
+    border: none;
+    padding: 0;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+
+button:hover {
+  background-color: var(--orange);
+}
+
+button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+
