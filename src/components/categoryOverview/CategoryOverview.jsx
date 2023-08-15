@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Bar from "../bar/Bar";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -79,7 +78,7 @@ export default function CategoryOverview({ onAddTest }) {
                 </button>
               }
           </div>
-          <Bar rating={result.average_note} />
+          {/* <Bar rating={result.average_note} /> */}
           <div
             className={`category-list__total-tests pill ${result.total_tests !== 0 ? "category-list__total-tests--empty" : ""}`}
             title="Tests realizados">
