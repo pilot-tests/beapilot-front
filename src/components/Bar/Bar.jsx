@@ -1,7 +1,7 @@
 import './Bar.scss';
 import React from 'react';
 
-export default function Bar({ rating }) {
+export default function bar({ rating }) {
   // Determinar el color según la puntuación
   const determineColor = (score) => {
     if (score < 50) {
