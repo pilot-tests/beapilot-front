@@ -29,7 +29,7 @@ export default function Test() {
   const token = auth.token;
 	const userID = auth.user.id_user;
 	const userEmail = auth.user.email_user;
-	const LOCAL_STORAGE_KEY = `test_timer_${testId}`;  // El key de localstorage es específico para cada test
+	const locaStorageTimeKey = `test_timer_${testId}`;  // El key de localstorage es específico para cada test
 
   const answerLetters = ['A', 'B', 'C', 'D'];
 
@@ -81,7 +81,7 @@ export default function Test() {
 		} finally {
 			setIsTestFinished(true);
 			setLoading(false);
-			localStorage.removeItem(LOCAL_STORAGE_KEY);
+			localStorage.removeItem(locaStorageTimeKey);
 			await getData();
 		}
 	};
@@ -248,13 +248,16 @@ export default function Test() {
 
 
 			// Obtener o establecer el tiempo restante
-			const storedTime = localStorage.getItem(LOCAL_STORAGE_KEY);
+			const storedTime = localStorage.getItem(locaStorageTimeKey);
 			if (storedTime) {
+				if (parseInt(storedTime) > 0) {
 					setSeconds(storedTime);
+				} else if (!isTestFinished) {
+					finishTest();
+				}
 			} else {
 				setSeconds(Math.max(0, remainingTime));
-
-				localStorage.setItem(LOCAL_STORAGE_KEY, remainingTime);
+				localStorage.setItem(locaStorageTimeKey, remainingTime);
 			}
 
 
@@ -290,19 +293,20 @@ export default function Test() {
 	}, []);
 
   useEffect(() => {
-		if (seconds === null) return;
+		console.log("Segundos", seconds);
+
+		if (seconds === null || isTestFinished) return;
     if (seconds > 0) {
 			const timerId = setTimeout(() => {
 					setSeconds(prev => prev - 1);
-					localStorage.setItem(LOCAL_STORAGE_KEY, seconds - 1);
+					localStorage.setItem(locaStorageTimeKey, seconds - 1);
 			}, 1000);
 			return () => clearTimeout(timerId);
     } else {
 			if (!isTestFinished) {
 				finishTest();
-				console.log("CALLING FINISHED TEST FUNCTION!!!!");
 			}
-			localStorage.removeItem(LOCAL_STORAGE_KEY);
+			localStorage.removeItem(locaStorageTimeKey);
     }
 	}, [seconds]);
 
@@ -432,6 +436,7 @@ export default function Test() {
 									const answerId = testData[currentQuestion][`answer_${i + 1}_id`];
 									const answerString = testData[currentQuestion][`answer_${i + 1}_string`];
 									const currentResult = testResults ? testResults.find(result => result.id_question === testData[currentQuestion].id_question) : null;
+
 
 
 									if (!answerId || !answerString) {
