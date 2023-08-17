@@ -24,9 +24,13 @@
   font-weight: var(--font-weight-bold);
 }
 
-.link-high {
-  text-transform: uppercase;
+
+
+.margin-bottom {
+  margin-bottom: var(--space);
 }
+
+
 
 .ui-block {
   background-color: var(--white);
@@ -72,6 +76,20 @@
     background-color: #f8d7da;
     border-color: #f5c2c7;
   }
+
+  &--icon {
+    &--success {
+      color: var(--green);
+    }
+
+    &--warning {
+      color: #664d03;
+    }
+
+    &--danger {
+      color: var(--red);
+    }
+  }
 }
 
 
@@ -93,3 +111,16 @@
 }
 
 
+.aiquote {
+    width: calc(100% - var(--space-big));
+    margin: 0 auto;
+    background-color: var(--white);
+    padding: var(--space) var(--space) var(--space) var(--space-big) ;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.2), inset 4px 0 0 0 var(--sunset);
+
+    &--spaced {
+      margin-top: var(--space-big);
+      margin-bottom: var(--space-big);
+    }
+  }

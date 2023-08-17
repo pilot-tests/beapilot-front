@@ -39,7 +39,7 @@ h6 {
 
 a, a:visited {
   color: var(--link-color);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-normal);
 }
 
 p {
@@ -64,4 +64,10 @@ p {
   max-width: var(--pagewidth);
   margin: 0 auto;
   flex: 1;
+}
+
+
+.svg-icon {
+  width: 1em;
+  height: 1em;
 }

@@ -4,6 +4,8 @@ import Bar from '../Bar';
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
 
+import HandThumbUpFill from '../svgIcons/HandThumbUpFill';
+import HandThumbDownFill from '../svgIcons/HandThumbDownFill';
 import "./categoryOverview.scss";
 
 export default function CategoryOverview({ onAddTest }) {
@@ -68,7 +70,7 @@ export default function CategoryOverview({ onAddTest }) {
                     :
                     <Link
                     to={{pathname:`/test/${result.inprogress_id_test}`}}
-                    className="link-high font-size-12">
+                    className="font-size-14">
                     Continuar Test
                   </Link>
                   }
@@ -79,12 +81,20 @@ export default function CategoryOverview({ onAddTest }) {
                 </button>
               }
           </div>
-          <Bar rating={result.average_note} />
-          <div
-            className={`category-list__total-tests pill ${result.total_tests !== 0 ? "category-list__total-tests--empty" : ""}`}
-            title="Tests realizados">
-              Tests: {result.total_tests}
+          <Bar rating={result.average_note} className='margin-bottom' />
+          <div className="category-list__overview">
+            <div className={`category-list__overview__item ${result.total_tests !== 0 ? "category-list__total-tests--empty" : ""}`}
+              title="Tests realizados">
+              <b>Tests</b> {result.total_tests}
+            </div>
+            <div className="category-list__overview__item">
+              <b><HandThumbUpFill className='alert--icon--success' /></b>{result.approved_tests}
+            </div>
+            <div className="category-list__overview__item">
+              <b><HandThumbDownFill className='alert--icon--danger' /></b>{result.failed_tests}
+            </div>
           </div>
+
 
         </li>
       ))}

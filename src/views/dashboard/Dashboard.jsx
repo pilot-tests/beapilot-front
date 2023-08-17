@@ -10,7 +10,7 @@ import './Dashboard.scss';
 
 export default function AsignaturesList() {
 
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	const navigate = useNavigate();

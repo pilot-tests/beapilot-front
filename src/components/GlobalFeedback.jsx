@@ -49,7 +49,7 @@ export default function OpenAiDataFetcher() {
 
     return (
         <>
-            <div dangerouslySetInnerHTML={{ __html: data && data.results[0].response_openai }} />
+            <div className='aiquote aiquote--spaced' dangerouslySetInnerHTML={{ __html: data && data.results[0].response_openai }} />
         </>
     );
 }

@@ -1,7 +1,7 @@
 import './Bar.scss';
 import React from 'react';
 
-export default function bar({ rating }) {
+export default function bar({ rating, className = "" }) {
   // Determinar el color según la puntuación
   const determineColor = (score) => {
     if (score < 50) {
@@ -18,7 +18,7 @@ export default function bar({ rating }) {
   const fillColor = determineColor(rating);
 
   return (
-    <div className="bar" role="progressbar">
+    <div className={`bar ${className}`} role="progressbar">
       <span id="rating" className='sr-only'>Promedio de resultados:</span>
       <span
         role="progressbar" aria-labelledby="rating" aria-valuenow={rating}>

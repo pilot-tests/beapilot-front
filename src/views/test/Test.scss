@@ -4,9 +4,16 @@
   width: 100%;
   padding-top: var(--space);
   flex-direction: column;
+  margin-bottom: var(--space-big);
 
   @include respond-to(medium) {
     flex-direction: row;
+  }
+
+  &__container {
+    width: calc(100% - var(--space-big));
+    padding: var(--space);
+    margin: 0 auto;
   }
 
   &__topbar {

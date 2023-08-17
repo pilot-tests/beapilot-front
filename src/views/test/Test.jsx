@@ -341,10 +341,6 @@ export default function Test() {
 
 	return (
 		<UserWrapper>
-			{
-					examDetails && examDetails.response_openai &&
-					<div dangerouslySetInnerHTML={{ __html: examDetails.response_openai }} />
-				}
 
 			<div className="test__topbar">
 				{loading && <Loader loadingText="Finalizando test, esto puede llevar hasta un minuto... No recargue la página"/>}
@@ -472,6 +468,16 @@ export default function Test() {
 					}
 				</main>
 			</div>
+
+			<div className="test__container">
+				<h2>Algunos consejos de nuestra IA:</h2>
+				<p className="alert alert--warning">Recordad que siempre trabajamos por mejorar las respuestas para que de verdad sean de ayuda. Si crees que esta respuesta no ayuda, es incompleta o es incorrecta, <a href="">Comunícalo!</a></p>
+			</div>
+
+			{
+				examDetails && examDetails.response_openai &&
+				<div className="aiquote" dangerouslySetInnerHTML={{ __html: examDetails.response_openai }} />
+			}
 		</UserWrapper>
 	)
 }

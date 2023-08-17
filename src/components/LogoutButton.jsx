@@ -24,7 +24,7 @@ const LogoutButton = () => {
   };
 
   return (
-    <button onClick={handleLogout}>
+    <button className='btn btn--aslink' onClick={handleLogout}>
       Logout
     </button>
   );
