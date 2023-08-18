@@ -20,6 +20,11 @@ function NumberOfTests() {
   const [data, setData] = useState({ results: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+	const [limit, setLimit] = useState(10);
+
+	const handleShowMore = () => {
+			setLimit(prevLimit => prevLimit + 10); // Aumentar el límite en 10 cada vez que se haga clic en "Mostrar más"
+	};
 
   useEffect(() => {
 		// TODO: Refactor all API calls into a function or a service
@@ -63,26 +68,19 @@ function NumberOfTests() {
 				<thead>
 					<tr>
 						<th scope="col">Categoría</th>
-						<th scope="col">Fecha inicio</th>
-						<th scope="col">Fecha Fin</th>
+						<th scope="col">Fecha</th>
 						<th scope="col">Nota</th>
 					</tr>
 				</thead>
 				<tbody>
 				{data &&
-					data.results.map((result) => (
+					data.results.slice(0, limit).map((result) => (
 						<tr key={result.id_test}>
 							<td>
 									<Link
 									to={{pathname:`/test/${result.id_test}`}}>
 										{result.name_category}
 									</Link>
-							</td>
-							<td>
-								<Link
-									to={{pathname:`/test/${result.id_test}`}}>
-									<time dateTime={result.creationdate_test}>{formatDate(result.creationdate_test)}</time>
-								</Link>
 							</td>
 							<td>
 								<Link
@@ -109,6 +107,9 @@ function NumberOfTests() {
 				)}
 				</tbody>
 			</table>
+			{data && data.results.length > limit && (
+				<button onClick={handleShowMore}>Mostrar más</button>
+			)}
 		</div>
    );
 }
