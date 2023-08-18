@@ -1,0 +1,30 @@
+.aiinput {
+  position: relative;
+  width: calc(100% - var(--space-big));
+  margin: calc(var(--space-big) * 2) auto 0;
+  background-color: var(--white);
+  padding: var(--space-big) var(--space) var(--space) var(--space-big);
+  border-radius: var(--border-radius);
+  box-shadow: 1px 1px 1px -1px var(--sunset);
+
+  &__picture {
+    position: absolute;
+    left: 0;
+    top: -24px;
+    background-color: var(--white);
+    padding: .5em;
+    border-radius: 15px;
+
+    svg {
+      font-size: 2em;
+      color: var(--sunset)
+    }
+  }
+
+    &--spaced {
+      margin-bottom: var(--space-big);
+    }
+
+
+
+  }

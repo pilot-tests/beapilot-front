@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import AiInput from './aiInput/AiInput';
 
 export default function OpenAiDataFetcher() {
     const { auth } = useAuth();
@@ -16,29 +17,33 @@ export default function OpenAiDataFetcher() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}openai`, {
-                    params: {
-                        token: token,
-                        select: '*',
-                        linkTo: 'id_user_openai,type_openai',
-                        equalTo: `${userID},${type_openai}`,
-                    },
-                    headers: {
-                        Auth: import.meta.env.VITE_AUTH
-                    }
-                });
-                console.log("OpenAI data: ", response.data);
-                setData(response.data);
-                setError(null);
+							const response = await axios.get(`${import.meta.env.VITE_API_URL}openai`, {
+								params: {
+									token: token,
+									select: '*',
+									linkTo: 'id_user_openai,type_openai',
+									equalTo: `${userID},${type_openai}`,
+									orderBy: 'id_openai',
+									orderMode: 'DESC',
+									startAt: 0,
+									endAt: 1
+								},
+								headers: {
+										Auth: import.meta.env.VITE_AUTH
+								}
+							});
+							console.log("OpenAI data: ", response.data);
+							setData(response.data);
+							setError(null);
             } catch (err) {
-                if (err.response && err.response.status === 404) {
-                    setError("No has hecho ningún test, empieza ahora!");
-                } else {
-                    setError(err.message);
-                }
+							if (err.response && err.response.status === 404) {
+									setError("No has hecho ningún test, empieza ahora!");
+							} else {
+									setError(err.message);
+							}
             setData(null);
             } finally {
-                setLoading(false);
+							setLoading(false);
             }
         };
         fetchData();
@@ -49,7 +54,7 @@ export default function OpenAiDataFetcher() {
 
     return (
         <>
-            <div className='aiquote aiquote--spaced' dangerouslySetInnerHTML={{ __html: data && data.results[0].response_openai }} />
+					<AiInput input={data && data.results[0].response_openai} className='aiinput--spaced' />
         </>
     );
 }

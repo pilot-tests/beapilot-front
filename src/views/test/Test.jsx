@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import Loader from "../../components/loader/Loader";
 import axios from "axios"
 import UserWrapper from "../../layouts/UserWrapper";
+import AiInput from "../../components/aiInput/AiInput";
 import "./Test.scss"
 
 
@@ -469,14 +470,9 @@ export default function Test() {
 				</main>
 			</div>
 
-			<div className="test__container">
-				<h2>Algunos consejos de nuestra IA:</h2>
-				<p className="alert alert--warning">Recordad que siempre trabajamos por mejorar las respuestas para que de verdad sean de ayuda. Si crees que esta respuesta no ayuda, es incompleta o es incorrecta, <a href="">Comunícalo!</a></p>
-			</div>
-
 			{
 				examDetails && examDetails.response_openai &&
-				<div className="aiquote" dangerouslySetInnerHTML={{ __html: examDetails.response_openai }} />
+				<AiInput input={examDetails.response_openai} className="margin-bottom" />
 			}
 		</UserWrapper>
 	)
