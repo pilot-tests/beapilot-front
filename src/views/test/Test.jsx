@@ -195,7 +195,7 @@ export default function Test() {
           console.log("TestData after POST:", testData);
         }
     } catch (error) {
-				setError(err.message);
+				setError(error.message);
         console.error(error);
     }
 
