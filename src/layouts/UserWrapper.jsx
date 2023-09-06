@@ -6,9 +6,9 @@ const UserWrapper = ({ children }) => {
   return (
     <div className='sticky-footer'>
       <Topbar />
-      <main className="container">
+      <div className="container">
         {children}
-      </main>
+      </div>
     </div>
   );
 };

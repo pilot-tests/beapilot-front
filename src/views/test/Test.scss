@@ -1,13 +1,22 @@
 @import "../../Scss/mixins";
 .test {
   display: flex;
+  flex: 1;
   width: 100%;
-  padding-top: var(--space);
   flex-direction: column;
   margin-bottom: var(--space-big);
 
   @include respond-to(medium) {
     flex-direction: row;
+  }
+
+  &__body {
+    background-color: white;
+
+    .container {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__container {
@@ -21,39 +30,40 @@
     align-items: center;
     background-color: var(--light-grey);
     padding: var(--space);
-
-    &--action {
-      margin-left: auto;
-    }
   }
 
+    &__timer {
+      background-color: var(--main-color);
+      color: cyan;
+      padding: 0.37rem 1rem;
+      font-weight: var(--font-weight-bold);
+      margin-left: auto;
+      margin-right: var(--space);
+    }
+
   &__aside {
-    padding: 0 var(--space);
+    padding: var(--space);
+    border: 1px solid var(--border-color);
 
     @include respond-to(medium) {
-      width: 33%;
+      width: 216px;
+      padding: var(--unit);
     }
   }
 
     &__list {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--space);
+      gap: var(--unit);
       margin: 0;
       padding: 0;
 
       @include respond-to(medium) {
-        .container {
-          display: grid;
-          grid-auto-flow: column;
-          grid-template-rows: repeat(auto-fill, minmax(16px, auto));
-          justify-content: start;
-          gap: 10px;
-          width: auto;
-          height: 100%;
-          overflow: hidden;
-        }
-
+        display: grid;
+        grid-template-columns: repeat(auto-fit, 60px, 1fr);
+        gap: var(--unit);
+        margin: 0;
+        padding: 0;
       }
     }
 

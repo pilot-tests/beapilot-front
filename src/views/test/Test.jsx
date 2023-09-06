@@ -22,6 +22,7 @@ export default function Test() {
 	const [unansweredCount, setUnansweredCount] = useState(0);
 
 	const [seconds, setSeconds] = useState(null);
+	const [testSeconds, setTestSeconds] = useState(null);
 	const [selectedAnswer, setSelectedAnswer] = useState(null);
 
 
@@ -264,6 +265,7 @@ export default function Test() {
 
 			console.log("Get Data / tesData:", response.data);
 			setTestData(response.data.results);
+			setTestSeconds(testTimeInSeconds);
 			setExamDetails(response.data.examDetails[0]);
 			setSelectedAnswer(response.data.results[currentQuestion].id_answer_student_answer);
 
@@ -317,6 +319,18 @@ export default function Test() {
 		}
 	}, [testData, isTestFinished]);
 
+
+	useEffect(() => {
+		// Add a class to body
+		document.body.classList.add('test__body');
+
+		// Remove Class
+		return () => {
+			document.body.classList.remove('test__body');
+		};
+	}, []);
+
+
 	const handleQuestionClick = (index) => {
     setCurrentQuestion(index);
   }
@@ -342,6 +356,9 @@ export default function Test() {
 
 	return (
 		<UserWrapper>
+		{isTestFinished	&&
+			<div className="alert alert--danger t-align-center">TEST FINALIZADO</div>
+		}
 
 			<div className="test__topbar">
 				{loading && <Loader loadingText="Finalizando test, esto puede llevar hasta un minuto... No recargue la página"/>}
@@ -354,18 +371,14 @@ export default function Test() {
 					<dd>{userEmail}</dd>
 					<dt>Categoría</dt>
 					<dd>{examDetails && examDetails.name_category}</dd>
-					{isTestFinished
-						? <>
-								<div className="alert alert--danger t-align-center">TEST FINALIZADO</div>
-							</>
-						:  <>
-								<dt>Tiempo restante</dt>
-								<dd>{formatTime(seconds)}</dd>
-							</>
-					}
+					<dt>Tiempo</dt>
+					<dd>{formatTime(testSeconds)}</dd>
 				</dl>
+				<div className="test__timer" role="timer" >
+				{formatTime(seconds)}
+					</div>
 				<div className="test__topbar--action">
-					{isTestFinished ? '' : <button onClick={finishTest} disabled={isTestFinished}>Finalizar Test</button>}
+					{isTestFinished ? '' : <button className="btn--cta" onClick={finishTest} disabled={isTestFinished}>Finalizar</button>}
 
 				</div>
 			</div>

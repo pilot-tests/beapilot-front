@@ -2,14 +2,17 @@
 /* Estilos para el botón de inicio de sesión */
 button, .btn {
   padding: var(--unit) var(--space);
-  text-transform: uppercase;
   border: none;
-  background-color: var(--sunset);
   border: 1px solid var(--sunset);
-  color: #fff;
+  background-color: transparent;
+  color: var(--sunset);
   font-size: var(--font-size-16);
   cursor: pointer;
   transition: background-color 0.3s ease;
+
+  &:hover {
+    color: #fff;
+  }
 
   &--aslink {
     display: inline-block;
@@ -23,6 +26,15 @@ button, .btn {
 
     &:hover {
       background-color: transparent;
+    }
+  }
+
+  &--cta {
+    background-color: var(--sunset);
+    color: #fff;
+
+    &:hover {
+      color: #fff;
     }
   }
 }
