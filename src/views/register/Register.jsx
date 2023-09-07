@@ -39,6 +39,9 @@ export function RegistrationForm() {
 
   return (
     <div className="form-center">
+
+      <h1>Test Pilot Pro</h1>
+      <h2>Toma el camino seguro a tu licencia PPL.</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Nombre:
@@ -68,7 +71,7 @@ export function RegistrationForm() {
           />
         </label>
         {error && <div className="alert alert--danger">{error}</div>}
-        <button type="submit" disabled={!stripe}>
+        <button className="btn--cta" type="submit" disabled={!stripe}>
           Registrarse
         </button>
       </form>

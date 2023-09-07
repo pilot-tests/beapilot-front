@@ -36,3 +36,9 @@ $breakpoints: (
     }
   }
 }
+
+@mixin center-content ($totalwidth : $pagemaxwidth) {
+	width: 100%;
+	padding-right: calc((100% - #{$totalwidth}) / 2);
+	padding-left: calc((100% - #{$totalwidth}) / 2);
+}

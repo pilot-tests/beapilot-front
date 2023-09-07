@@ -1,13 +1,48 @@
 /* Estilos para las etiquetas de los campos de formulario */
 
+@import "../Scss/mixins";
+
 .form-center {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 43px);
+  flex-direction: column;
+  height: 100vh;
   background-color: white;
+  background-image: url("/img/ppl-tests.jpg");
+  background-size: cover;
   border-radius: var(--border-radius);
   padding: var(--space);
+  &:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(20, 70, 80, 0.2);
+    background: rgb(2,0,36);
+    background: radial-gradient(circle, rgba(2,0,36,0.8) 0%, rgba(0,212,255,0) 100%);
+    z-index: 0;
+  }
+
+  @include respond-to(medium) {
+    @include center-content;
+  }
+
+  // This may need scalability XOXO
+  form {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+
+    label {
+      color: white;
+    }
+  }
+
+  h1, h2 {
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
 }
 label {
   position: relative;
