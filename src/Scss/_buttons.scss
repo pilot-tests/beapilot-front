@@ -30,6 +30,8 @@ button, .btn {
   &--cta {
     background-color: var(--sunset);
     color: #fff;
+    padding-left: var(--space-18);
+    padding-right: var(--space-18);
 
     &:hover {
       color: #fff;

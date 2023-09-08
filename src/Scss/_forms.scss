@@ -13,13 +13,16 @@
   background-size: cover;
   border-radius: var(--border-radius);
   padding: var(--space);
+  position: relative;
+  color: white;
+
   &:after {
     content: "";
     position: absolute;
     inset: 0;
     background-color: rgba(20, 70, 80, 0.2);
     background: rgb(2,0,36);
-    background: radial-gradient(circle, rgba(2,0,36,0.8) 0%, rgba(0,212,255,0) 100%);
+    background: radial-gradient(circle, rgba(2,0,36,0.8) 0%, rgba(2,0,36,0.8) 100%);
     z-index: 0;
   }
 
