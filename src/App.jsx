@@ -9,6 +9,8 @@ import  Landing  from './views/landing/Landing';
 import  Test  from './views/test/Test';
 import  TestResult from './views/testResult/TestResult';
 import  Dashboard  from './views/dashboard/Dashboard';
+
+import UserArea from './views/user/UserArea';
 import  Subscribe  from './views/subscribe/Subscribe';
 import { RegistrationForm } from './views/register/Register';
 import RegisterCancel from './views/register/RegisterCancel';
@@ -41,6 +43,7 @@ ReactGA.initialize('G-H482JFP07W');
 						<Route path="/register/cancel" element={<RegisterCancel />} />
 						<Route element={<PrivateRoutes />}>
                 <Route element={<Dashboard/>} path="/dashboard" />
+								<Route element={<UserArea/>} path="/user" />
                 <Route element={<Test/>} path="/test/:testId"/>
 								<Route element={<TestResult/>} path="/testresult/:testId"/>
             </Route>
