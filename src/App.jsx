@@ -1,8 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect} from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PrivateRoutes from './components/PrivateRoute';
+import ReactGA from 'react-ga4';
 
 import  Landing  from './views/landing/Landing';
 import  Test  from './views/test/Test';
@@ -17,8 +18,15 @@ import './Scss/style.scss';
 
 // Inicializar Stripe
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_API_KEY);
+ReactGA.initialize('G-H482JFP07W');
 
 	export function App() {
+		const location = useLocation();
+
+		useEffect(() => {
+			ReactGA.page_view(location.pathname + location.search);
+		}, [location]);
+
 		return (
 			<Elements stripe={stripePromise}>
 				<Router>
