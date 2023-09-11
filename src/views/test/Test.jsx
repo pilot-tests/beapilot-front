@@ -366,7 +366,7 @@ export default function Test() {
 					<div>{error}</div>
 				)}
 
-				<dl className="dl-horizontal">
+				<dl className="dl-userbar">
 					<dt>Alumno</dt>
 					<dd>{userEmail}</dd>
 					<dt>Categoría</dt>

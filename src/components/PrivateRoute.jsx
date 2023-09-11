@@ -14,7 +14,7 @@ const PrivateRoutes = () => {
     }
 
     if (user.active_subscription != "active") {
-        return <Navigate to="/subscribe" />;
+        return <Navigate to="/user" />;
     }
 
     return <Outlet/>;
