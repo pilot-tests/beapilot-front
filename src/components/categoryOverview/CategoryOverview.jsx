@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Bar from '../Bar';
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
+import AccessContext from '../../contexts/AccessContext';
 
 import HandThumbUpFill from '../svgIcons/HandThumbUpFill';
 import HandThumbDownFill from '../svgIcons/HandThumbDownFill';
@@ -14,6 +15,7 @@ export default function CategoryOverview({ onAddTest }) {
   const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
+  const accessStatus = useContext(AccessContext);
 
   const { auth } = useAuth();
   const token = auth.token;
@@ -34,7 +36,6 @@ export default function CategoryOverview({ onAddTest }) {
 						}
 					}
 				);
-				console.log("user per category info: ", response.data);
 				setData(response.data);
 				setError(null);
 			} catch (err) {
@@ -59,7 +60,8 @@ export default function CategoryOverview({ onAddTest }) {
           <h2 className="category-list__title">{result.name_category}</h2>
           <div className="category-list__body">
             <p className="category-list__rating" >{result.average_note ? result.average_note : "00.00" } <span className="category-list__percent">%</span></p>
-              {result.has_tests > 0 ?
+            {accessStatus === "active" && (
+              result.has_tests > 0 ?
                 <>
                   {Number(result.has_inprogress_tests) != 1 ?
                     <>
@@ -79,7 +81,7 @@ export default function CategoryOverview({ onAddTest }) {
                 <button className='btn btn--aslink font-size-12' onClick={() => onAddTest(result)} disabled={loading}>
                   {loading ? 'Cargando...' : 'Empezar Test'}
                 </button>
-              }
+            )}
           </div>
           <Bar rating={result.average_note} className='margin-bottom' />
           <div className="category-list__overview">
