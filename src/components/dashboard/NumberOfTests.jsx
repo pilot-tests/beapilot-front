@@ -46,7 +46,6 @@ function NumberOfTests() {
 						}
 					}
 				);
-				console.log("Number of tests request:", response.data);
 				setData(response.data);
 				setError(null);
 			} catch (err) {

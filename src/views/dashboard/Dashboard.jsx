@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, accessStatus, useContext } from "react";
 import axios from "axios";
 import { useAuth } from '../../contexts/AuthContext'
 import UserWrapper from "../../layouts/UserWrapper";
 import CategoryOverview from "../../components/categoryOverview/CategoryOverview";
 import NumberOfTests from "../../components/dashboard/NumberOfTests";
+import AccessContext from '../../contexts/AccessContext';
 import { Link, useNavigate } from "react-router-dom";
 import GlobalFeedback from "../../components/GlobalFeedback";
 import './Dashboard.scss';
@@ -18,6 +19,9 @@ export default function AsignaturesList() {
   const token = auth.token;
   const user = auth.user;
 	const userID = auth.user.id_user;
+	const accessStatus = useContext(AccessContext);
+
+
 
 
 	const handleAddTest = async (result) => {
@@ -66,6 +70,9 @@ export default function AsignaturesList() {
 			{error && (
 				<div>{`There is a problem fetching the post data - ${error}`}</div>
 			)}
+			{accessStatus != "active" && (
+        <div className="alert alert--danger">No tienes una subscripción activa. Accede a <Link to="/user">tu perfil</Link> para activarla!</div>
+      )}
 
 			<GlobalFeedback />
 			<CategoryOverview onAddTest={handleAddTest} />

@@ -1,4 +1,4 @@
-.dl-horizontal {
+.dl-userbar {
   display: flex;
   flex-direction: column;
   gap: var(--space);
@@ -31,4 +31,19 @@
     border: 1px solid blue;
   }
 
+}
+
+.dl-horizontal {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  line-height: 3;
+
+  dt {
+    font-weight: var(--font-weight-bold);
+    border-bottom: 1px solid var(--border-color);
+  }
+  dd {
+    border-bottom: 1px solid var(--border-color);
+    margin: 0;
+  }
 }
