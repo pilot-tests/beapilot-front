@@ -13,7 +13,7 @@ export default function Topbar() {
       {user ? (
         <>
           <div>
-            {user} - id: {idUser}
+            {user}
           </div>
           <div className="topbar__last">  <LogoutButton />
           </div>

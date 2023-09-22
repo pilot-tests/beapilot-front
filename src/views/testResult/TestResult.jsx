@@ -6,9 +6,9 @@ import { useAuth } from '../../contexts/AuthContext'
 
 
 export default function Test({test}) {
-	const [data, setData] = useState(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
+	const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+	const [incorrectAnswersCount, setIncorrectAnswersCount] = useState(0);
+	const [unansweredCount, setUnansweredCount] = useState(0);
 	const { auth } = useAuth();
 
 	const { testId } = useParams();

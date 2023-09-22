@@ -5,6 +5,7 @@ import Loader from "../../components/loader/Loader";
 import axios from "axios"
 import UserWrapper from "../../layouts/UserWrapper";
 import AiInput from "../../components/aiInput/AiInput";
+import TestSummaryTable from "../../components/test/TestSummaryTable";
 import "./Test.scss"
 
 
@@ -383,24 +384,12 @@ export default function Test() {
 				</div>
 			</div>
 			{isTestFinished &&
-				<table className="table-singledata">
-					<thead>
-						<tr>
-							<th>Correctas</th>
-							<th>Incorrectas</th>
-							<th>No respondidas</th>
-							<th>Nota %</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr className="font-size-32 font-weight-bold">
-							<td>{correctAnswersCount}</td>
-							<td>{incorrectAnswersCount}</td>
-							<td>{unansweredCount}</td>
-							<td>{examDetails.final_note}</td>
-						</tr>
-					</tbody>
-				</table>
+				<TestSummaryTable
+					correctAnswersCount={correctAnswersCount}
+					incorrectAnswersCount={incorrectAnswersCount}
+					unansweredCount={unansweredCount}
+					finalNote={examDetails.final_note}
+				/>
 			}
 
 			<div className="test">
