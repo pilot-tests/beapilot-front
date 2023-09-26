@@ -34,6 +34,18 @@
   text-align: right;
 }
 
+.align-left {
+  text-align: left;
+}
+
+
+//-----> Blocks
+
+.block-small {
+  margin: 0 auto;
+  max-width: var(--block-small);
+}
+
 
 
 

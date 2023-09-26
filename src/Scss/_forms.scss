@@ -34,7 +34,7 @@
   form {
     position: relative;
     z-index: 1;
-    max-width: 650px;
+    max-width: 350px;
 
     label {
       color: white;
@@ -73,4 +73,10 @@ input:focus {
 
 input:checked {
   background-color: red;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 110px;
 }

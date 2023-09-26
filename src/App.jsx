@@ -17,6 +17,7 @@ import { RegistrationForm } from './views/register/Register';
 import RegisterCancel from './views/register/RegisterCancel';
 import RegisterSuccess from './views/register/RegisterSuccess';
 import VerifyEmail from './views/verifyEmail/VerifyEmail';
+import Contact from './views/contact/Contact';
 import './Scss/style.scss';
 
 // Inicializar Stripe
@@ -46,6 +47,7 @@ if (window.location.hostname !== 'localhost') {
 								<Route element={<UserArea/>} path="/user" />
                 <Route element={<Test/>} path="/test/:testId"/>
 								<Route element={<TestResult/>} path="/testresult/:testId"/>
+								<Route element={<Contact/>} path="/contact"/>
             </Route>
 					</Routes>
 				</Router>

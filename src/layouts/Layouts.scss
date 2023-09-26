@@ -1,0 +1,12 @@
+@import '../Scss/mixins';
+
+.user-footer {
+  background-color: var(--white);
+  padding-top: var(--space-big);
+  padding-bottom: var(--space-big);
+  @include center-content;
+
+  &__title {
+    font-size: var(--font-size-18);
+  }
+}
