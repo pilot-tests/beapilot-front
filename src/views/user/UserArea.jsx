@@ -8,6 +8,7 @@ import Loader from "../../components/loader/Loader";
 
 export default function Subscribe() {
   const { auth } = useAuth();
+  const { updateAuthUser } = useAuth();
   if (!auth || !auth.user) {
     return <div>Cargando...</div>;
   }
@@ -17,7 +18,9 @@ export default function Subscribe() {
   const token = auth.token;
   const user = auth.user;
 	const userStripeId = auth.user.stripe_customer_id;
+  const [subscriptionType, setSubscriptionType] = useState(user.subscription_type);
   console.log(user);
+
 
 
   const cancelSubscription = async () => {
@@ -35,16 +38,28 @@ export default function Subscribe() {
             }
         });
 
-        // Aquí puedes manejar la respuesta. Por ejemplo:
-        if (response.data.success) {  // Suponiendo que tu API devuelva un campo 'success' en caso de éxito
-            alert("Subscripción cancelada con éxito");
-            localStorage.setItem('active_subscription', "false");
-            getStripeData();
+        if (response.data.results.subscription_status === "canceled") {
+          // Obtener el objeto 'user' actual desde localStorage
+          let user = JSON.parse(localStorage.getItem('user'));
+
+          // Actualizar el objeto 'user' con los nuevos valores
+          user = { ...user, stripe_active_subscription: "false", subscription_type: "free" };
+
+          // Guardar el objeto 'user' actualizado de nuevo en localStorage
+          localStorage.setItem('user', JSON.stringify(user));
+          // Actualizar el contexto de autenticación
+          updateAuthUser({ stripe_active_subscription: "false", subscription_type: "free" });
+
+          setSubscriptionType("free");
+          alert("Subscripción cancelada con éxito");
+
+
+          getStripeData();
         } else {
             alert("Error al cancelar la suscripción. Inténtalo de nuevo.");
             setLoading(false);
         }
-        console.log(response.data);
+        console.log("Cancel Subscription: ", response.data.results.subscription_status);
 
     } catch (error) {
         if (error.response) {
@@ -81,9 +96,21 @@ export default function Subscribe() {
         });
 
         // Aquí puedes manejar la respuesta. Por ejemplo:
+        console.log("respuesta on resubscribe:", response);
+
         if (response.data.results.subscription_status ==	"active") {
-            alert("Te has subscrito exitósamente");
-            localStorage.setItem('active_subscription', "active");
+           let user = JSON.parse(localStorage.getItem('user'));
+
+            // Actualizar el objeto 'user' con los nuevos valores
+            user = { ...user, stripe_active_subscription: "active", subscription_type: "premium" };
+
+            // Guardar el objeto 'user' actualizado de nuevo en localStorage
+            localStorage.setItem('user', JSON.stringify(user));
+
+            // Actualizar el contexto de autenticación
+            updateAuthUser({ stripe_active_subscription: "active", subscription_type: "premium" });
+            setSubscriptionType("free");
+;
         } else {
             alert("Error al resubscribir. Inténtalo de nuevo.");
             setLoading(false);
@@ -122,7 +149,7 @@ export default function Subscribe() {
           }
         });
         setUserStripe(response.data.results);
-        console.log(response.data.results);
+        console.log("getStripeData:", response.data.results);
 
         setError(null);
       } catch (err) {
@@ -152,9 +179,11 @@ export default function Subscribe() {
       <h1>Detalles de la cuenta</h1>
       <div className="ui-block ui-centered">
         <dl className="dl-horizontal">
-          <dt>Estado: </dt>
+          <dt>Email:</dt>
+          <dd>{user && user.email_user}</dd>
+          <dt>Subscripciçon actual: </dt>
           <dd>
-              {userStripe && userStripe.status}
+              {user && user.subscription_type}
           </dd>
 
           <dt>Próxima fecha de facturación:</dt>
@@ -170,10 +199,10 @@ export default function Subscribe() {
             }
           </dd>
         </dl>
-        {userStripe && userStripe.status === "active" ?
+        {user && user.subscription_type === "premium" ?
           <button className='btn btn--danger' onClick={cancelSubscription}>Cancelar subscripción</button>
         :
-          <button className='btn btn--danger' onClick={resubscribe}>Subscribir</button>
+          <button className='btn' onClick={resubscribe}>Subscribir</button>
         }
       </div>
     </UserWrapper>

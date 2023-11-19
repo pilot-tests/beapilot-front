@@ -20,6 +20,9 @@ export default function AsignaturesList() {
   const user = auth.user;
 	const userID = auth.user.id_user;
 	const accessStatus = useContext(AccessContext);
+	console.log(accessStatus);
+
+
 
 
 
@@ -70,13 +73,15 @@ export default function AsignaturesList() {
 			{error && (
 				<div>{`There is a problem fetching the post data - ${error}`}</div>
 			)}
-			{accessStatus != "active" && (
-        <div className="alert alert--danger">No tienes una subscripción activa. Accede a <Link to="/user">tu perfil</Link> para activarla!</div>
+			{accessStatus === "premium" && (
+        <GlobalFeedback />
       )}
 
-			<GlobalFeedback />
+
 			<CategoryOverview onAddTest={handleAddTest} />
-			<NumberOfTests />
+			{accessStatus === "premium" && (
+				<NumberOfTests />
+			)}
 
 
 		</UserWrapper>

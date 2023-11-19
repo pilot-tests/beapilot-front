@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import LoginForm from '../../components/LoginForm';
 import { useNavigate } from "react-router-dom";
-import LandingWrapper from '../../layouts/LandingWrapper';
+import VisitorWrapper from '../../layouts/VisitorWrapper';
 import { Link } from 'react-router-dom';
 
 const Landing = () => {
@@ -14,12 +14,11 @@ const Landing = () => {
     }
   }, []);
   return (
-  <LandingWrapper>
-
-    <div className="form-center">
+  <VisitorWrapper>
+    <div className="block-medium">
       <LoginForm />
     </div>
-  </LandingWrapper>
+  </VisitorWrapper>
   );
 };
 

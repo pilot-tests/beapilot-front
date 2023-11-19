@@ -7,24 +7,10 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 100vh;
   background-color: white;
-  background-image: url("/img/ppl-tests.jpg");
-  background-size: cover;
   border-radius: var(--border-radius);
   padding: var(--space);
   position: relative;
-  color: white;
-
-  &:after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: rgba(20, 70, 80, 0.2);
-    background: rgb(2,0,36);
-    background: radial-gradient(circle, rgba(2,0,36,0.8) 0%, rgba(2,0,36,0.8) 100%);
-    z-index: 0;
-  }
 
   @include respond-to(medium) {
     @include center-content;
@@ -34,15 +20,11 @@
   form {
     position: relative;
     z-index: 1;
-    max-width: 350px;
+    max-width: 650px;
 
-    label {
-      color: white;
-    }
   }
 
   h1, h2 {
-    color: white;
     position: relative;
     z-index: 1;
   }
@@ -50,25 +32,37 @@
 label {
   position: relative;
   margin-bottom: 20px;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--text-color);
   font-size: 16px;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-medium);
 }
 
 /* Estilos para los campos de formulario */
 input {
-  width: 100%;
-  padding: var(--space) var(--space) ; /* Añade relleno vertical */
-  border: none;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  margin-bottom: var(--margin-bottom);
-  font-size: var(--font-size-20);
+  appearance: none;
+
+  &[type="text"],
+  &[type="email"],
+  &[type="password"] {
+    border-radius: 6px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid var(--border-color);
+    transition-timing-function: ease;
+    transition-duration: 0.2s;
+    transition-property: box-shadow, color, border-color;
+    color: rgb(42, 48, 57);
+    width: 100%;
+    height: var(--space-40);
+    line-height: var(--space-40);
+    padding: 0px 20px;
+    font-size: 16px;
+    margin: var(--unit) 0 var(--space);
+  }
 }
 
 /* Estilos para los campos de formulario cuando están enfocados */
 input:focus {
   outline: none;
-  border-bottom: 2px solid #3f51b5; /* Color azul de Material Design */
 }
 
 input:checked {

@@ -59,31 +59,32 @@ export default function CategoryOverview({ onAddTest }) {
 
           <h2 className="category-list__title">{result.name_category}</h2>
           <div className="category-list__body">
-            <p className="category-list__rating" >{result.average_note ? result.average_note : "00.00" } <span className="category-list__percent">%</span></p>
-            {accessStatus === "active" && (
-              result.has_tests > 0 ?
+            {accessStatus === "premium" && (
+              <p className="category-list__rating" >{result.average_note ? result.average_note : "00.00" } <span className="category-list__percent">%</span></p>
+            )}
+            {result.has_tests > 0 ? (
+              Number(result.has_inprogress_tests) !== 1 ? (
                 <>
-                  {Number(result.has_inprogress_tests) != 1 ?
-                    <>
-                      <button className='btn btn--aslink font-size-12' onClick={() => onAddTest(result)} disabled={loading}>
-                        {loading ? 'Cargando...' : 'Hacer otro test'}
-                      </button>
-                    </>
-                    :
-                    <Link
-                    to={{pathname:`/test/${result.inprogress_id_test}`}}
-                    className="font-size-14">
-                    Continuar Test
-                  </Link>
-                  }
+                  <button className='btn btn--aslink font-size-12' onClick={() => onAddTest(result)} disabled={loading}>
+                    {loading ? 'Cargando...' : 'Hacer otro test'}
+                  </button>
                 </>
-              :
-                <button className='btn btn--aslink font-size-12' onClick={() => onAddTest(result)} disabled={loading}>
-                  {loading ? 'Cargando...' : 'Empezar Test'}
-                </button>
+              )  : (
+                <Link
+                  to={{pathname:`/test/${result.inprogress_id_test}`}}
+                  className="font-size-14">
+                    Continuar Test
+                </Link>
+              )
+            ) : (
+              <button className='btn btn--aslink font-size-12' onClick={() => onAddTest(result)} disabled={loading}>
+                {loading ? 'Cargando...' : 'Empezar Test'}
+              </button>
             )}
           </div>
-          <Bar rating={result.average_note} className='margin-bottom' />
+          {accessStatus === "premium" && (
+            <Bar rating={result.average_note} className='margin-bottom' />
+          )}
           <div className="category-list__overview">
             <div className={`category-list__overview__item ${result.total_tests !== 0 ? "category-list__total-tests--empty" : ""}`}
               title="Tests realizados">

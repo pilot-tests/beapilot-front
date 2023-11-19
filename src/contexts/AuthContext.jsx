@@ -29,6 +29,11 @@ export function AuthProvider({ children }) {
     setAuth(prevAuth => ({ ...prevAuth, user }));
   };
 
+  const updateAuthUser = (updatedData) => {
+    setAuth((prevAuth) => ({ ...prevAuth, user: { ...prevAuth.user, ...updatedData } }));
+  };
+
+
   const value = {
     auth,
     setToken,

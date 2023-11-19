@@ -6,6 +6,7 @@
   --dark-grey: hsl(0, 0%, 50%);
   --white: white;
   --sky: hsl(210, 100%, 20%);
+  --sky-mid: hsl(210, 100%, 70%);
   --sky-tint: hsl(210, 30%, 93%);
   --sunset: hsl(24, 100%, 50%);
   --red: hsl(0, 74%, 43%);
@@ -76,6 +77,7 @@
   --font-size-18: 18px;
   --font-size-20: 20px;
   --font-size-32: 32px;
+  --font-size-56: 56px;
   --font-size-64: 64px;
 
 
@@ -87,11 +89,28 @@
   // Units
   --unit: 6px;
   --space: calc(var(--unit) * 2);
-  --space-18: calc(var(--unit) * 3);
+  --space-18: 18px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-64: 64px;
   --margin-bottom: calc(var(--unit) * 3);
   --space-big: calc(var(--unit) * 4);
   --border-radius: 4px;
 
   --pagewidth: 1024px;
   --block-small: 450px;
+  --block-medium: 650px;
+
+
+  --shadow-dark: 286deg 36% 56%;
+  --shadow-light: 286deg 96% 96%;
+  --shadow-medium:
+    0.3px 0.5px 0.7px hsl(var(--shadow-light) / 0.36),
+    0.8px 1.6px 2px -0.8px hsl(var(--shadow-light) / 0.36),
+    2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-light) / 0.36),
+    5px 10px 12.6px -2.5px hsl(var(--shadow-light) / 0.36);
+
+
+
 }

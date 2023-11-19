@@ -1,0 +1,122 @@
+@import "../../Scss/mixins";
+
+
+.pricetag {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space) var(--space-18);
+  border-radius: var(--border-radius);
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 5px 14px 2px;
+  background-color: white;
+  color: black!important;
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+
+
+  &__check {
+    visibility: hidden;
+    position: absolute;
+    inset: -.5em -.5em auto auto;
+    background-color: var(--color-score-outstanding);
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0px 2px rgba(255, 255, 255, 0.6);
+
+    svg {
+      width: 22px;
+      fill: white;
+    }
+  }
+
+
+  &__text {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-normal);
+    text-transform: uppercase;
+
+    span {
+      display: block;
+      margin: var(--space-big) auto;
+      font-size: var(--font-size-32);
+      font-weight: var(--font-weight-normal);
+      border-radius: 100%;
+    }
+
+    &__period {
+      margin-top: calc(var(--space-18) * -1.5);
+      font-weight: var(--font-weight-normal);
+      color: var(--mute-color);
+    }
+  }
+
+  input {
+    width: 24px;
+    margin: 0;
+  }
+
+  &__container {
+    display: flex;
+    gap: var(--space-18);
+    padding-left: var(--space);
+    padding-right: var(--space);
+
+    padding: var(--space-64);
+    margin-bottom: var(--space-64);
+
+    @include respond-to(medium) {
+      @include center-content(var(--block-medium));
+    }
+  }
+
+  &__list {
+    margin: 0 0 var(--space-18);
+    padding: 0;
+    list-style: none;
+    font-weight: var(--font-weight-normal);
+    width: 100%;
+
+    li {
+      padding: var(--space) 0;
+
+      &::before {
+        content: '✓';
+        color: var(--sky);
+        margin-right: 0.5em;
+      }
+
+      &:first-child {
+        padding-top: 0;
+      }
+    }
+
+    &::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border-radius: var(--border-radius);
+    }
+  }
+
+  input {
+    display: none;
+
+    &:checked {
+      ~ .pricetag__list {
+        &:after {
+          border: 2px solid var(--sky);
+        }
+      }
+
+      ~ .pricetag__check {
+        visibility: visible;
+      }
+    }
+  }
+}

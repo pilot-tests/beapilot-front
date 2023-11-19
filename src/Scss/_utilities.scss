@@ -19,6 +19,9 @@
 .font-size-32 {
   font-size: var(--font-size-32);
 }
+.font-size-20 {
+  font-size: var(--font-size-20);
+}
 
 .font-weight-bold {
   font-weight: var(--font-weight-bold);
@@ -30,6 +33,18 @@
   margin-bottom: var(--space);
 }
 
+.margin-bottom-18 {
+  margin-bottom: var(--space-18);
+}
+
+.margin-bottom-32 {
+  margin-bottom: var(--space-32);
+}
+
+.margin-bottom-64 {
+  margin-bottom: var(--space-64);
+}
+
 .align-right {
   text-align: right;
 }
@@ -38,12 +53,32 @@
   text-align: left;
 }
 
+.alig-center {
+  text-align: center;
+}
+
 
 //-----> Blocks
 
 .block-small {
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   max-width: var(--block-small);
+}
+
+.block-medium {
+  padding-left: var(--space);
+  padding-right: var(--space);
+
+  @include respond-to(medium) {
+    @include center-content(var(--block-medium));
+  }
+}
+
+.block-medium-big {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: calc(var(--block-medium) + (var(--block-small) / 2));
 }
 
 

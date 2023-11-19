@@ -1,5 +1,5 @@
 
-import SubscriptionWrapper from '../../layouts/SubscriptionWrapper';
+import SubscriptionWrapper from '../../layouts/VisitorWrapper';
 import { useAuth } from '../../contexts/AuthContext'
 
 

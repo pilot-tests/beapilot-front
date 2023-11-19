@@ -1,14 +1,14 @@
-import SubscriptionWrapper from '../../layouts/SubscriptionWrapper';
+import VisitorWrapper from '../../layouts/VisitorWrapper';
 import LoginForm from '../../components/LoginForm';
 
 
 function RegisterSuccess() {
   return (
-    <SubscriptionWrapper>
+    <VisitorWrapper>
       <h1>Registrao!</h1>
       <h2>Haz login para acceder</h2>
       <LoginForm />
-    </SubscriptionWrapper>
+    </VisitorWrapper>
    );
 }
 

@@ -1,18 +1,20 @@
 // Ideal wrapper for when the user is loged in but has no subscription.
 import React from 'react';
 import Topbar from '../components/layout/Topbar';
+import Footer from '../components/layout/Footer';
 
 
-const SubscriptionWrapper = ({ children }) => {
+const VisitorWrapper = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem('authToken');
   return (
-    <React.Fragment>
+    <div className='sticky-footer'>
       <Topbar />
-      <main className="form-container">
+      <main>
         {children}
       </main>
-    </React.Fragment>
+      <Footer />
+    </div>
   );
 };
 
-export default SubscriptionWrapper;
+export default VisitorWrapper;

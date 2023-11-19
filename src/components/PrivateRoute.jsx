@@ -9,13 +9,13 @@ const PrivateRoutes = () => {
     const [accessStatus, setAccessStatus] = useState("loading");
 
     useEffect(() => {
-        if (user && user.active_subscription !== "active") {
-            setAccessStatus("inactiveSubscription");
+        if (user && user.subscription_type === "free") {
+            setAccessStatus("free");
         } else {
-            setAccessStatus("active");
+            setAccessStatus("premium");
         }
-    }, [user]);
 
+    }, [user]);
 
     if (loading) {
         return <div>Loading...</div>; // O tu componente de carga aquí.

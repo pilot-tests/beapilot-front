@@ -38,6 +38,7 @@ const LoginForm = () => {
       // Asigna el token a localStorage
       localStorage.setItem('authToken', token);
 
+
       // Actualiza el token y la información del usuario en el contexto de autenticación
       setToken(token);
       setUser(user);
@@ -67,6 +68,7 @@ const LoginForm = () => {
   return (
     <>
       {loading && <Loader />}
+      <h1 className="title-page">Login</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:

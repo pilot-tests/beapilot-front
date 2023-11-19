@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useAuth } from '../contexts/AuthContext';
 
 const LogoutButton = () => {
@@ -24,9 +25,16 @@ const LogoutButton = () => {
   };
 
   return (
-    <button className='btn btn--aslink' onClick={handleLogout}>
-      Logout
-    </button>
+    <>
+      <button className='btn btn--aslink' onClick={handleLogout}>
+        Logout
+      </button>
+      <Link
+        to="/user"
+        className="font-size-14">
+          Preferencias
+      </Link>
+    </>
   );
 };
 

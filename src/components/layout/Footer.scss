@@ -1,0 +1,62 @@
+@import "../../Scss/mixins";
+
+.footer {
+  position: relative;
+  border-top: 1px solid var(--dark-grey);
+  background-color: white;
+  margin-top: var(--space-40);
+
+  &__content {
+    display: flex;
+    padding-top: var(--space);
+    padding-bottom: var(--space);
+    padding: var(--space) var(--space);
+
+    @include respond-to(large) {
+      @include center-content;
+    }
+  }
+
+    &__logo {
+      display: flex;
+      gap: var(--gap);
+      align-items: center;
+      font-weight: 600;
+      svg {
+        width: 30px;
+      }
+    }
+
+    &__links {
+      display: flex;
+      justify-content: flex-end;
+      flex: 1;
+      list-style-type: none;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: var(--space);
+
+      a, a:visited {
+
+      }
+    }
+
+  &-cta {
+    transform: translateY(-50%);
+    position: relative;
+    z-index: 2;
+    max-width: 90%;
+    margin: 0 auto 0;
+    padding: var(--space);
+    border: 1px solid var(--border-color);
+    border-radius: var(--gap);
+    background-color: var(--black);
+    box-shadow: var(--shadow-elevation-high);
+    text-align: center;
+    color: white;
+
+    @include respond-to(medium) {
+      max-width: 25%;
+    }
+  }
+}
