@@ -25,10 +25,6 @@ export function RegistrationForm() {
       return;
     }
 
-    // Aquí debes hacer una solicitud a tu backend para crear una sesión de pago de Stripe.
-    // Reemplaza la siguiente línea con esa llamada a la API.
-    // const { stripe_session_id: sessionId } = await fetchCreateStripeSession(email, password, name);
-
     if (!stripe || !elements) {
       return;
     }

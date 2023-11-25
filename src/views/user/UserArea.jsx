@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios"
+import { useStripe } from "@stripe/react-stripe-js";
 import UserWrapper from '../../layouts/UserWrapper';
 import { useAuth } from '../../contexts/AuthContext'
 import Loader from "../../components/loader/Loader";
 
 
 export default function Subscribe() {
+  const stripe = useStripe();
   const { auth } = useAuth();
   const { updateAuthUser } = useAuth();
   if (!auth || !auth.user) {
@@ -19,7 +21,7 @@ export default function Subscribe() {
   const user = auth.user;
 	const userStripeId = auth.user.stripe_customer_id;
   const [subscriptionType, setSubscriptionType] = useState(user.subscription_type);
-  console.log(user);
+  console.log("Auth:", auth);
 
 
 
@@ -79,6 +81,40 @@ export default function Subscribe() {
     }
   };
 
+  const subscribeExistingUser = async () => {
+  setLoading(true);
+
+    const data = new URLSearchParams();
+    data.append("email_user", user.email_user);
+    data.append("name_user", user.name_user);
+    data.append("SubscribeExistingUser", "true");
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}users`, data, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Auth: import.meta.env.VITE_AUTH,
+          token: token
+        }
+      });
+
+      if (response.data && response.data.results && response.data.results.checkout_session) {
+        const sessionId = response.data.results.checkout_session;
+        // Aquí se redirige al usuario a la sesión de checkout de Stripe
+        await stripe.redirectToCheckout({ sessionId });
+      } else {
+        // Manejar casos en que no se recibe una sesión de checkout
+        alert("No se pudo iniciar la sesión de checkout de Stripe. Por favor, inténtalo de nuevo.");
+      }
+    } catch (error) {
+      // Manejo de errores (similar al que ya tienes)
+      console.error("Error:", error);
+      alert("Error al intentar suscribir. Por favor, inténtalo de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const resubscribe = async () => {
     setLoading(true);
@@ -87,82 +123,137 @@ export default function Subscribe() {
     data.append("ResubscribeCustomerNumber", userStripeId);
 
     try {
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}`, data, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Auth: import.meta.env.VITE_AUTH,
-                token: token
-            }
-        });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}`, data, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Auth: import.meta.env.VITE_AUTH,
+            token: token
+        }
+      });
 
-        // Aquí puedes manejar la respuesta. Por ejemplo:
-        console.log("respuesta on resubscribe:", response);
+      // Aquí puedes manejar la respuesta. Por ejemplo:
+      console.log("respuesta on resubscribe:", response);
 
-        if (response.data.results.subscription_status ==	"active") {
-           let user = JSON.parse(localStorage.getItem('user'));
+      if (response.data.results.subscription_status ==	"active") {
+        let user = JSON.parse(localStorage.getItem('user'));
 
-            // Actualizar el objeto 'user' con los nuevos valores
-            user = { ...user, stripe_active_subscription: "active", subscription_type: "premium" };
+        // Actualizar el objeto 'user' con los nuevos valores
+        user = { ...user, stripe_active_subscription: "active", subscription_type: "premium" };
 
-            // Guardar el objeto 'user' actualizado de nuevo en localStorage
-            localStorage.setItem('user', JSON.stringify(user));
+        // Guardar el objeto 'user' actualizado de nuevo en localStorage
+        localStorage.setItem('user', JSON.stringify(user));
 
-            // Actualizar el contexto de autenticación
-            updateAuthUser({ stripe_active_subscription: "active", subscription_type: "premium" });
-            setSubscriptionType("free");
+        // Actualizar el contexto de autenticación
+        updateAuthUser({ stripe_active_subscription: "active", subscription_type: "premium" });
+        setSubscriptionType("free");
 ;
-        } else {
-            alert("Error al resubscribir. Inténtalo de nuevo.");
-            setLoading(false);
-        }
-
-        getStripeData();
-    } catch (error) {
-        if (error.response) {
-            // El servidor respondió con un estado fuera del rango 2xx
-            console.error("Server Error:", error.response.data);
-            alert("Error al resubscribir. Inténtalo de nuevo.");
-        } else if (error.request) {
-            // La solicitud fue hecha pero no se recibió respuesta
-            console.error("No response:", error.request);
-            alert("Ocurrió un error al intentar resubscribir. Inténtalo de nuevo.");
-        } else {
-            // Algo salió mal al configurar la solicitud
-            console.error("Axios Error:", error.message);
-            alert("Ocurrió un error al intentar resubscribir. Inténtalo de nuevo.");
-        }
+      } else {
+        alert("Error al resubscribir. Inténtalo de nuevo.");
         setLoading(false);
+      }
+
+      getStripeData();
+    } catch (error) {
+      if (error.response) {
+        // El servidor respondió con un estado fuera del rango 2xx
+        console.error("Server Error:", error.response.data);
+        alert("Error al resubscribir. Inténtalo de nuevo.");
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió respuesta
+        console.error("No response:", error.request);
+        alert("Ocurrió un error al intentar resubscribir. Inténtalo de nuevo.");
+      } else {
+        // Algo salió mal al configurar la solicitud
+        console.error("Axios Error:", error.message);
+        alert("Ocurrió un error al intentar resubscribir. Inténtalo de nuevo.");
+      }
+      setLoading(false);
+    }
+  };
+
+   const userSubscribe = async () => {
+    setLoading(true);
+
+    const data = new URLSearchParams();
+    data.append("ResubscribeCustomerNumber", userStripeId);
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}`, data, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Auth: import.meta.env.VITE_AUTH,
+            token: token
+        }
+      });
+
+      // Aquí puedes manejar la respuesta. Por ejemplo:
+      console.log("respuesta on resubscribe:", response);
+
+      if (response.data.results.subscription_status ==	"active") {
+        let user = JSON.parse(localStorage.getItem('user'));
+
+        // Actualizar el objeto 'user' con los nuevos valores
+        user = { ...user, stripe_active_subscription: "active", subscription_type: "premium" };
+
+        // Guardar el objeto 'user' actualizado de nuevo en localStorage
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Actualizar el contexto de autenticación
+        updateAuthUser({ stripe_active_subscription: "active", subscription_type: "premium" });
+        setSubscriptionType("free");
+;
+      } else {
+        alert("Error al resubscribir. Inténtalo de nuevo.");
+        setLoading(false);
+      }
+
+      getStripeData();
+    } catch (error) {
+      if (error.response) {
+        // El servidor respondió con un estado fuera del rango 2xx
+        console.error("Server Error:", error.response.data);
+        alert("Error al resubscribir. Inténtalo de nuevo.");
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió respuesta
+        console.error("No response:", error.request);
+        alert("Ocurrió un error al intentar resubscribir. Inténtalo de nuevo.");
+      } else {
+        // Algo salió mal al configurar la solicitud
+        console.error("Axios Error:", error.message);
+        alert("Ocurrió un error al intentar resubscribir. Inténtalo de nuevo.");
+      }
+      setLoading(false);
     }
   };
 
   const getStripeData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}stripeUsers`, {
-          params: {
-            getStripeData: true,
-            customerNumber: userStripeId,
-            token: token
-          },
-          headers: {
-              Auth: import.meta.env.VITE_AUTH
-          }
-        });
-        setUserStripe(response.data.results);
-        console.log("getStripeData:", response.data.results);
-
-        setError(null);
-      } catch (err) {
-        if (err.response && err.response.status === 404) {
-            setError("Error obteniendo tus datos de Stripe -Recarga la página.");
-        } else {
-            setError(err.message);
+    setLoading(true);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}stripeUsers`, {
+        params: {
+          getStripeData: true,
+          customerNumber: userStripeId,
+          token: token
+        },
+        headers: {
+            Auth: import.meta.env.VITE_AUTH
         }
-      setUserStripe(null);
-      } finally {
-        setLoading(false);
+      });
+      setUserStripe(response.data.results);
+      console.log("getStripeData:", response.data.results);
+
+      setError(null);
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+          setError("Error obteniendo tus datos de Stripe -Recarga la página.");
+      } else {
+          setError(err.message);
       }
-    };
+    setUserStripe(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     getStripeData();
@@ -181,7 +272,7 @@ export default function Subscribe() {
         <dl className="dl-horizontal">
           <dt>Email:</dt>
           <dd>{user && user.email_user}</dd>
-          <dt>Subscripciçon actual: </dt>
+          <dt>Subscripción actual: </dt>
           <dd>
               {user && user.subscription_type}
           </dd>
@@ -202,7 +293,11 @@ export default function Subscribe() {
         {user && user.subscription_type === "premium" ?
           <button className='btn btn--danger' onClick={cancelSubscription}>Cancelar subscripción</button>
         :
-          <button className='btn' onClick={resubscribe}>Subscribir</button>
+
+          userStripeId ?
+          <button className='btn' onClick={resubscribe}>Reanudar subscribción</button>
+          :
+          <button className='btn btn--cta' onClick={subscribeExistingUser}>Obtener premium</button>
         }
       </div>
     </UserWrapper>
