@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SvgLogo from '../svg/Logo';
 import "./Footer.scss"
 
 export default function Footer() {
@@ -9,7 +10,7 @@ export default function Footer() {
       <div className="footer__content">
         <div className="footer__logo">
           <a href="/">
-            Logo
+            <SvgLogo />
             </a>
             Test Pilot Pro
         </div>
