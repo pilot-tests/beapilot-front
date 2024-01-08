@@ -11,14 +11,15 @@ export function RegistrationForm() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [subscription_type, setSubscription_type] = useState("");
+  const [coupon, setCoupon] = useState("");
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const sessionObj = await fetchCreateStripeSession(email, password, name, subscription_type);
-    const { sessionId, error: fetchError } = sessionObj;
+    const sessionObj = await fetchCreateStripeSession(email, password, name, subscription_type, coupon);
+    const { sessionId, subscriptionTypeFromServer, error: fetchError } = sessionObj;
 
     if (fetchError) {
       setError(fetchError);
@@ -29,18 +30,23 @@ export function RegistrationForm() {
       return;
     }
 
-    if (subscription_type != 'free') {
-      // Si el tipo de suscripción es 'free', redirige a Stripe
-      const result = await stripe.redirectToCheckout({
-        sessionId
-      });
+    if (subscriptionTypeFromServer === 'premium') {
+      console.log(sessionId);
+      let result;
 
-      if (result.error) {
+      if (sessionId) {
+        result = await stripe.redirectToCheckout({sessionId});
+      } else {
+        navigate("/register/success/byCoupon");
+      }
+
+      if (result && result.error) {
         console.log("results here:", result.error.message);
       }
     } else {
       navigate("/");
     }
+
   };
 
   return (
@@ -135,6 +141,17 @@ export function RegistrationForm() {
               required
             />
           </label>
+          {subscription_type === "premium" && (
+          <label>
+            Cupón
+            <input
+              type="text"
+              placeholder="ABCD..."
+              value={coupon}
+              onChange={(e) => setCoupon(e.target.value)}
+            />
+          </label>
+          )}
           {error && <div className="alert alert--danger">{error}</div>}
           <button className="btn--cta" type="submit" disabled={!stripe}>
             Registrarse
@@ -146,12 +163,13 @@ export function RegistrationForm() {
   );
 }
 
-async function fetchCreateStripeSession(email, password, name, subscription_type) {
+async function fetchCreateStripeSession(email, password, name, subscription_type, coupon_code) {
   // Los datos del usuario para enviar a tu API.
   const data = new URLSearchParams();
   data.append("email_user", email);
   data.append("password_user", password);
   data.append("name_user", name);
+  data.append("coupon_code", coupon_code);
   data.append("subscription_type", subscription_type);
   console.log(data["subscription_type"]);
 
@@ -168,22 +186,16 @@ async function fetchCreateStripeSession(email, password, name, subscription_type
       },
       data: data
     });
-
-
-    console.log("response", response);
-    const sessionId = response.data.results.stripe_session_id
-    console.log("sessionId: ", sessionId);
-    console.log("data: ", response.data);
+    // Extraer subscription_type de la respuesta
+    const subscriptionTypeFromServer = response.data.results.subscription_type;
 
     return {
       sessionId: response.data.results.stripe_session_id,
-      subscription_type: response.data.results.subscription_type
+      subscriptionTypeFromServer,
+      error: null
     }
   } catch (error) {
     let errorMessage;
-  // console.error("Error fetching Stripe session ID", error);
-  // console.error("Error message:", error.message);
-  // console.error("HTTP response:", error.response);
     if (error.response) {
         // El servidor respondió con un estado fuera del rango 2xx
         errorMessage = error.response.data.results;

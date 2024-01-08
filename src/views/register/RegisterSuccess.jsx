@@ -3,11 +3,20 @@ import LoginForm from '../../components/LoginForm';
 
 
 function RegisterSuccess() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <VisitorWrapper>
-      <h1>Registrao!</h1>
-      <h2>Haz login para acceder</h2>
-      <LoginForm />
+      <div className="block-medium">
+        <div className="alert alert--success">
+          <h6>Registrado!</h6>
+          <p>Haz login para acceder</p>
+        </div>
+
+
+        <LoginForm />
+      </div>
     </VisitorWrapper>
    );
 }
