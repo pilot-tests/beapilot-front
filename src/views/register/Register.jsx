@@ -12,14 +12,19 @@ export function RegistrationForm() {
   const [name, setName] = useState("");
   const [subscription_type, setSubscription_type] = useState("");
   const [coupon, setCoupon] = useState("");
+  const [loading, setLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(null);
+    setLoading(true);
     const sessionObj = await fetchCreateStripeSession(email, password, name, subscription_type, coupon);
     const { sessionId, subscriptionTypeFromServer, error: fetchError } = sessionObj;
+
+    setLoading(false);
 
     if (fetchError) {
       setError(fetchError);
@@ -152,8 +157,8 @@ export function RegistrationForm() {
             />
           </label>
           )}
-          {error && <div className="alert alert--danger">{error}</div>}
-          <button className="btn--cta" type="submit" disabled={!stripe}>
+          {error && <div className="alert alert--danger margin-bottom">{error}</div>}
+          <button className="btn--cta" type="submit" disabled={!stripe || loading}>
             Registrarse
           </button>
           </div>

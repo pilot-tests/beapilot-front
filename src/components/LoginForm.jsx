@@ -79,7 +79,7 @@ const LoginForm = () => {
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
         </label>
         <div className="align-right">
-          {error && <div className="alert alert--danger">{error}</div>}
+          {error && <div className="alert alert--danger margin-bottom">{error}</div>}
           <button className='btn btn--cta margin-bottom' type="submit">Login</button>
           <p>No tienes cuenta? <a href="/register">Únete -></a></p>
         </div>
